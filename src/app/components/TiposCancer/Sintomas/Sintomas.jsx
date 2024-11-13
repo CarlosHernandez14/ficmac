@@ -5,17 +5,11 @@ function Sintomas() {
   return (
     <div>
       <p className="text-4xl font-bold text-center">Sintomas</p>
-      <div className="grid grid-cols-8 gap-2 justify-center py-4">
-        <BolaSintoma />
-        <BolaSintoma />
-        <BolaSintoma />
-        <BolaSintoma />
-        <BolaSintoma />
-        <BolaSintoma />
-        <BolaSintoma />
-        <BolaSintoma />
-        <BolaSintoma />
-        <BolaSintoma />
+      <div className="grid grid-cols-4 gap-2 justify-center py-4">
+        <BolaSintoma ruta={"/TiposCancer/CM1.png"} nombre={"Secreción del pezón"}/>
+        <BolaSintoma ruta={"/TiposCancer/CM2.png"} nombre={"Dolor general"}/>
+        <BolaSintoma ruta={"/TiposCancer/CM3.png"} nombre={"Cambios en la piel"}/>
+        <BolaSintoma ruta={"/TiposCancer/CM4.png"} nombre={"Cambios de forma"}/>
       </div>
     </div>
   );
