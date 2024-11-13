@@ -75,14 +75,14 @@ export const getPostById = async (id) => {
 
 // Función para crear una publicación
 /* 
-    Recibe los siguientes datos:
+    Recibe los siguientes datos(data):
     - titulo: string
     - cuerpo: string
     - idUsuario: number
     - idTipoCancer: number
     - idPostPadre: number (opcional en caso de ser una respuesta de otro post)
 
-    Retorna
+    Retorna un objeto con la siguiente estructura
     - message: string
     - OK: boolean // true si se creó, false si no
     - data: object
@@ -92,7 +92,20 @@ export const createPost = async (data) => {
     try {
         // Se crea la publicación
         const publicacion = await db.Post.create({
-            data
+            data: {
+                ...data,
+                idPostPadre: null,
+                idUsuario: {
+                    connect: {
+                        id: data.idUsuario
+                    }
+                },
+                idTipoCancer: {
+                    connect: {
+                        id: data.idTipoCancer
+                    }
+                }
+            }
         });
 
         // Se retorna la publicación creada
@@ -165,7 +178,7 @@ export const updatePost = async (data, idPost) => {
     - message: string
     - OK: boolean // true si se eliminó, false si no
     - data: object
-    
+
 */
 
 export const deletePost = async (idPost) => {
