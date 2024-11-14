@@ -46,7 +46,7 @@ function CajaRegistrar({ setShowLogin }) {
       initial={{ x: 100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: -500, opacity: 0 }}
-      className="w-96 flex flex-col justify-between h-full "
+      className="relative w-96 flex flex-col justify-between h-full "
     >
       <div>
         <p className="text-2xl font-extrabold py-0 text-center  text-[#367B99] underline mb-6">

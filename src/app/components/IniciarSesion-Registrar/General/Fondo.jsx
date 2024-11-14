@@ -10,28 +10,16 @@ function Fondo({ setShowLogin, color, imagen, isLogin, gradient }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="w-96 absolute inset-0"
+      className="absolute inset-0 w-full h-full overflow-hidden"
       style={{
-        background: `linear-gradient(${gradient}, ${color}, transparent)`,
+        background: `linear-gradient(${gradient}, ${color}, transparent), url(${imagen})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
-      <div className="relative h-screen w-screen flex items-center justify-center">
-        {/* Imagen de fondo */}
-        <div className="absolute inset-0 bg-cover bg-center">
-          <img
-            src={imagen}
-            alt={isLogin ? "inicio_sesion" : "registro"}
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(${gradient}, ${color}, transparent)`,
-          }}
-        ></div>
+      <div className="relative min-h-screen w-full h-full flex items-center justify-center overflow-auto">
         {/* Contenido */}
-        <div className="absolute inset-0 p-14">
+        <div className="absolute inset-0 p-14 w-full ">
           {isLogin ? (
             <CajaIzquierda setShowLogin={setShowLogin} />
           ) : (
