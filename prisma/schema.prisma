@@ -8,23 +8,47 @@ datasource db {
 }
 
 model Usuario {
-  id                  Int                   @id @default(autoincrement())
-  correo              String                @unique
-  contrasena          String
-  rol                 Int
-  fecha_registro      DateTime              @default(now()) @db.Date
-  Donacion            Donacion[]
-  Paciente            Paciente[]
-  Medico              Medico[]
-  Post                Post[]
-  Voto                Voto[]
-  Solicitud_Estudio   Solicitud_Estudio[]
-  solicitud_resultado solicitud_resultado[]
+  id                     String                   @id @default(cuid())
+  correo                 String?                  @unique
+  correoVerificado       DateTime?
+  contrasena             String?
+  rol                    Int?
+  fecha_registro         DateTime?                @default(now()) @db.Date
+  Donacion               Donacion[]
+  Paciente               Paciente[]
+  Medico                 Medico[]
+  Post                   Post[]
+  Voto                   Voto[]
+  Solicitud_Estudio      Solicitud_Estudio[]
+  solicitud_resultado    solicitud_resultado[]
+  Account                Account[]
+  Publicacion_Cientifica Publicacion_Cientifica[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user Usuario @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
 }
 
 model Donacion {
   id        Int      @id @default(autoincrement())
-  idUsuario Int
+  idUsuario String
   cantidad  Float
   fecha     DateTime @default(now()) @db.Date
   usuario   Usuario  @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario")
@@ -35,7 +59,7 @@ model Donacion {
 model Paciente {
   id              Int     @id @default(autoincrement())
   nombre_completo String
-  idUsuario       Int
+  idUsuario       String
   sexo            String
   num_celular     String
   imagen_path     String
@@ -45,27 +69,26 @@ model Paciente {
 }
 
 model Medico {
-  id                     Int                      @id @default(autoincrement())
-  nombre_completo        String
-  idUsuario              Int
-  rfc                    String
-  matricula              String
-  num_celular            String
-  especialidad           String
-  usuario                Usuario                  @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_medico")
-  Publicacion_Cientifica Publicacion_Cientifica[]
+  id              Int     @id @default(autoincrement())
+  nombre_completo String
+  idUsuario       String
+  rfc             String
+  matricula       String
+  num_celular     String
+  especialidad    String
+  usuario         Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_medico")
 
   @@index([idUsuario], name: "fk_usuario_medico_inx")
 }
 
 model Publicacion_Cientifica {
   id              Int      @id @default(autoincrement())
-  idUsuario       Int
+  idUsuario       String
   titulo          String
   resumen         String
   fecha_publicado DateTime @db.Date
   link            String
-  usuario         Medico   @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_publicacion")
+  usuario         Usuario  @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_publicacion")
 
   @@index([idUsuario], name: "fk_usuario_publicacion_inx")
 }
@@ -109,7 +132,7 @@ model Post {
   titulo       String
   cuerpo       String
   fecha        DateTime    @default(now())
-  idUsuario    Int
+  idUsuario    String
   idPostPadre  Int?
   idTipoCancer Int
   usuario      Usuario     @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_post")
@@ -126,7 +149,7 @@ model Post {
 model Voto {
   id        Int      @id @default(autoincrement())
   fecha     DateTime @default(now())
-  idUsuario Int
+  idUsuario String
   idPost    Int
   usuario   Usuario  @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_voto")
   post      Post     @relation(fields: [idPost], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_post_voto")
@@ -146,7 +169,7 @@ model Estudio {
 
 model Solicitud_Estudio {
   id                     Int                   @id @default(autoincrement())
-  idPaciente             Int
+  idPaciente             String
   idEstudio              Int
   path_orden_medica      String
   path_identificacion    String
@@ -165,7 +188,7 @@ model Solicitud_Estudio {
 
 model solicitud_resultado {
   id                 Int               @id @default(autoincrement())
-  idMedico           Int
+  idMedico           String
   idTipoCancer       Int
   prueba             String
   biopsia_remitida   String
