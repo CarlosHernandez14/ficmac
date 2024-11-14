@@ -1,27 +1,43 @@
+"use server";
 
 import { sendEmail } from "@/utils/mail.utils";
 
 // Funcion para manejar el envio de correos
+/*
+    La funcion recibe un objeto con los siguientes atributos:
+    - destinatario: {
+        name: String,
+        address: String
+    }
+    - mensaje: String
+    - subject: String (Asunto del correo)
+    
+    La funcion retorna un objeto con los siguientes atributos:
+    - OK: Boolean
+    - accepted: Array de Strings (direcciones de correo aceptadas)
 
-export async function enviarCorreo() {
+*/
+export async function enviarCorreo(destinatario, mensaje, subject) {
     const sender = {
-        name: 'Ficmac',
-        address: 'no-reply@example.com'
+        name: 'ONTEC',
+        address: process.env.MAIL_USER,
     };
 
     const receipients = [{
-        name: 'Ficmac',
-        address: 'john.doe@example.com',
+        name: destinatario.name,
+        address: destinatario.address,
     }];
 
-    try { 
+    const htmlMessage = generarHtmlCorreo(destinatario.name, mensaje);
+
+    try {
         const result = await sendEmail({
             sender,
             receipients,
-            subject: 'Correo de prueba',
-            message: 'Este es un correo de prueba'
+            subject: subject,
+            message: htmlMessage,
         });
-        
+
         // Return the json response
         return {
             OK: true,
@@ -36,4 +52,15 @@ export async function enviarCorreo() {
             message: 'Error al enviar el correo'
         }
     }
+}
+
+
+function generarHtmlCorreo(nombre, mensaje) {
+    return `
+      <div style="font-family: Arial, sans-serif; color: #333;">
+        <h1 style="color: #4A90E2;">Hola, ${nombre}!</h1>
+        <p style="font-size: 16px; line-height: 1.5;">${mensaje}</p>
+        <p style="font-size: 14px; color: #888;">Saludos,<br>El equipo de <strong>ONTEC</strong></p>
+      </div>
+    `;
 }
