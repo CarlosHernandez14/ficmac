@@ -4,23 +4,23 @@ import bcrypt from "bcryptjs"
 
 export const register = async (values) =>{
     //Encriptar la contrseña
-    const hash = await bcrypt.hash(values.contrasena, 10)
+    const hash = await bcrypt.hash(values.password, 10)
     try{
     //Verificar si el correo ya está registrado
-    const existingUser = await db.Usuario.findUnique({
+    const existingUser = await db.User.findUnique({
         where:{
-            correo: values.correo
+            email: values.email
         }
     })
     if (existingUser){
         return {error: "El correo ya está registrado"}
     }
     //Registrar el usuario
-        const response = await db.Usuario.create({
+        const response = await db.User.create({
             data:{
-                correo: values.correo,
-                contrasena: hash,
-                rol: "PACIENTE"
+                email: values.email,
+                password: hash,
+                role: "PACIENTE"
             }        
         })
         

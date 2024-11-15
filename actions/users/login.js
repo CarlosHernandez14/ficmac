@@ -22,3 +22,21 @@ export const login = async (values) =>{
         throw ex
     }
 }
+
+export const loginGoogle = async () =>{
+    try{
+        await signIn("google",{
+            callbackUrl: DEFAULT_LOGIN_REDIRECT,
+        })
+    }catch(ex){
+        if(ex instanceof AuthError){
+            switch(ex.type){
+                case "CredentialsSignin":
+                    return {error: "Correo o contraseña incorrectos"}
+                default:
+                    return {error: "Error desconocido"}
+            }
+        }
+        throw ex
+    }
+}

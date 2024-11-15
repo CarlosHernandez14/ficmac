@@ -18,9 +18,9 @@ export default auth(async (req) => {
   const token =  await getToken({req, secret: process.env.AUTH_SECRET}) 
   const {nextUrl} = req
   const isLoggedIn = !!req.auth
-  const isAdmin = isLoggedIn && token.rol=== "ADMIN"
-  const isMedical = isLoggedIn && token.rol === "MEDICO"
-  const isPacient = isLoggedIn && token.rol === "PACIENTE"
+  const isAdmin = isLoggedIn && token.role=== "ADMIN"
+  const isMedical = isLoggedIn && token.role === "MEDICO"
+  const isPacient = isLoggedIn && token.role === "PACIENTE"
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
   const isMedicalRoute = medicalRoutes.includes(nextUrl.pathname)

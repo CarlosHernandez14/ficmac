@@ -12,18 +12,13 @@ export const {
     signOut,
 } = NextAuth({
     callbacks: {
-        async signIn({user}){
-            const existingUser = await userById(user.id)
-            if(!existingUser || existingUser.correoVerificado) return false
-            return true
-        },
         async session({token, session}){
             if(token.sub && session.user){
                 session.user.id = token.sub
             } 
 
             if(token.rol && session.user){
-                session.user.rol = token.rol
+                session.user.role = token.role
             }
             return session
         },
@@ -34,7 +29,7 @@ export const {
             const existingUser = await userById(token.sub)
             if(!existingUser) return token
 
-            token.rol = existingUser.rol
+            token.role = existingUser.role
             return token
         }
     },
