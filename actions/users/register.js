@@ -1,6 +1,6 @@
 "use server"
 import db from "@/libs/db"
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 
 export const register = async (values) =>{
     //Encriptar la contrseña
@@ -15,13 +15,12 @@ export const register = async (values) =>{
     if (existingUser){
         return {error: "El correo ya está registrado"}
     }
-    console.log(values)
     //Registrar el usuario
         const response = await db.Usuario.create({
             data:{
                 correo: values.correo,
                 contrasena: hash,
-                rol: 1  // 1 = Usuario  
+                rol: "PACIENTE"
             }        
         })
         

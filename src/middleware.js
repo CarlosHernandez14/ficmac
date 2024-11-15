@@ -1,5 +1,7 @@
 import authConfig from "@/auth.config"
 import NextAuth from "next-auth"
+import {getToken} from "next-auth/jwt"
+
 import {
   publicRoutes,
   authRoutes,
@@ -12,12 +14,13 @@ import {
 
 const { auth } = NextAuth(authConfig)
  
-export default auth((req) => {
+export default auth(async (req) => {
+  const token =  await getToken({req, secret: process.env.AUTH_SECRET}) 
   const {nextUrl} = req
   const isLoggedIn = !!req.auth
-  const isAdmin = isLoggedIn && req.auth.rol === 3
-  const isMedical = isLoggedIn && req.auth.rol === 2
-  const isPacient = isLoggedIn && req.auth.rol === 1
+  const isAdmin = isLoggedIn && token.rol=== "ADMIN"
+  const isMedical = isLoggedIn && token.rol === "MEDICO"
+  const isPacient = isLoggedIn && token.rol === "PACIENTE"
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
   const isMedicalRoute = medicalRoutes.includes(nextUrl.pathname)

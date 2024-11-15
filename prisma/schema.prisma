@@ -7,12 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  ADMIN
+  PACIENTE
+  MEDICO
+} 
+
 model Usuario {
   id                     String                   @id @default(cuid())
   correo                 String?                  @unique
   correoVerificado       DateTime?
   contrasena             String?
-  rol                    Int?
+  rol                    UserRole                 @default(PACIENTE)
   fecha_registro         DateTime?                @default(now()) @db.Date
   Donacion               Donacion[]
   Paciente               Paciente[]
