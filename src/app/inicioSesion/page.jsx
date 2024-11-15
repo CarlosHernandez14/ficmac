@@ -4,9 +4,7 @@ import Animacion from "../components/IniciarSesion-Registrar/General/Animacion";
 function Page() {
   return (
     <div>
-      <Animacion
-        
-      />
+      <Animacion/>
     </div>
   );
 }

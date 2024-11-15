@@ -10,7 +10,7 @@ function Fondo({ setShowLogin, color, imagen, isLogin, gradient }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute inset-0 w-full h-full overflow-hidden"
+      className="absolute inset-0 w-full h-full overflow-hidden z-0"
       style={{
         background: `linear-gradient(${gradient}, ${color}, transparent), url(${imagen})`,
         backgroundSize: "cover",
