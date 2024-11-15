@@ -2,7 +2,11 @@ import React from "react";
 
 function InfoCancer() {
   return (
-    <div className="bg-[#D9D9D9] w-96 h-60 shadow-lg p-4 rounded-md overflow-y-auto">
+    <div className="bg-[#D9D9D9] 
+    w-96 h-80 
+    sm:w-64 md:w-72 lg:w-80 xl:w-96 2xl:w-96
+    sm:h-64 md:h-72 lg:h-80 xl:h-80 2xl:h-96 
+    shadow-lg p-4 rounded-md overflow-y-auto">
       <p className="text-sm text-justify">
         El cáncer de mama es una enfermedad en la que las células de la mama
         crecen de manera descontrolada. Existen diferentes tipos de cáncer de
