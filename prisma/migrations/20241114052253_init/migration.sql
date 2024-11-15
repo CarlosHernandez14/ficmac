@@ -1,18 +1,37 @@
 -- CreateTable
 CREATE TABLE "Usuario" (
-    "id" SERIAL NOT NULL,
-    "correo" TEXT NOT NULL,
-    "contrasena" TEXT NOT NULL,
-    "rol" INTEGER NOT NULL,
-    "fecha_registro" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "id" TEXT NOT NULL,
+    "correo" TEXT,
+    "contrasena" TEXT,
+    "rol" INTEGER,
+    "fecha_registro" DATE DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Usuario_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
+CREATE TABLE "Account" (
+    "userId" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "provider" TEXT NOT NULL,
+    "providerAccountId" TEXT NOT NULL,
+    "refresh_token" TEXT,
+    "access_token" TEXT,
+    "expires_at" INTEGER,
+    "token_type" TEXT,
+    "scope" TEXT,
+    "id_token" TEXT,
+    "session_state" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Account_pkey" PRIMARY KEY ("provider","providerAccountId")
+);
+
+-- CreateTable
 CREATE TABLE "Donacion" (
     "id" SERIAL NOT NULL,
-    "idUsuario" INTEGER NOT NULL,
+    "idUsuario" TEXT NOT NULL,
     "cantidad" DOUBLE PRECISION NOT NULL,
     "fecha" DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -23,7 +42,7 @@ CREATE TABLE "Donacion" (
 CREATE TABLE "Paciente" (
     "id" SERIAL NOT NULL,
     "nombre_completo" TEXT NOT NULL,
-    "idUsuario" INTEGER NOT NULL,
+    "idUsuario" TEXT NOT NULL,
     "sexo" TEXT NOT NULL,
     "num_celular" TEXT NOT NULL,
     "imagen_path" TEXT NOT NULL,
@@ -35,7 +54,7 @@ CREATE TABLE "Paciente" (
 CREATE TABLE "Medico" (
     "id" SERIAL NOT NULL,
     "nombre_completo" TEXT NOT NULL,
-    "idUsuario" INTEGER NOT NULL,
+    "idUsuario" TEXT NOT NULL,
     "rfc" TEXT NOT NULL,
     "matricula" TEXT NOT NULL,
     "num_celular" TEXT NOT NULL,
@@ -47,7 +66,7 @@ CREATE TABLE "Medico" (
 -- CreateTable
 CREATE TABLE "Publicacion_Cientifica" (
     "id" SERIAL NOT NULL,
-    "idUsuario" INTEGER NOT NULL,
+    "idUsuario" TEXT NOT NULL,
     "titulo" TEXT NOT NULL,
     "resumen" TEXT NOT NULL,
     "fecha_publicado" DATE NOT NULL,
@@ -99,7 +118,7 @@ CREATE TABLE "Post" (
     "titulo" TEXT NOT NULL,
     "cuerpo" TEXT NOT NULL,
     "fecha" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "idUsuario" INTEGER NOT NULL,
+    "idUsuario" TEXT NOT NULL,
     "idPostPadre" INTEGER,
     "idTipoCancer" INTEGER NOT NULL,
 
@@ -110,7 +129,7 @@ CREATE TABLE "Post" (
 CREATE TABLE "Voto" (
     "id" SERIAL NOT NULL,
     "fecha" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "idUsuario" INTEGER NOT NULL,
+    "idUsuario" TEXT NOT NULL,
     "idPost" INTEGER NOT NULL,
 
     CONSTRAINT "Voto_pkey" PRIMARY KEY ("id")
@@ -130,7 +149,7 @@ CREATE TABLE "Estudio" (
 -- CreateTable
 CREATE TABLE "Solicitud_Estudio" (
     "id" SERIAL NOT NULL,
-    "idPaciente" INTEGER NOT NULL,
+    "idPaciente" TEXT NOT NULL,
     "idEstudio" INTEGER NOT NULL,
     "path_orden_medica" TEXT NOT NULL,
     "path_identificacion" TEXT NOT NULL,
@@ -146,7 +165,7 @@ CREATE TABLE "Solicitud_Estudio" (
 -- CreateTable
 CREATE TABLE "solicitud_resultado" (
     "id" SERIAL NOT NULL,
-    "idMedico" INTEGER NOT NULL,
+    "idMedico" TEXT NOT NULL,
     "idTipoCancer" INTEGER NOT NULL,
     "prueba" TEXT NOT NULL,
     "biopsia_remitida" TEXT NOT NULL,
@@ -210,6 +229,9 @@ CREATE INDEX "fk_tipo_cancer_solicitud_resultado_inx" ON "solicitud_resultado"("
 CREATE INDEX "fk_solicitud_estudio_solicitud_resultado_inx" ON "solicitud_resultado"("idSolicitudEstudio");
 
 -- AddForeignKey
+ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Donacion" ADD CONSTRAINT "fk_usuario" FOREIGN KEY ("idUsuario") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -219,7 +241,7 @@ ALTER TABLE "Paciente" ADD CONSTRAINT "fk_usuario_paciente" FOREIGN KEY ("idUsua
 ALTER TABLE "Medico" ADD CONSTRAINT "fk_usuario_medico" FOREIGN KEY ("idUsuario") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Publicacion_Cientifica" ADD CONSTRAINT "fk_usuario_publicacion" FOREIGN KEY ("idUsuario") REFERENCES "Medico"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Publicacion_Cientifica" ADD CONSTRAINT "fk_usuario_publicacion" FOREIGN KEY ("idUsuario") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Tipo_Cancer_Sintoma" ADD CONSTRAINT "fk_sintoma" FOREIGN KEY ("id_sintoma") REFERENCES "Sintoma"("id") ON DELETE CASCADE ON UPDATE CASCADE;
