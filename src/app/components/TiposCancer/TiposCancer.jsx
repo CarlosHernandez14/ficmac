@@ -11,7 +11,7 @@ function TiposCancer() {
         <img src='/TiposCancer/adn.jfif' alt='ADN' className='w-full h-48 object-cover' />
       </div>
       <div className='relative z-10 p-4'>
-        <div className='flex justify-around items-center'>
+        <div className='flex justify-evenly items-center'>
           <MenuTipoCancer />
           <div className='space-y-2'>
             <TipoCancer />
