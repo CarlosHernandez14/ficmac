@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, TipoEstudio, Especialidad } from "@prisma/client"
 
 //Declaración de la instancia de Prisma
 const PrismaClientSigleton = () => {
@@ -11,7 +11,8 @@ const globalForPrisma = globalThis;
 //Instancia de Prisma
 const prisma = globalForPrisma.prisma ?? PrismaClientSigleton();
 
-//Exportar instancia de Prisma
+export { prisma, TipoEstudio, Especialidad };
+
 export default prisma;
 
 //Verificar si no es producción

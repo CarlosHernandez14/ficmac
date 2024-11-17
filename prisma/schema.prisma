@@ -7,6 +7,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TipoEstudio {
+  // Biopsia liquida o solida
+  BIOPSIA_LIQUIDA
+  BIOPSIA_SOLIDA
+}
+
+enum UserRole {
+  ADMIN
+  PACIENTE
+  MEDICO
+}
+
+enum Especialidad {
+  MEDICO_GENERAL
+  ONCOLOGO
+  RADIOLOGO
+  PATOLOGO
+  CIRUJANO
+  GINECOLOGO
+  UROLOGO
+  OTRO
+}
+
+
 model User {
   id                         String                   @id @default(cuid())
   name                       String?
@@ -46,6 +70,25 @@ model Account {
   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
+}
+
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
 }
 
 model VerificationToken {
@@ -93,7 +136,7 @@ model Medico {
   idUsuario       String
   rfc             String
   matricula       String
-  especialidad    String
+  especialidad    Especialidad @default(MEDICO_GENERAL)
   usuario         User   @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_medico")
 
   @@index([idUsuario], map: "fk_usuario_medico_inx")
@@ -180,7 +223,8 @@ model Estudio {
   id                Int                 @id @default(autoincrement())
   nombre            String
   descripcion       String
-  tipo              Int
+  // Biopsia liquida o solida
+  tipo              TipoEstudio        @default(BIOPSIA_LIQUIDA)
   precio            Float
   Solicitud_Estudio Solicitud_Estudio[]
 }
@@ -225,8 +269,4 @@ model solicitud_resultado {
   @@index([idSolicitudEstudio], map: "fk_solicitud_estudio_solicitud_resultado_inx")
 }
 
-enum UserRole {
-  ADMIN
-  PACIENTE
-  MEDICO
-}
+
