@@ -15,7 +15,14 @@ const MailBtn = () => {
         console.log("Mail sent");
 
         // Send email
-        const response = await enviarCorreo();
+        const response = await enviarCorreo(
+            {
+                name: "Carlos",
+                address: "carloskvpchc@gmail.com"
+            },
+            "Este es un mensaje de prueba",
+            "Correo de prueba"
+        );
 
         // Set response
         setMailResponse(response);

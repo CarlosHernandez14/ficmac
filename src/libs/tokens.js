@@ -1,6 +1,6 @@
 import { getPasswordResetTokenByEmail, getVerificationTokenByEmail } from '@/actions/users/data';
 import {v4 as uuidv4} from 'uuid';
-import db from "@/libs/db"
+import { prisma as db } from "@/libs/db"
 
 /**
  * Función para generar un token de verificación

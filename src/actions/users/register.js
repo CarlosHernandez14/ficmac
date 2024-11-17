@@ -1,10 +1,9 @@
 "use server"
-import db from "@/libs/db"
+import {prisma as db, UserRole } from "@/libs/db"
 import bcrypt from "bcryptjs"
 import { generateVerificationToken } from "@/libs/tokens"
 import { enviarCorreoConfirmacion } from "../mail/confirmation"
 import { revalidatePath } from "next/cache"
-
 
 //Función para registrar un usuario
 export const register = async (values) =>{
@@ -21,13 +20,15 @@ export const register = async (values) =>{
         return {error: "El correo ya está registrado"}
     }
     //Registrar el usuario
+        console.log("Antes de crear el usuario")
+
         const response = await db.User.create({
             data:{
                 email: values.email,
                 name: values.name,
                 num_celular: values.num_celular,
                 password: hash,
-                role: "PACIENTE"
+                role: UserRole.PACIENTE
             }        
         })
 
@@ -36,7 +37,7 @@ export const register = async (values) =>{
         revalidatePath('/auth/login')
         return {success: "Confirmation email sent!"}
     }catch(ex){
-        console.log(ex.message)
+        console.log(ex)
         return {error: ex.message}
     }
 }
