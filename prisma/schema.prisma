@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum TipoEstudio {
+  BIOPSIA_LIQUIDA
+  BIOPSIA_SOLIDA
+}
+
 model Usuario {
   id                     String                   @id @default(cuid())
   correo                 String?                  @unique
@@ -162,7 +167,8 @@ model Estudio {
   id                Int                 @id @default(autoincrement())
   nombre            String
   descripcion       String
-  tipo              Int
+  // Tipo ENUM ('Biopsia Liquida o Biopsia Solida')
+  tipo              TipoEstudio        @default(BIOPSIA_LIQUIDA)
   precio            Float
   Solicitud_Estudio Solicitud_Estudio[]
 }
