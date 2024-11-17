@@ -7,22 +7,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Usuario {
-  id                     String                   @id @default(cuid())
-  correo                 String?                  @unique
-  correoVerificado       DateTime?
-  contrasena             String?
-  rol                    Int?
-  fecha_registro         DateTime?                @default(now()) @db.Date
-  Donacion               Donacion[]
-  Paciente               Paciente[]
-  Medico                 Medico[]
-  Post                   Post[]
-  Voto                   Voto[]
-  Solicitud_Estudio      Solicitud_Estudio[]
-  solicitud_resultado    solicitud_resultado[]
-  Account                Account[]
-  Publicacion_Cientifica Publicacion_Cientifica[]
+model User {
+  id                         String                   @id @default(cuid())
+  name                       String?
+  email                      String?                  @unique
+  emailVerified              DateTime?
+  password                   String?
+  role                       UserRole                 @default(PACIENTE)
+  createdAt                  DateTime                 @default(now())
+  updatedAt                  DateTime                 @updatedAt
+  num_celular                String?
+  accounts                   Account[]
+  Donacion                   Donacion[]
+  Medico                     Medico[]
+  Paciente                   Paciente[]
+  Post                       Post[]
+  Publicacion_Cientifica     Publicacion_Cientifica[]
+  Solicitud_Estudio_Paciente Solicitud_Estudio[]      @relation("PacienteToSolicitud")
+  Voto                       Voto[]
+  solicitud_resultado        solicitud_resultado[]
+  Solicitud_Estudio_Medico   Solicitud_Estudio[]      @relation("MedicoToSolicitud")
 }
 
 model Account {
@@ -37,13 +41,29 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user Usuario @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
+}
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
 }
 
 model Donacion {
@@ -51,34 +71,32 @@ model Donacion {
   idUsuario String
   cantidad  Float
   fecha     DateTime @default(now()) @db.Date
-  usuario   Usuario  @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario")
+  usuario   User     @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario")
 
-  @@index([idUsuario], name: "fk_usuario_inx")
+  @@index([idUsuario], map: "fk_usuario_inx")
 }
 
 model Paciente {
-  id              Int     @id @default(autoincrement())
+  id              Int    @id @default(autoincrement())
   nombre_completo String
   idUsuario       String
   sexo            String
-  num_celular     String
   imagen_path     String
-  usuario         Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_paciente")
+  usuario         User   @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_paciente")
 
-  @@index([idUsuario], name: "fk_usuario_paciente_inx")
+  @@index([idUsuario], map: "fk_usuario_paciente_inx")
 }
 
 model Medico {
-  id              Int     @id @default(autoincrement())
+  id              Int    @id @default(autoincrement())
   nombre_completo String
   idUsuario       String
   rfc             String
   matricula       String
-  num_celular     String
   especialidad    String
-  usuario         Usuario @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_medico")
+  usuario         User   @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_medico")
 
-  @@index([idUsuario], name: "fk_usuario_medico_inx")
+  @@index([idUsuario], map: "fk_usuario_medico_inx")
 }
 
 model Publicacion_Cientifica {
@@ -88,9 +106,9 @@ model Publicacion_Cientifica {
   resumen         String
   fecha_publicado DateTime @db.Date
   link            String
-  usuario         Usuario  @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_publicacion")
+  usuario         User     @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_publicacion")
 
-  @@index([idUsuario], name: "fk_usuario_publicacion_inx")
+  @@index([idUsuario], map: "fk_usuario_publicacion_inx")
 }
 
 model Pregunta_Frecuente {
@@ -111,8 +129,8 @@ model Tipo_Cancer {
   nombre              String
   descripcion         String
   path_imagen         String
-  Tipo_Cancer_Sintoma Tipo_Cancer_Sintoma[]
   Post                Post[]
+  Tipo_Cancer_Sintoma Tipo_Cancer_Sintoma[]
   solicitud_resultado solicitud_resultado[]
 }
 
@@ -120,11 +138,11 @@ model Tipo_Cancer_Sintoma {
   id           Int         @id @default(autoincrement())
   idSintoma    Int         @map("id_sintoma")
   idTipoCancer Int         @map("id_tipo_cancer")
-  Sintoma      Sintoma     @relation(fields: [idSintoma], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_sintoma")
-  Tipo_Cancer  Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_tipo_cancer")
+  Sintoma      Sintoma     @relation(fields: [idSintoma], references: [id], onDelete: Cascade, map: "fk_sintoma")
+  Tipo_Cancer  Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer")
 
-  @@index([idSintoma], name: "fk_sintoma_inx")
-  @@index([idTipoCancer], name: "fk_tipo_cancer_inx")
+  @@index([idSintoma], map: "fk_sintoma_inx")
+  @@index([idTipoCancer], map: "fk_tipo_cancer_inx")
 }
 
 model Post {
@@ -135,15 +153,15 @@ model Post {
   idUsuario    String
   idPostPadre  Int?
   idTipoCancer Int
-  usuario      Usuario     @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_post")
-  Post         Post?       @relation("PostToPost", fields: [idPostPadre], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_post_padre")
-  Tipo_Cancer  Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_tipo_cancer_post")
+  Post         Post?       @relation("PostToPost", fields: [idPostPadre], references: [id], onDelete: Cascade, map: "fk_post_padre")
   PostHijos    Post[]      @relation("PostToPost")
+  Tipo_Cancer  Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_post")
+  usuario      User        @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_post")
   Voto         Voto[]
 
-  @@index([idUsuario], name: "fk_usuario_post_inx")
-  @@index([idPostPadre], name: "fk_post_padre_inx")
-  @@index([idTipoCancer], name: "fk_tipo_cancer_post_inx")
+  @@index([idUsuario], map: "fk_usuario_post_inx")
+  @@index([idPostPadre], map: "fk_post_padre_inx")
+  @@index([idTipoCancer], map: "fk_tipo_cancer_post_inx")
 }
 
 model Voto {
@@ -151,11 +169,11 @@ model Voto {
   fecha     DateTime @default(now())
   idUsuario String
   idPost    Int
-  usuario   Usuario  @relation(fields: [idUsuario], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_voto")
-  post      Post     @relation(fields: [idPost], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_post_voto")
+  post      Post     @relation(fields: [idPost], references: [id], onDelete: Cascade, map: "fk_post_voto")
+  usuario   User     @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_voto")
 
-  @@index([idUsuario], name: "fk_usuario_voto_inx")
-  @@index([idPost], name: "fk_post_voto_inx")
+  @@index([idUsuario], map: "fk_usuario_voto_inx")
+  @@index([idPost], map: "fk_post_voto_inx")
 }
 
 model Estudio {
@@ -170,6 +188,7 @@ model Estudio {
 model Solicitud_Estudio {
   id                     Int                   @id @default(autoincrement())
   idPaciente             String
+  idMedico               String?
   idEstudio              Int
   path_orden_medica      String
   path_identificacion    String
@@ -178,12 +197,13 @@ model Solicitud_Estudio {
   path_historia_clinica  String
   path_informe_patologia String
   fecha_solicitud        DateTime              @default(now())
-  usuario                Usuario               @relation(fields: [idPaciente], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_solicitud")
-  estudio                Estudio               @relation(fields: [idEstudio], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_estudio_solicitud")
+  estudio                Estudio               @relation(fields: [idEstudio], references: [id], onDelete: Cascade, map: "fk_estudio_solicitud")
+  usuario                User                  @relation("PacienteToSolicitud", fields: [idPaciente], references: [id], onDelete: Cascade, map: "fk_usuario_solicitud")
+  medico                 User?                 @relation("MedicoToSolicitud", fields: [idMedico], references: [id], onDelete: SetNull, map: "fk_medico_solicitud")
   solicitud_resultado    solicitud_resultado[]
 
-  @@index([idPaciente], name: "fk_usuario_solicitud_inx")
-  @@index([idEstudio], name: "fk_estudio_solicitud_inx")
+  @@index([idPaciente], map: "fk_usuario_solicitud_inx")
+  @@index([idEstudio], map: "fk_estudio_solicitud_inx")
 }
 
 model solicitud_resultado {
@@ -196,11 +216,17 @@ model solicitud_resultado {
   cedula             String
   especialidad       String
   idSolicitudEstudio Int
-  usuario            Usuario           @relation(fields: [idMedico], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_usuario_solicitud_resultado")
-  tipo_cancer        Tipo_Cancer       @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_tipo_cancer_solicitud_resultado")
-  solicitud_estudio  Solicitud_Estudio @relation(fields: [idSolicitudEstudio], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "fk_solicitud_estudio_solicitud_resultado")
+  solicitud_estudio  Solicitud_Estudio @relation(fields: [idSolicitudEstudio], references: [id], onDelete: Cascade, map: "fk_solicitud_estudio_solicitud_resultado")
+  tipo_cancer        Tipo_Cancer       @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_solicitud_resultado")
+  usuario            User              @relation(fields: [idMedico], references: [id], onDelete: Cascade, map: "fk_usuario_solicitud_resultado")
 
-  @@index([idMedico], name: "fk_usuario_solicitud_resultado_inx")
-  @@index([idTipoCancer], name: "fk_tipo_cancer_solicitud_resultado_inx")
-  @@index([idSolicitudEstudio], name: "fk_solicitud_estudio_solicitud_resultado_inx")
+  @@index([idMedico], map: "fk_usuario_solicitud_resultado_inx")
+  @@index([idTipoCancer], map: "fk_tipo_cancer_solicitud_resultado_inx")
+  @@index([idSolicitudEstudio], map: "fk_solicitud_estudio_solicitud_resultado_inx")
+}
+
+enum UserRole {
+  ADMIN
+  PACIENTE
+  MEDICO
 }
