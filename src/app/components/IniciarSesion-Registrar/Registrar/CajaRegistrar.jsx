@@ -1,9 +1,14 @@
 'use strict';
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { motion } from "framer-motion";
 import DivisionComponentes from "../General/DivisionComponentes";
 import IniciarSesionGoogle from "../General/IniciarSesionGoogle";
 import TerminosPoliticaPrivacidad from "./TerminosPoliticaPrivacidad";
+import { register } from "@/actions/users/register";
+import ErrorBox from "../General/ErrorBox";
+import SuccessBox from "../General/SuccessBox";
+import { DNA } from "react-loader-spinner";
+
 
 function CajaRegistrar({ setShowLogin }) {
   const [fullName, setFullName] = useState("");
@@ -11,6 +16,9 @@ function CajaRegistrar({ setShowLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [errorResponse, setErrorResponse] = useState("");
+  const [successResponse, setSuccessResponse] = useState("");
+  const [isPending, startTransition] = useTransition()
 
   const validate = () => {
     const newErrors = {};
@@ -30,14 +38,34 @@ function CajaRegistrar({ setShowLogin }) {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorResponse(null)
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      // Enviar formulario
-      // console.log("Formulario enviado");
+      const values = {
+        email: e.target.email.value,
+        name: e.target.fullName.value,
+        num_celular: e.target.phoneNumber.value,
+        password: e.target.password.value
+      }
+      startTransition( () => {
+        register(values).then(
+          (response) => {
+            if(response.error){
+              console.log(response.error)
+              setErrorResponse(response.error)
+            }
+            if(response.success){
+              console.log(response.success)
+              setSuccessResponse(response.success)
+            }
+          }
+        )
+      })
+     
     }
   };
 
@@ -59,6 +87,8 @@ function CajaRegistrar({ setShowLogin }) {
               id="fullName"
               type="text"
               placeholder="Nombre completo"
+              maxLength={50}
+              disabled={isPending}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
@@ -71,7 +101,9 @@ function CajaRegistrar({ setShowLogin }) {
               className="shadow-md appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="phoneNumber"
               type="text"
+              maxLength={10}
               placeholder="Número de teléfono"
+              disabled={isPending}
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
@@ -86,6 +118,8 @@ function CajaRegistrar({ setShowLogin }) {
               className="shadow-md appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
+              maxLength={50}
+              disabled={isPending}
               placeholder="Correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -99,14 +133,31 @@ function CajaRegistrar({ setShowLogin }) {
               className="shadow-md appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
+              disabled={isPending}
               placeholder="Contraseña"
+              maxLength={30}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             {errors.password && (
-              <p className="text-red-500 text-xs italic">{errors.password}</p>
+                <p className="text-red-500 text-xs italic">{errors.password}</p>
             )}
           </div>
+          {errorResponse && (
+            <div className="flex items-center justify-center">
+                <ErrorBox error={errorResponse}/>
+            </div>
+          )}
+          {successResponse && (
+            <div className="flex items-center justify-center">
+                <SuccessBox success={successResponse}/>
+            </div>
+          )}
+          {isPending && (
+            <div className="flex justify-center items-center">
+              <DNA/>
+            </div>
+          )}
           {/* REDIRECCIONAR A PAGINA PRINCIPAL */}
           <div className="flex items-center justify-center">
             <button
@@ -119,7 +170,7 @@ function CajaRegistrar({ setShowLogin }) {
         </form>
 
         <DivisionComponentes color={"#367B99"} />
-        <IniciarSesionGoogle />
+        {/*<IniciarSesionGoogle />*/}
         <div className="flex justify-between  py-6 px-12">
           <p className="text-[#367B99] underline text-sm">
             ¿Ya tienes una cuenta?{" "}

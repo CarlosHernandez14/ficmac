@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import { BiError } from 'react-icons/bi'
 import { FaRegCheckCircle } from 'react-icons/fa'
 import {useRouter} from 'next/navigation'
+import { motion } from 'framer-motion'
 
 const NewVerificationPage = () => {
 
@@ -41,12 +42,16 @@ const NewVerificationPage = () => {
     },[onSubmit])
 
     return (
-        <div className='h-screen w-screen flex items-center justify-center'>
+        <div className='h-screen w-screen flex items-center justify-center' style={{
+            backgroundImage: "radial-gradient(circle at center,  transparent, #753350), url('/inicio_sesion.jpg')", 
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}>
             <div className='bg-white w-[450px] rounded-xl flex flex-col justify-center items-center'>
                 <p className='text-[#753350] underline text-3xl font-extrabold text-center pt-5 pb-3'>Autenticación</p>
                 <p className='text-[#A0737D] text-center pb-5'>Verificando tu correo</p>
                 {!success && !error && (
-                    <div>
+                    <div className='w-full flex flex-col justify-center items-center'>
                         <DNA className='pb-5'/>
                         <p className='text-[#A0737D] text text-center pb-5'>Espere un momento...</p>
                     </div>
@@ -63,7 +68,7 @@ const NewVerificationPage = () => {
                         <p className='mr-2'>{success}</p>
                     </div>
                 )}
-                <button onClick={redirectLogin} className=' text-[#753350] rounded-xl p-1 pb-5 w-1/2 hover:underline' >niciar sesión</button>
+                <button onClick={redirectLogin} className=' text-[#753350] rounded-xl p-1 pb-5 w-1/2 hover:underline' >Iniciar sesión</button>
                 
             </div>
         </div>
