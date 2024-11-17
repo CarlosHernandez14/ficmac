@@ -60,7 +60,7 @@ const Formulario = () => {
   return (
     <div className="flex h-screen">
       <div className="w-1/5 p-4 flex flex-col items-center justify-start mr-48 ml-10">
-        <IconosAvance />
+        <IconosAvance imagen={"/FormularioSolicitarEstudios/Carpeta.png"} color={"black"} fondo={"#D9D9D9"}/>
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-start">

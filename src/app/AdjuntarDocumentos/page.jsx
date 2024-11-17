@@ -1,11 +1,11 @@
 import React from 'react'
+import AdjuntarDocs from '../components/FormularioEstudios/AdjuntarDocs';
 
-const page = () => {
-  return (
-    <div>
-      <h1> Haz llegado a adjuntar documentos</h1>
-    </div>
-  )
+
+
+function page() {
+    return <AdjuntarDocs/>
 }
+export default page;
 
-export default page
+
