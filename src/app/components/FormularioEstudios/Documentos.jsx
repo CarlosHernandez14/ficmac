@@ -8,7 +8,7 @@ import ButtonAzul from "../General/ButtonAzul";
 const Documentos = () => {
   return (
     <div className="flex h-screen justify-center">
-      <div className=" w-1/5 p-4 flex flex-col items-center justify-start mr-48 ml-10">
+      <div className="p-4 flex flex-col items-center justify-start ml-10">
         <IconosAvance
           imagen={"/FormularioSolicitarEstudios/carpeta blanca.png"}
           color={"#367B99"}
@@ -36,7 +36,11 @@ const Documentos = () => {
             "Informe de Patología de la Biopsia de Tejido(Para exámen en Biopsia sólida).*"
           }
         />
-        <ButtonAzul text={"Enviar"} className="mt-5" />
+        <div className="flex justify-center">
+          <div className="w-1/3 mt-5">
+            <ButtonAzul text={"Enviar"} className="mt-5" />
+          </div>
+        </div>
       </div>
     </div>
   );
