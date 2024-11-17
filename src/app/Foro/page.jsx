@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react";
+import Image from 'next/image';
 
 export default function Forum() {
   const posts = [
@@ -35,7 +36,7 @@ export default function Forum() {
       question: "¿Qué pruebas recomiendan para la detección temprana de cáncer de mama?",
       description:
         "Quiero hacerme estudios para prevenir el cáncer de mama. ¿Qué pruebas son las más recomendadas para una detección temprana?",
-      categories: ["Cáncer de mama", "Cáncer"],
+      categories: ["Cáncer de colon", "Cáncer"],
       likes: 63,
       responses: 16,
     },
@@ -44,7 +45,7 @@ export default function Forum() {
       question: "¿Qué pruebas recomiendan para la detección temprana de cáncer de mama?",
       description:
         "Quiero hacerme estudios para prevenir el cáncer de mama. ¿Qué pruebas son las más recomendadas para una detección temprana?",
-      categories: ["Cáncer de mama", "Cáncer"],
+      categories: ["Cáncer de colon", "Cáncer"],
       likes: 63,
       responses: 16,
     },
@@ -53,7 +54,7 @@ export default function Forum() {
       question: "¿Qué pruebas recomiendan para la detección temprana de cáncer de mama?",
       description:
         "Quiero hacerme estudios para prevenir el cáncer de mama. ¿Qué pruebas son las más recomendadas para una detección temprana?",
-      categories: ["Cáncer de mama", "Cáncer"],
+      categories: ["Cáncer de próstata", "Cáncer"],
       likes: 63,
       responses: 16,
     },
@@ -61,12 +62,12 @@ export default function Forum() {
 
   const categories = [
     "Cáncer de piel",
+    "Cáncer de mama",
     "Cáncer de colon",
     "Cáncer de pulmón",
     "Leucemia",
     "Cáncer de laringe",
     "Melanoma",
-    "Cáncer de seno",
     "Cáncer de próstata",
     "Cáncer de ovario",
     "Cáncer de hígado",
@@ -80,10 +81,30 @@ export default function Forum() {
     setSelectedCategory((prev) => (prev === category ? null : category));
   };
 
-  return (
-    <div className="w-full h-full bg-white flex p-10">
+  // Filtrar publicaciones según la categoría seleccionada
+  const filteredPosts = selectedCategory
+    ? posts.filter((post) => post.categories.includes(selectedCategory))
+    : posts; // Si no hay categoría seleccionada, mostrar todas las publicaciones
 
-      <div className="max-w-5xl p-4 rounded-3xl pl-8 pr-8 bg-[#D9D9D9]">
+
+  return (
+    <div className="w-full min-h-screen bg-white flex p-10">
+
+      <div className="absolute inset-0">
+        <Image
+          src="/fondo_foro.jpg"
+          alt="Background Image"
+          layout="fill"
+          objectFit="cover"
+          priority={true}
+          className="opacity-50"
+        />
+      </div>
+
+      <div className="absolute inset-0 bg-gradient-to-r from-white from-8% to-transparent to-40% z-10" />
+      <div className="absolute inset-0 bg-gradient-to-l from-white from-8% to-transparent to-40% z-10" />
+
+      <div className="relative max-w-5xl z-10 p-4 rounded-3xl pl-8 pr-8 bg-[#D9D9D9]">
 
         <div className="relative flex items-center space-x-4 mb-4">
           <div className="relative flex-grow">
@@ -109,7 +130,7 @@ export default function Forum() {
 
         <h1 className="text-3xl font-bold pl-1 mb-6 text-[#753350]">Post en Tendencia</h1>
 
-        {posts.map((post) => (
+        {filteredPosts.map((post) => (
           <div key={post.id} className="bg-[#A0737D] p-6 rounded-lg shadow-lg mb-6">
 
             <div className="flex items-center">
