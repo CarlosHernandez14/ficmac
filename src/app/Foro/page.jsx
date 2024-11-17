@@ -74,9 +74,11 @@ export default function Forum() {
     "Cáncer de riñón",
   ];
 
-  const [showAllCategories, setShowAllCategories] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const displayedCategories = showAllCategories ? categories : categories.slice(0, 7);
+  const handleCategoryClick = (category) => {
+    setSelectedCategory((prev) => (prev === category ? null : category));
+  };
 
   return (
     <div className="w-full h-full bg-white flex p-10">
@@ -93,26 +95,16 @@ export default function Forum() {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-1 justify-between">
-          {displayedCategories.map((category, index) => (
-            <span
+        <div className="flex overflow-x-auto space-x-2 mb-6 pb-4">
+          {categories.map((category, index) => (
+            <button
               key={index}
-              className="bg-white text-gray-700 rounded-xl px-4 py-2 text-sm border border-gray-300 shadow-lg"
+              onClick={() => handleCategoryClick(category)}
+              className={`flex-shrink-0 bg-white text-gray-700 rounded-xl px-4 py-2 text-sm border ${selectedCategory === category ? "bg-[#753350] text-white" : "border-gray-300"}`}
             >
               {category}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex justify-end pr-1">
-          {categories.length > 7 && (
-            <button
-              onClick={() => setShowAllCategories(!showAllCategories)}
-              className="text-[#753350] hover:underline text-sm"
-            >
-              {showAllCategories ? "Ver menos" : "Ver más"}
             </button>
-          )}
+          ))}
         </div>
 
         <h1 className="text-3xl font-bold pl-1 mb-6 text-[#753350]">Post en Tendencia</h1>
