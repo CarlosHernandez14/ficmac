@@ -1,6 +1,5 @@
 
-import ScrollBar from "@/app/components/ConsultarResultados/Consultar/ScrollBar";
-import TextoTiposBiopsia from "@/app/components/ConsultarResultados/Consultar/TextoTiposBiopsia";
+import General from "@/app/components/ConsultarResultados/Consultar/General";
 
 function Page() {
   return (
@@ -13,14 +12,15 @@ function Page() {
         }}
       ></div>
       <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-[#D9D9D9] to-transparent"></div>
-      <div className="flex justify-between relative  py-5 px-24">
-        
-          <ScrollBar />
-       
-        <TextoTiposBiopsia />
-        
-      </div>
       
+      <General/>
+      {/* <div className="flex justify-between relative  py-5 px-24 ">
+        <ScrollBar />
+        <div>
+          <TextoTiposBiopsia />
+          <BotonesTipoBiopsia />
+        </div>
+      </div> */}
     </div>
   );
 }

@@ -11,7 +11,7 @@ function TextoTiposBiopsia() {
         Tipo de biopsia
       </p>
 
-      <BotonesTipoBiopsia />
+      
     </div>
   );
 }
