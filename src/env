@@ -1,0 +1,8 @@
+# Environment variables declared in this file are automatically made available to Prisma.
+# See the documentation for more detail: https://pris.ly/d/prisma-schema#accessing-environment-variables-from-the-schema
+
+# Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
+# See the documentation for all the connection string options: https://pris.ly/d/connection-strings
+
+DATABASE_URL="postgresql://educatina_db_user:0vcNm8jnbyRwfRsiyeaFkFnn781qFSlZ@dpg-csap24ggph6c73a4rmag-a.oregon-postgres.render.com/educatina_db"
+JWT_SECRET="$2a$10$HPb3DPflnIDs57Zf*&#/./2dAetsss95msbQE/W49a3fYderEUnpIp6&**$"
