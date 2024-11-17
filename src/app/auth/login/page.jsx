@@ -1,5 +1,5 @@
+import Animacion from "@/app/components/IniciarSesion-Registrar/General/Animacion";
 import React from "react";
-import Animacion from "../components/IniciarSesion-Registrar/General/Animacion";
 
 function Page() {
   return (
