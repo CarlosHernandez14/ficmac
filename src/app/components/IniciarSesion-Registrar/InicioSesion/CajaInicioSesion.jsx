@@ -34,7 +34,7 @@ function CajaInicioSesion({ setShowLogin }) {
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 500, opacity: 0 }}
-      className=" relative w-96"
+      className="w-96"
     >
       <p className="text-2xl font-extrabold py-10 text-center  text-[#753350] underline">
         Iniciar sesión

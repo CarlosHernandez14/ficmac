@@ -1,5 +1,5 @@
 import React from "react";
-import Resultados from "../../components/ConsultarResultados/Resultados/Resultados";
+import Resultados from "../../../components/ConsultarResultados/Resultados/Resultados";
 
 function page() {
   return (
@@ -10,7 +10,6 @@ function page() {
           alt="Background"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white opacity-100 pointer-events-none"></div>
       </div>
       <div className="relative z-10">
         <Resultados />
