@@ -3,7 +3,7 @@ import Texto from "./Texto";
 import ExaminarArchivo from "./ExaminarArchivo";
 import Linea from "./Linea";
 
-const DocumentosAdjuntar = ({ texto }) => {
+const DocumentosAdjuntar = ({ texto,onFileChange }) => {
   return (
     <div>
       <div className="flex my-3 gap-2 justify-between ">

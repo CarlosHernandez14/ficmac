@@ -1,11 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import ButtonAzul from "../General/ButtonAzul";
+
 import IconosAvance from "./IconosAvance";
 import { useRouter } from "next/navigation";
+import ButtonNext from "./ButtonNext";
 
 const Formulario = () => {
-  const router = useRouter(); // Instancia el enrutador
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -43,7 +44,7 @@ const Formulario = () => {
       }
     }
     if (!formData.aceptaPolitica) {
-      newErrors.aceptaPolitica = "Debe aceptar la política de privacidad";
+      newErrors.aceptaPolitica = "Acepta la política y privacidad de datos*";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -52,169 +53,222 @@ const Formulario = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      router.push("/AdjuntarDocumentos"); // Redirección con useRouter
+      router.push("/AdjuntarDocumentos"); 
     } else {
       alert("Por favor, completa todos los campos obligatorios.");
     }
   };
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen ">
       <div className="w-1/5 p-4 flex flex-col items-center justify-start mr-48 ml-10">
-        <IconosAvance imagen={"/FormularioSolicitarEstudios/Carpeta.png"} color={"black"} fondo={"#D9D9D9"}/>
+        <IconosAvance
+          imagen={"/FormularioSolicitarEstudios/Carpeta.png"}
+          color={"black"}
+          fondo={"#D9D9D9"}
+        />
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-start">
+      <div className="flex-1 flex flex-col items-center justify-start -translate-x-4">
         <div className="bg-[#2B6A86] p-8 rounded-[20px] w-[945px] h-[747px] mt-8">
           <h2 className="text-white text-center text-4xl font-medium mb-6">
             Datos del paciente
           </h2>
           <form className="grid grid-cols-2 gap-6 text-xl font-thin">
-            <input
-              type="text"
-              placeholder="Nombre*"
-              name="nombre"
-              value={formData.nombre}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.nombre ? "border-red-500" : ""
-              }`}
-            />
-            <input
-              type="text"
-              placeholder="Apellidos*"
-              name="apellidos"
-              value={formData.apellidos}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.apellidos ? "border-red-500" : ""
-              }`}
-            />
-            <select
-              name="tipoDocumento"
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.tipoDocumento ? "border-red-500" : ""
-              }`}
-              value={formData.tipoDocumento}
-              onChange={handleChange}
-            >
-              <option> Tipo de documento*</option>
-              <option>INE</option>
-              <option>Pasaporte</option>
-              <option>Cartilla militar</option>
-            </select>
-            <input
-              type="text"
-              placeholder="Número de documento*"
-              name="numeroDocumento"
-              value={formData.numeroDocumento}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.numeroDocumento ? "border-red-500" : ""
-              }`}
-            />
-            <input
-              type="date"
-              placeholder="Fecha de nacimiento*"
-              name="fechaNacimiento"
-              value={formData.fechaNacimiento}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.fechaNacimiento ? "border-red-500" : ""
-              }`}
-            />
-            <input
-              type="text"
-              placeholder="Ciudad residente*"
-              name="ciudad"
-              value={formData.ciudad}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.ciudad ? "border-red-500" : ""
-              }`}
-            />
-            <input
-              type="text"
-              placeholder="Dirección de residencia*"
-              name="direccion"
-              value={formData.direccion}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.direccion ? "border-red-500" : ""
-              }`}
-            />
-            <input
-              type="text"
-              placeholder="Nacionalidad*"
-              name="nacionalidad"
-              value={formData.nacionalidad}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.nacionalidad ? "border-red-500" : ""
-              }`}
-            />
-            <input
-              type="text"
-              placeholder="Número de teléfono*"
-              name="telefono"
-              value={formData.telefono}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.telefono ? "border-red-500" : ""
-              }`}
-            />
-            <input
-              type="email"
-              placeholder="Correo electrónico*"
-              name="correo"
-              value={formData.correo}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.correo ? "border-red-500" : ""
-              }`}
-            />
-            <input
-              type="text"
-              placeholder="IPS*"
-              name="ips"
-              value={formData.ips}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.ips ? "border-red-500" : ""
-              }`}
-            />
-            <select
-              name="eps"
-              value={formData.eps}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.eps ? "border-red-500" : ""
-              }`}
-            >
-              <option>EPS*</option>
-            </select>
-            <select
-              name="familiar"
-              value={formData.familiar}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.familiar ? "border-red-500" : ""
-              }`}
-            >
-              <option>Familiar de contacto*</option>
-              <option>Madre</option>
-              <option>Padre</option>
-              <option>Hijo/a</option>
-            </select>
-            <input
-              type="text"
-              placeholder="Teléfono del familiar*"
-              name="telefonoFamiliar"
-              value={formData.telefonoFamiliar}
-              onChange={handleChange}
-              className={`w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 ${
-                errors.telefonoFamiliar ? "border-red-500" : ""
-              }`}
-            />
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Nombre*"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleChange}
+                className="[419px] h-[56px] rounded-[20px] shadow-2xl  pl-5"
+              />
+              {errors.nombre && (
+                <p className="text-red-500 text-xs  ">{errors.nombre}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Apellidos*"
+                name="apellidos"
+                value={formData.apellidos}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
+              />
+              {errors.apellidos && (
+                <p className="text-red-500 text-xs  ">{errors.apellidos}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <select
+                name="tipoDocumento"
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
+                value={formData.tipoDocumento}
+                onChange={handleChange}
+              >
+                <option> Tipo de documento*</option>
+                <option>INE</option>
+                <option>Pasaporte</option>
+                <option>Cartilla militar</option>
+              </select>
+              {errors.tipoDocumento && (
+                <p className="text-red-500 text-xs  ">{errors.tipoDocumento}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Número de documento*"
+                name="numeroDocumento"
+                value={formData.numeroDocumento}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
+              />
+              {errors.numeroDocumento && (
+                <p className="text-red-500 text-xs  ">
+                  {errors.numeroDocumento}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="date"
+                placeholder="Fecha de nacimiento*"
+                name="fechaNacimiento"
+                value={formData.fechaNacimiento}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
+              />
+              {errors.fechaNacimiento && (
+                <p className="text-red-500 text-xs  ">
+                  {errors.fechaNacimiento}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Ciudad residente*"
+                name="ciudad"
+                value={formData.ciudad}
+                onChange={handleChange}
+                className=" w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
+              />
+              {errors.ciudad && (
+                <p className="text-red-500 text-xs  ">{errors.ciudad}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Dirección de residencia*"
+                name="direccion"
+                value={formData.direccion}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
+              />
+              {errors.direccion && (
+                <p className="text-red-500 text-xs  ">{errors.direccion}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Nacionalidad*"
+                name="nacionalidad"
+                value={formData.nacionalidad}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
+              />
+              {errors.nacionalidad && (
+                <p className="text-red-500 text-xs  ">{errors.nacionalidad}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Número de teléfono*"
+                name="telefono"
+                value={formData.telefono}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
+              />
+              {errors.telefono && (
+                <p className="text-red-500 text-xs  ">{errors.telefono}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="email"
+                placeholder="Correo electrónico*"
+                name="correo"
+                value={formData.correo}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
+              />
+              {errors.correo && (
+                <p className="text-red-500 text-xs  ">{errors.correo}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="IPS*"
+                name="ips"
+                value={formData.ips}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
+              />
+              {errors.ips && (
+                <p className="text-red-500 text-xs  ">{errors.ips}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <select
+                name="eps"
+                value={formData.eps}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
+              >
+                <option>EPS*</option>
+                <option>Jijo</option>
+              </select>
+              {errors.eps && (
+                <p className="text-red-500 text-xs  ">{errors.eps}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <select
+                name="familiar"
+                value={formData.familiar}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
+              >
+                <option>Familiar de contacto*</option>
+                <option>Madre</option>
+                <option>Padre</option>
+                <option>Hijo/a</option>
+              </select>
+              {errors.familiar && (
+                <p className="text-red-500 text-xs  ">{errors.familiar}</p>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Teléfono del familiar*"
+                name="telefonoFamiliar"
+                value={formData.telefonoFamiliar}
+                onChange={handleChange}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
+              />
+              {errors.telefonoFamiliar && (
+                <p className="text-red-500 text-xs  ">
+                  {errors.telefonoFamiliar}
+                </p>
+              )}
+            </div>
           </form>
         </div>
         <div className="flex justify-between items-center mt-6 text-black text-xl w-[945px] pl-4">
@@ -232,7 +286,7 @@ const Formulario = () => {
             </span>
           </label>
           {errors.aceptaPolitica && (
-            <p className="text-red-500 col-span-2">{errors.aceptaPolitica}</p>
+            <p className="text-red-500 col-span-2 text-sm">{errors.aceptaPolitica}</p>
           )}
 
           <a href="" className="underline">
@@ -241,7 +295,7 @@ const Formulario = () => {
         </div>
         <div className="w-full mt-8 flex justify-center">
           <div className="w-1/2">
-            <ButtonAzul text={"Continuar"} onClick={handleSubmit} />
+            <ButtonNext text={"Continuar"} onClick={handleSubmit} />
           </div>
         </div>
       </div>
