@@ -1,12 +1,19 @@
--- CreateTable
-CREATE TABLE "Usuario" (
-    "id" TEXT NOT NULL,
-    "correo" TEXT,
-    "contrasena" TEXT,
-    "rol" INTEGER,
-    "fecha_registro" DATE DEFAULT CURRENT_TIMESTAMP,
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'PACIENTE', 'MEDICO');
 
-    CONSTRAINT "Usuario_pkey" PRIMARY KEY ("id")
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "name" TEXT,
+    "email" TEXT,
+    "emailVerified" TIMESTAMP(3),
+    "password" TEXT,
+    "image" TEXT,
+    "role" "UserRole" NOT NULL DEFAULT 'PACIENTE',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -178,7 +185,7 @@ CREATE TABLE "solicitud_resultado" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Usuario_correo_key" ON "Usuario"("correo");
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE INDEX "fk_usuario_inx" ON "Donacion"("idUsuario");
@@ -229,19 +236,19 @@ CREATE INDEX "fk_tipo_cancer_solicitud_resultado_inx" ON "solicitud_resultado"("
 CREATE INDEX "fk_solicitud_estudio_solicitud_resultado_inx" ON "solicitud_resultado"("idSolicitudEstudio");
 
 -- AddForeignKey
-ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Donacion" ADD CONSTRAINT "fk_usuario" FOREIGN KEY ("idUsuario") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Donacion" ADD CONSTRAINT "fk_usuario" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Paciente" ADD CONSTRAINT "fk_usuario_paciente" FOREIGN KEY ("idUsuario") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Paciente" ADD CONSTRAINT "fk_usuario_paciente" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Medico" ADD CONSTRAINT "fk_usuario_medico" FOREIGN KEY ("idUsuario") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Medico" ADD CONSTRAINT "fk_usuario_medico" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Publicacion_Cientifica" ADD CONSTRAINT "fk_usuario_publicacion" FOREIGN KEY ("idUsuario") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Publicacion_Cientifica" ADD CONSTRAINT "fk_usuario_publicacion" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Tipo_Cancer_Sintoma" ADD CONSTRAINT "fk_sintoma" FOREIGN KEY ("id_sintoma") REFERENCES "Sintoma"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -250,7 +257,7 @@ ALTER TABLE "Tipo_Cancer_Sintoma" ADD CONSTRAINT "fk_sintoma" FOREIGN KEY ("id_s
 ALTER TABLE "Tipo_Cancer_Sintoma" ADD CONSTRAINT "fk_tipo_cancer" FOREIGN KEY ("id_tipo_cancer") REFERENCES "Tipo_Cancer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Post" ADD CONSTRAINT "fk_usuario_post" FOREIGN KEY ("idUsuario") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Post" ADD CONSTRAINT "fk_usuario_post" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "fk_post_padre" FOREIGN KEY ("idPostPadre") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -259,19 +266,19 @@ ALTER TABLE "Post" ADD CONSTRAINT "fk_post_padre" FOREIGN KEY ("idPostPadre") RE
 ALTER TABLE "Post" ADD CONSTRAINT "fk_tipo_cancer_post" FOREIGN KEY ("idTipoCancer") REFERENCES "Tipo_Cancer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Voto" ADD CONSTRAINT "fk_usuario_voto" FOREIGN KEY ("idUsuario") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Voto" ADD CONSTRAINT "fk_usuario_voto" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Voto" ADD CONSTRAINT "fk_post_voto" FOREIGN KEY ("idPost") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Solicitud_Estudio" ADD CONSTRAINT "fk_usuario_solicitud" FOREIGN KEY ("idPaciente") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Solicitud_Estudio" ADD CONSTRAINT "fk_usuario_solicitud" FOREIGN KEY ("idPaciente") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Solicitud_Estudio" ADD CONSTRAINT "fk_estudio_solicitud" FOREIGN KEY ("idEstudio") REFERENCES "Estudio"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "solicitud_resultado" ADD CONSTRAINT "fk_usuario_solicitud_resultado" FOREIGN KEY ("idMedico") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "solicitud_resultado" ADD CONSTRAINT "fk_usuario_solicitud_resultado" FOREIGN KEY ("idMedico") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "solicitud_resultado" ADD CONSTRAINT "fk_tipo_cancer_solicitud_resultado" FOREIGN KEY ("idTipoCancer") REFERENCES "Tipo_Cancer"("id") ON DELETE CASCADE ON UPDATE CASCADE;

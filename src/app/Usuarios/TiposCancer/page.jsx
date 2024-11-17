@@ -1,5 +1,5 @@
 import React from "react";
-import TiposCancer from "../components/TiposCancer/TiposCancer";
+import TiposCancer from "../../components/TiposCancer/TiposCancer";
 
 function page() {
   return <TiposCancer />;

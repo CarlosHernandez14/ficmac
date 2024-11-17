@@ -1,12 +1,13 @@
 export const publicRoutes = [
     "/",
-    // Rutas de las apis
-    "/api/testing/estudios",
+    "/auth/new-verification",
+    "/auth/new-password",
+    "/auth/forgot-password",
+    "/TiposCancer"
 ]
 
 export const authRoutes = [
     "/auth/login",
-    "/auth/register",
 ]
 
 export const medicalRoutes = [
