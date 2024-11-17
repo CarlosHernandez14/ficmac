@@ -6,18 +6,19 @@ import {
   FaInfoCircle,
   FaUser,
 } from "react-icons/fa";
-import NavbarItem from "./NavbarItem";
+import NavbarItemGeneral from "./NavbarItemGeneral";
+
 
 function NavbarGeneral() {
   return (
     <nav className="flex items-center flex justify-between bg-[#753350] p-6">
       <img src="/General/logoblanco.png" alt="logo" className="h-12" />
       <div className="flex space-x-8">
-        <NavbarItem icon={FaHome} name="Inicio" href="/" />
-        <NavbarItem icon={FaStethoscope} name="Estudios" href="/estudios" />
-        <NavbarItem icon={FaGraduationCap} name="Educación" href="/educacion" />
-        <NavbarItem icon={FaInfoCircle} name="Nosotros" href="/nosotros" />
-        <NavbarItem icon={FaUser} name="Alejandro Gutiérrez" href="/perfil" />
+        <NavbarItemGeneral icon={FaHome} name="Inicio" href="/" />
+        <NavbarItemGeneral icon={FaStethoscope} name="Estudios" href="/estudios" />
+        <NavbarItemGeneral icon={FaGraduationCap} name="Educación" href="/educacion" />
+        <NavbarItemGeneral icon={FaInfoCircle} name="Nosotros" href="/nosotros" />
+        <NavbarItemGeneral icon={FaUser} name="Alejandro Gutiérrez" href="/perfil" />
       </div>
     </nav>
   );
