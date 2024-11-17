@@ -52,5 +52,5 @@ export const newPassword = async (password, token) => {
         }
     })
 
-    return {success: "Password actualizada"}
+    return {success: "Contraseña actualizada"}
 }

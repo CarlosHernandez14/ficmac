@@ -3,6 +3,7 @@ import db from "@/libs/db"
 import bcrypt from "bcryptjs"
 import { generateVerificationToken } from "@/libs/tokens"
 import { enviarCorreoConfirmacion } from "../mail/confirmation"
+import { revalidatePath } from "next/cache"
 
 
 //Función para registrar un usuario
@@ -32,6 +33,7 @@ export const register = async (values) =>{
 
         const verificationToken = await generateVerificationToken(values.email)
         await enviarCorreoConfirmacion(values.email, verificationToken)
+        revalidatePath('/auth/login')
         return {success: "Confirmation email sent!"}
     }catch(ex){
         console.log(ex.message)
