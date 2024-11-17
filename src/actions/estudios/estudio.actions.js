@@ -1,6 +1,6 @@
 // CRUD Para los estudios
 
-import { prisma as db, TipoEstudio } from "@/libs/db";
+import { prisma, TipoEstudio } from "@/libs/db";
 
 // Funcion para obtener los estudios
 /*
@@ -14,16 +14,24 @@ import { prisma as db, TipoEstudio } from "@/libs/db";
 export async function getEstudios() {
     try {
         // Consulta de todos los estudios
-        const estudios = await db.Estudio.findMany();
+        console.log("Antes de consultar estudios");
+
+        const estudios = await prisma.estudio.findMany();
+
+        console.log("Estudios");
+
+
         return {
             OK: true,
             message: "Estudios encontrados",
             data: estudios
         };
     } catch (error) {
+        console.table(error);
         return {
             OK: false,
             message: "Error al buscar los estudios",
+            error: error,
             data: null
         };
     }
@@ -45,7 +53,7 @@ export async function getEstudios() {
 export async function getEstudioById(idEstudio) {
     try {
         // Consulta de un estudio por su ID
-        const estudio = await db.estudio.findUnique({
+        const estudio = await prisma.estudio.findUnique({
             where: {
                 id: idEstudio
             }
@@ -59,6 +67,7 @@ export async function getEstudioById(idEstudio) {
         return {
             OK: false,
             message: "Error al buscar el estudio",
+            error: error,
             data: null
         };
     }
@@ -82,7 +91,7 @@ export async function getEstudioById(idEstudio) {
 export async function createEstudio(nombre, descripcion, precio, tipoEstudio = TipoEstudio.BIOPSIA_LIQUIDA) {
     try {
         // Creacion de un nuevo estudio
-        const estudio = await db.estudio.create({
+        const estudio = await prisma.estudio.create({
             data: {
                 nombre,
                 descripcion,
@@ -100,6 +109,7 @@ export async function createEstudio(nombre, descripcion, precio, tipoEstudio = T
         return {
             OK: false,
             message: "Error al crear el estudio",
+            error: error,
             data: null
         };
     }
@@ -142,9 +152,9 @@ export async function updateEstudio(idEstudio, estudio) {
         }
 
         // Transaccion para actualizar el estudio
-        const result = await db.$transaction(async (db) => {
+        const result = await prisma.$transaction(async (prisma) => {
             // Consultamos el estudio para verificar que exista
-            const estudioExistente = await db.estudio.findUnique({
+            const estudioExistente = await prisma.estudio.findUnique({
                 where: {
                     id: idEstudio
                 }
@@ -161,7 +171,7 @@ export async function updateEstudio(idEstudio, estudio) {
 
 
             // Actualizacion de un estudio
-            const estudio = await db.estudio.update({
+            const estudio = await prisma.estudio.update({
                 where: {
                     id: idEstudio
                 },
@@ -185,6 +195,7 @@ export async function updateEstudio(idEstudio, estudio) {
         return {
             OK: false,
             message: "Error al actualizar el estudio",
+            error: error,
             data: null
         };
     }
@@ -206,9 +217,9 @@ export async function updateEstudio(idEstudio, estudio) {
 export async function deleteEstudio(idEstudio) {
     try {
         // Transaccion para eliminar el estudio
-        const result = await db.$transaction(async (db) => {
+        const result = await prisma.$transaction(async (prisma) => {
             // Consultamos el estudio para verificar que exista
-            const estudioExistente = await db.estudio.findUnique({
+            const estudioExistente = await prisma.estudio.findUnique({
                 where: {
                     id: idEstudio
                 }
@@ -224,14 +235,14 @@ export async function deleteEstudio(idEstudio) {
             }
 
             // Eliminamos las solicitudes asociadas al estudio
-            await db.Solicitud_Estudio.deleteMany({
+            await prisma.Solicitud_Estudio.deleteMany({
                 where: {
                     idEstudio: idEstudio
                 }
             });
 
             // Eliminamos el estudio
-            const estudio = await db.estudio.delete({
+            const estudio = await prisma.estudio.delete({
                 where: {
                     id: idEstudio
                 }
@@ -250,6 +261,7 @@ export async function deleteEstudio(idEstudio) {
         return {
             OK: false,
             message: "Error al eliminar el estudio",
+            error: error,
             data: null
         };
     }
