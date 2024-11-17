@@ -14,11 +14,8 @@ import { prisma, TipoEstudio } from "@/libs/db";
 export async function getEstudios() {
     try {
         // Consulta de todos los estudios
-        console.log("Antes de consultar estudios");
 
         const estudios = await prisma.estudio.findMany();
-
-        console.log("Estudios");
 
 
         return {
@@ -58,6 +55,16 @@ export async function getEstudioById(idEstudio) {
                 id: idEstudio
             }
         });
+
+        if (!estudio) {
+            return {
+                OK: false,
+                message: "El estudio no existe",
+                error: "El estudio no existe",
+                data: null
+            };
+        }
+
         return {
             OK: true,
             message: "Estudio encontrado",
