@@ -27,6 +27,7 @@ model User {
   Solicitud_Estudio_Paciente Solicitud_Estudio[]      @relation("PacienteToSolicitud")
   Voto                       Voto[]
   solicitud_resultado        solicitud_resultado[]
+  Documento                  Documento[]
 }
 
 model Account {
@@ -203,6 +204,7 @@ model Solicitud_Estudio {
   medico                 User?                 @relation("MedicoToSolicitud", fields: [idMedico], references: [id], map: "fk_medico_solicitud")
   usuario                User                  @relation("PacienteToSolicitud", fields: [idPaciente], references: [id], onDelete: Cascade, map: "fk_usuario_solicitud")
   solicitud_resultado    solicitud_resultado[]
+  Documento              Documento[]
 
   @@index([idPaciente], map: "fk_usuario_solicitud_inx")
   @@index([idEstudio], map: "fk_estudio_solicitud_inx")
@@ -225,6 +227,17 @@ model solicitud_resultado {
   @@index([idMedico], map: "fk_usuario_solicitud_resultado_inx")
   @@index([idTipoCancer], map: "fk_tipo_cancer_solicitud_resultado_inx")
   @@index([idSolicitudEstudio], map: "fk_solicitud_estudio_solicitud_resultado_inx")
+}
+
+model Documento {
+  id                 Int                @id @default(autoincrement())
+  idUsuario          String?
+  idDocumento        String
+  name               String
+  mimeType           String
+  idSolicitudEstudio Int?
+  solicitud_estudio  Solicitud_Estudio? @relation(fields: [idSolicitudEstudio], references: [id], onDelete: Cascade, map: "fk_solicitud_estudio_documento")
+  usuario            User?              @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_documento")
 }
 
 enum TipoEstudio {

@@ -11,7 +11,7 @@ const DocumentosAdjuntar = ({ texto,onFileChange }) => {
           <Texto descripcion={texto} />
         </div>
         <div>
-          <ExaminarArchivo />
+          <ExaminarArchivo onFileChange={onFileChange}/>
         </div>
       </div>
       <div className="mt-2">

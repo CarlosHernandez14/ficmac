@@ -1,18 +1,24 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useTransition } from "react";
 import ButtonImage from "./ButtonImage";
+import { uploadFile } from "@/actions/documentos/documentos";
 
-const ExaminarArchivo = () => {
+
+const ExaminarArchivo = ({onFileChange}) => {
   const fileInputRef = useRef(null);
+  const [isPending, startTransition] = useTransition()
+  
   const [fileName, setFileName] = useState(
     "Ningún archivo seleccionado | Tamaño máximo 3MB"
   );
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
       setFileName(file.name);
+      onFileChange(file)
     }
+    
   };
 
   const handleButtonClick = () => {

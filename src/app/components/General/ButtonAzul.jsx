@@ -1,8 +1,8 @@
 import React from "react";
 
-function ButtonAzul({text}) {
+function ButtonAzul({text, onClick}) {
   return (
-    <button className="bg-[#367B99] text-white w-full p-2 rounded-lg hover:bg-[#5c57e8]">
+    <button onClick={onClick} className="bg-[#367B99] text-white w-full p-2 rounded-lg hover:bg-[#5c57e8]">
       {text}
     </button>
   );
