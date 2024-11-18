@@ -4,8 +4,8 @@ import CajaRegistrar from './CajaRegistrar';
 
 function CajaDerecha({ setShowLogin }) {
   return (
-    <div className="absolute bg-white h-auto w-auto rounded-3xl max-w-md
-    shadow-2xl p-10 right-28 overflow-hidden ">
+    <div className="absolute bg-white rounded-3xl 
+    shadow-2xl px-10 py-5">
       <CajaRegistrar setShowLogin={setShowLogin} />
     </div>
   );

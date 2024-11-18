@@ -1,10 +1,13 @@
 export const publicRoutes = [
-    "/"
+    "/",
+    "/auth/new-verification",
+    "/auth/new-password",
+    "/auth/forgot-password",
+    "/TiposCancer"
 ]
 
 export const authRoutes = [
     "/auth/login",
-    "/auth/register",
 ]
 
 export const medicalRoutes = [
