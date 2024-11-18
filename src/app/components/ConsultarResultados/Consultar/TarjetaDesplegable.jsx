@@ -5,21 +5,18 @@ import DatosPaciente from "./DatosPaciente";
 import ImagenCircular from "./ImagenCircular";
 import BotonSeleccionarPaciente from "./BotonSeleccionarPaciente";
 
-
 function TarjetaDesplegable({
-  // NombrePaciente,
-  // SexoPaciente,
+  NombrePaciente,
+  SexoPaciente,
   TipoBiopsia,
   // NombreCancer,
-  // NombreMedico,
-  // TelefonoPaciente,
+  TelefonoPaciente,
   // NombreSintomas,
-  // MatriculaMedico,
-  // CorreoPaciente,
+  CorreoPaciente,
   DescripcionCancer,
 }) {
   const [desplegado, setDesplegado] = useState(false);
-
+  console.log(SexoPaciente);
   const toggleDesplegado = () => {
     setDesplegado(!desplegado);
   };
@@ -34,7 +31,7 @@ function TarjetaDesplegable({
         <div className="flex items-center space-x-1">
           <ImagenCircular />
           <div className="w-[550px] ">
-            <p className="text-lg font-bold">Yair Arriaga{NombrePaciente}</p>
+            <p className="text-lg font-bold">{NombrePaciente}</p>
             <LineaDivisora />
           </div>
         </div>
@@ -44,7 +41,7 @@ function TarjetaDesplegable({
       </div>
 
       <div className="flex justify-between px-[67px]  ">
-        <p className="text-sm">Masculina{SexoPaciente}</p>
+        <p className="text-sm">{SexoPaciente}</p>
         <span className="text-white  py-1 text-sm font-semibold">
           {TipoBiopsia}
         </span>
@@ -52,12 +49,8 @@ function TarjetaDesplegable({
       {desplegado && (
         <div className="mt-4 ">
           <DatosPaciente
-            // NombreCancer={NombreCancer}
-            // NombreMedico={NombreMedico}
-            // TelefonoPaciente={TelefonoPaciente}
-            // NombreSintomas={NombreSintomas}
-            // MatriculaMedico={MatriculaMedico}
-            // CorreoPaciente={CorreoPaciente}
+            TelefonoPaciente={TelefonoPaciente}
+            CorreoPaciente={CorreoPaciente}
             DescripcionCancer={DescripcionCancer}
           />
           <div className=" flex justify-center py-2">
