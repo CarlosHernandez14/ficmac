@@ -1,8 +1,11 @@
 import React from 'react';
 
-const PostCard = ({ question, description, categories, likes, responses }) => {
+const PostCard = ({ question, description, categories, likes, responses, compact = false }) => {
   return (
-    <div className="bg-[#A0737D] p-6 rounded-lg shadow-lg">
+    <div
+      className={`bg-[#A0737D] mb-6 p-${compact ? '4' : '6'} rounded-lg shadow-lg ${compact ? 'text-sm' : 'text-base'
+        }`}
+    >
       {/* Encabezado */}
       <div className="flex items-center mb-4">
         <div className="w-12 h-12 bg-black rounded-full mr-4"></div>
