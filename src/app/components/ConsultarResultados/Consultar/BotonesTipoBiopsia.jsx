@@ -1,14 +1,15 @@
-import { getEstudios } from "@/actions/estudios/estudio.actions";
+import { getAllSolicitudes } from "@/actions/estudios/solicitud.actions";
 
-function BotonesTipoBiopsia({ setEstudios }) {
+function BotonesTipoBiopsia({ setSolicitudes }) {
   const handleClick = async (tipo) => {
     try {
-      const response = await getEstudios();
+      const response = await getAllSolicitudes();
+      console.log(response);
       if (response.OK) {
-        const estudiosFiltrados = response.data.filter(
-          (estudio) => estudio.tipo === tipo
+        const solicitudesPacientes = response.data.filter(
+          (solicitud) => solicitud.estudio.tipo === tipo
         );
-        setEstudios(estudiosFiltrados);
+        setSolicitudes(solicitudesPacientes);
       } else {
         alert("Error al obtener los estudios: " + response.message);
       }

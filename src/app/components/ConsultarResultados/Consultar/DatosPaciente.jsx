@@ -1,29 +1,21 @@
-import React from 'react'
+import React from "react";
 
-function DatosPaciente({NombreCancer, NombreMedico, TelefonoPaciente, 
-  NombreSintomas, MatriculaMedico, CorreoPaciente, DescripcionCancer}) {
+function DatosPaciente({
+ 
+  TelefonoPaciente,
+
+  CorreoPaciente,
+  DescripcionCancer,
+}) {
   return (
     <div className="space-y-2">
       <div className="flex justify-between px-16 ">
         <div className=" space-y-2">
           <p>
-            Tipo de cáncer: <span className="ml-2"> {NombreCancer}</span>{" "}
-          </p>
-          <p>
-            Médico: <span className="ml-2">{NombreMedico}</span>
-          </p>
-          <p>
             Télefono: <span className="ml-2">{TelefonoPaciente}</span>
           </p>
         </div>
         <div className=" space-y-2">
-          <p>
-            Síntomas: <span className="ml-2">{NombreSintomas}</span>
-          </p>
-          <p>
-            {" "}
-            Matrícula:<span className="ml-2">{MatriculaMedico}</span>
-          </p>
           <p>
             Correo: <span className="ml-2">{CorreoPaciente}</span>
           </p>
@@ -39,4 +31,4 @@ function DatosPaciente({NombreCancer, NombreMedico, TelefonoPaciente,
   );
 }
 
-export default DatosPaciente
+export default DatosPaciente;

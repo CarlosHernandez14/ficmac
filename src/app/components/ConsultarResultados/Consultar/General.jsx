@@ -5,13 +5,13 @@ import TextoTiposBiopsia from "@/app/components/ConsultarResultados/Consultar/Te
 import BotonesTipoBiopsia from "@/app/components/ConsultarResultados/Consultar/BotonesTipoBiopsia";
 
 function General() {
-  const [estudios, setEstudios] = useState([]);
+  const [solicitudes, setSolicitudes] = useState([]);
   return (
-    <div className="flex justify-between relative  py-5 px-24 ">
-      <ScrollBar estudiosPacientes={estudios} />
-      <div>
+    <div className="flex justify-between relative  py-5 px-36 ">
+      <ScrollBar solicitudesPacientes={solicitudes} />
+      <div className="px-40"> 
         <TextoTiposBiopsia />
-        <BotonesTipoBiopsia setEstudios={setEstudios} />
+        <BotonesTipoBiopsia setSolicitudes={setSolicitudes} />
       </div>
     </div>
   );
