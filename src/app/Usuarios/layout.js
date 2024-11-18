@@ -1,3 +1,4 @@
+import FooterGeneral from "../components/Footer/FooterGeneral";
 import NavbarGeneral from "../components/Navbar/NavbarGeneral";
 
 export default function UsuariosLayout({ children }) {
@@ -5,6 +6,7 @@ export default function UsuariosLayout({ children }) {
     <div>
       <NavbarGeneral />
       <main>{children}</main>
+      <FooterGeneral />
     </div>
   );
 }
