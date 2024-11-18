@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react";
 import Image from 'next/image';
+//import PostCard from './components/Foro/PostCard';
 
 export default function Forum() {
   const posts = [
@@ -60,6 +61,14 @@ export default function Forum() {
     },
   ];
 
+  const myPosts = [
+    { id: 1, question: "¿Cómo prevenir el cáncer de piel?", description: "¿Qué tipo de protector solar recomiendan para prevenir el cáncer de piel en climas cálidos?", categories: ["Cáncer de piel", "Cuidado personal"], likes: 45, responses: 10 },
+  ];
+
+  const savedPosts = [
+    { id: 2, question: "¿Cuáles son los síntomas iniciales del cáncer de piel?", description: "Estoy notando una nueva mancha en mi piel. ¿Cómo puedo saber si es un síntoma de alerta o solo algo benigno?", categories: ["Cáncer de piel", "Cáncer"], likes: 120, responses: 30 },
+  ];
+
   const categories = [
     "Cáncer de piel",
     "Cáncer de mama",
@@ -88,7 +97,7 @@ export default function Forum() {
 
 
   return (
-    <div className="w-full min-h-screen bg-white flex p-10">
+    <div className="w-full min-h-screen bg-white flex p-10 justify-between">
 
       <div className="absolute inset-0">
         <Image
@@ -121,7 +130,7 @@ export default function Forum() {
             <button
               key={index}
               onClick={() => handleCategoryClick(category)}
-              className={`flex-shrink-0 bg-white text-gray-700 rounded-xl px-4 py-2 text-sm border ${selectedCategory === category ? "bg-[#753350] text-white" : "border-gray-300"}`}
+              className={`flex-shrink-0 bg-white text-gray-700 rounded-xl px-4 py-2 text-sm border ${selectedCategory === category ? "bg-[#753350] text-gray-700 border-[#753350]" : "border-gray-300"}`}
             >
               {category}
             </button>
@@ -130,38 +139,86 @@ export default function Forum() {
 
         <h1 className="text-3xl font-bold pl-1 mb-6 text-[#753350]">Post en Tendencia</h1>
 
-        {filteredPosts.map((post) => (
-          <div key={post.id} className="bg-[#A0737D] p-6 rounded-lg shadow-lg mb-6">
+        <div className="h-[660px] overflow-y-scroll pr-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+          {filteredPosts.map((post) => (
+            <div key={post.id} className="bg-[#A0737D] p-6 rounded-lg shadow-lg mb-6">
 
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-black rounded-full mr-4"></div>
-              <h2 className="text-xl font-semibold text-white">{post.question}</h2>
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-black rounded-full mr-4"></div>
+                <h2 className="text-xl font-semibold text-white">{post.question}</h2>
+              </div>
+
+              <p className="text-white mt-2">{post.description}</p>
+
+              <div className="flex space-x-2 mt-4">
+                {post.categories.map((category, index) => (
+                  <span
+                    key={index}
+                    className="bg-gray-200 text-gray-700 rounded-xl px-3 py-1 text-sm font-medium"
+                  >
+                    {category}
+                  </span>
+                ))}
+              </div>
+
+              <hr className="my-4 border-white" />
+
+              <div className="flex justify-start space-x-10 text-white text-base">
+                <span>{post.likes} Votos</span>
+                <span>{post.responses} Respuestas</span>
+              </div>
+
             </div>
+          ))}
+        </div>
+      </div>
 
-            <p className="text-white mt-2">{post.description}</p>
 
-            <div className="flex space-x-2 mt-4">
-              {post.categories.map((category, index) => (
-                <span
-                  key={index}
-                  className="bg-gray-200 text-gray-700 rounded-xl px-3 py-1 text-sm font-medium"
-                >
-                  {category}
-                </span>
-              ))}
-            </div>
+      <div className="flex flex-col justify-between space-y-6 w-[40%] z-10">
 
-            <hr className="my-4 border-white" />
+        {/* Perfil del usuario */}
+        <div className="h-2/4 bg-[#D9D9D9] rounded-3xl p-6 shadow-lg">
 
-            <div className="flex justify-start space-x-10 text-white text-base">
-              <span>{post.likes} Votos</span>
-              <span>{post.responses} Respuestas</span>
-            </div>
-
+          <div className="flex flex-col items-center mb-4">
+            <div className="w-24 h-24 bg-black rounded-full"></div>
+            <h2 className="text-xl font-bold mt-4 text-[#753350]">Leonardo Aguilar</h2>
           </div>
-        ))}
+
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-[#753350]">Mis Posts</h3>
+            <button className="text-sm text-[#753350] hover:underline">Ver todos</button>
+          </div>
+
+          <div className="space-y-4">
+            {myPosts.map((post) => (
+              <div key={post.id} className="bg-[#A0737D] p-4 rounded-lg text-white">
+                <h4 className="text-base font-bold">{post.question}</h4>
+                <p className="text-sm">{post.description}</p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
+        {/* Posts Guardados */}
+        <div className="h-2/4 bg-[#D9D9D9] rounded-3xl p-6 shadow-lg">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-[#753350]">Post Guardados</h3>
+            <button className="text-sm text-[#753350] hover:underline">Ver todos</button>
+          </div>
+          <div className="space-y-4">
+            {savedPosts.map((post) => (
+              <div key={post.id} className="bg-[#A0737D] p-4 rounded-lg text-white">
+                <h4 className="text-base font-bold">{post.question}</h4>
+                <p className="text-sm">{post.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
 
       </div>
+
+
 
     </div>
   );
