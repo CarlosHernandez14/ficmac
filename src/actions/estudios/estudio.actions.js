@@ -1,5 +1,5 @@
 // CRUD Para los estudios
-
+"use server";
 import { prisma, TipoEstudio } from "@/libs/db";
 
 // Funcion para obtener los estudios

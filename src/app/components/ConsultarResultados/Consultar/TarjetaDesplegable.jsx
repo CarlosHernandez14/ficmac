@@ -5,7 +5,19 @@ import DatosPaciente from "./DatosPaciente";
 import ImagenCircular from "./ImagenCircular";
 import BotonSeleccionarPaciente from "./BotonSeleccionarPaciente";
 
-function TarjetaDesplegable() {
+
+function TarjetaDesplegable({
+  // NombrePaciente,
+  // SexoPaciente,
+  TipoBiopsia,
+  // NombreCancer,
+  // NombreMedico,
+  // TelefonoPaciente,
+  // NombreSintomas,
+  // MatriculaMedico,
+  // CorreoPaciente,
+  DescripcionCancer,
+}) {
   const [desplegado, setDesplegado] = useState(false);
 
   const toggleDesplegado = () => {
@@ -22,7 +34,7 @@ function TarjetaDesplegable() {
         <div className="flex items-center space-x-1">
           <ImagenCircular />
           <div className="w-[550px] ">
-            <p className="text-lg font-bold">Leonardo Aguilar {nombre}</p>
+            <p className="text-lg font-bold">Yair Arriaga{NombrePaciente}</p>
             <LineaDivisora />
           </div>
         </div>
@@ -32,24 +44,21 @@ function TarjetaDesplegable() {
       </div>
 
       <div className="flex justify-between px-[67px]  ">
-        <p className="text-sm">Masculino {sexo}</p>
+        <p className="text-sm">Masculina{SexoPaciente}</p>
         <span className="text-white  py-1 text-sm font-semibold">
-          Biopsia Líquida {tipo}
+          {TipoBiopsia}
         </span>
       </div>
       {desplegado && (
         <div className="mt-4 ">
           <DatosPaciente
-            NombreCancer="Cáncer de mama " //{NombreCancer}
-            TipoCancer="Invasivo" //{TipoCancer}
-            NombreMedico="Dr. Juan Pérez" //{NombreMedico}
-            TelefonoPaciente="12345678" //{TelefonoPaciente}
-            NombreSintomas="Dolor en el pecho" //{NombreSintomas}
-            CedulaMedico="12345678" //{CedulaMedico}
-            CorreoPaciente="aguimtz.2003@gmail.com" //{CorreoPaciente}
-            DescripcionCancer="Dolores en el pecho, dificultad para respirar, dolor en la espalda
-            Dolores en el pecho, dificultad para respirar, dolor en la espalda Dolores en el pecho,
-             dificultad para respirar, dolor en la espalda" //{DescripcionCancer}
+            // NombreCancer={NombreCancer}
+            // NombreMedico={NombreMedico}
+            // TelefonoPaciente={TelefonoPaciente}
+            // NombreSintomas={NombreSintomas}
+            // MatriculaMedico={MatriculaMedico}
+            // CorreoPaciente={CorreoPaciente}
+            DescripcionCancer={DescripcionCancer}
           />
           <div className=" flex justify-center py-2">
             <BotonSeleccionarPaciente />
