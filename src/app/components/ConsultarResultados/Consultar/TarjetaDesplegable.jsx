@@ -5,18 +5,7 @@ import DatosPaciente from "./DatosPaciente";
 import ImagenCircular from "./ImagenCircular";
 import BotonSeleccionarPaciente from "./BotonSeleccionarPaciente";
 
-function TarjetaDesplegable({
-  nombre,
-  tipo,
-  sexo,
-  NombreCancer,
-  NombreMedico,
-  TelefonoPaciente,
-  NombreSintomas,
-  CedulaMedico,
-  CorreoPaciente,
-  DescripcionCancer,
-}) {
+function TarjetaDesplegable() {
   const [desplegado, setDesplegado] = useState(false);
 
   const toggleDesplegado = () => {
