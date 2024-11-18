@@ -1,7 +1,7 @@
 import React from 'react'
 
 function DatosPaciente({NombreCancer, NombreMedico, TelefonoPaciente, 
-  NombreSintomas, CedulaMedico, CorreoPaciente, DescripcionCancer}) {
+  NombreSintomas, MatriculaMedico, CorreoPaciente, DescripcionCancer}) {
   return (
     <div className="space-y-2">
       <div className="flex justify-between px-16 ">
@@ -22,7 +22,7 @@ function DatosPaciente({NombreCancer, NombreMedico, TelefonoPaciente,
           </p>
           <p>
             {" "}
-            Cédula:<span className="ml-2">{CedulaMedico}</span>
+            Matrícula:<span className="ml-2">{MatriculaMedico}</span>
           </p>
           <p>
             Correo: <span className="ml-2">{CorreoPaciente}</span>

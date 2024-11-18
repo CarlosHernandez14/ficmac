@@ -1,4 +1,10 @@
 -- CreateEnum
+CREATE TYPE "TipoEstudio" AS ENUM ('BIOPSIA_LIQUIDA', 'BIOPSIA_SOLIDA');
+
+-- CreateEnum
+CREATE TYPE "Especialidad" AS ENUM ('MEDICO_GENERAL', 'ONCOLOGO', 'RADIOLOGO', 'PATOLOGO', 'CIRUJANO', 'GINECOLOGO', 'UROLOGO', 'OTRO');
+
+-- CreateEnum
 CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'PACIENTE', 'MEDICO');
 
 -- CreateTable
@@ -8,10 +14,10 @@ CREATE TABLE "User" (
     "email" TEXT,
     "emailVerified" TIMESTAMP(3),
     "password" TEXT,
-    "image" TEXT,
     "role" "UserRole" NOT NULL DEFAULT 'PACIENTE',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "num_celular" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -33,6 +39,26 @@ CREATE TABLE "Account" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("provider","providerAccountId")
+);
+
+-- CreateTable
+CREATE TABLE "VerificationToken" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "VerificationToken_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PasswordResetToken" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PasswordResetToken_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -65,7 +91,7 @@ CREATE TABLE "Medico" (
     "rfc" TEXT NOT NULL,
     "matricula" TEXT NOT NULL,
     "num_celular" TEXT NOT NULL,
-    "especialidad" TEXT NOT NULL,
+    "especialidad" "Especialidad" NOT NULL DEFAULT 'MEDICO_GENERAL',
 
     CONSTRAINT "Medico_pkey" PRIMARY KEY ("id")
 );
@@ -147,8 +173,8 @@ CREATE TABLE "Estudio" (
     "id" SERIAL NOT NULL,
     "nombre" TEXT NOT NULL,
     "descripcion" TEXT NOT NULL,
-    "tipo" INTEGER NOT NULL,
     "precio" DOUBLE PRECISION NOT NULL,
+    "tipo" "TipoEstudio" NOT NULL DEFAULT 'BIOPSIA_LIQUIDA',
 
     CONSTRAINT "Estudio_pkey" PRIMARY KEY ("id")
 );
@@ -165,6 +191,7 @@ CREATE TABLE "Solicitud_Estudio" (
     "path_historia_clinica" TEXT NOT NULL,
     "path_informe_patologia" TEXT NOT NULL,
     "fecha_solicitud" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "idMedico" TEXT,
 
     CONSTRAINT "Solicitud_Estudio_pkey" PRIMARY KEY ("id")
 );
@@ -186,6 +213,18 @@ CREATE TABLE "solicitud_resultado" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_email_token_key" ON "VerificationToken"("email", "token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PasswordResetToken_token_key" ON "PasswordResetToken"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PasswordResetToken_email_token_key" ON "PasswordResetToken"("email", "token");
 
 -- CreateIndex
 CREATE INDEX "fk_usuario_inx" ON "Donacion"("idUsuario");
@@ -257,31 +296,34 @@ ALTER TABLE "Tipo_Cancer_Sintoma" ADD CONSTRAINT "fk_sintoma" FOREIGN KEY ("id_s
 ALTER TABLE "Tipo_Cancer_Sintoma" ADD CONSTRAINT "fk_tipo_cancer" FOREIGN KEY ("id_tipo_cancer") REFERENCES "Tipo_Cancer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Post" ADD CONSTRAINT "fk_usuario_post" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "fk_post_padre" FOREIGN KEY ("idPostPadre") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "fk_tipo_cancer_post" FOREIGN KEY ("idTipoCancer") REFERENCES "Tipo_Cancer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Voto" ADD CONSTRAINT "fk_usuario_voto" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Post" ADD CONSTRAINT "fk_usuario_post" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Voto" ADD CONSTRAINT "fk_post_voto" FOREIGN KEY ("idPost") REFERENCES "Post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Solicitud_Estudio" ADD CONSTRAINT "fk_usuario_solicitud" FOREIGN KEY ("idPaciente") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Voto" ADD CONSTRAINT "fk_usuario_voto" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Solicitud_Estudio" ADD CONSTRAINT "fk_estudio_solicitud" FOREIGN KEY ("idEstudio") REFERENCES "Estudio"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "solicitud_resultado" ADD CONSTRAINT "fk_usuario_solicitud_resultado" FOREIGN KEY ("idMedico") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Solicitud_Estudio" ADD CONSTRAINT "fk_medico_solicitud" FOREIGN KEY ("idMedico") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Solicitud_Estudio" ADD CONSTRAINT "fk_usuario_solicitud" FOREIGN KEY ("idPaciente") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "solicitud_resultado" ADD CONSTRAINT "fk_solicitud_estudio_solicitud_resultado" FOREIGN KEY ("idSolicitudEstudio") REFERENCES "Solicitud_Estudio"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "solicitud_resultado" ADD CONSTRAINT "fk_tipo_cancer_solicitud_resultado" FOREIGN KEY ("idTipoCancer") REFERENCES "Tipo_Cancer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "solicitud_resultado" ADD CONSTRAINT "fk_solicitud_estudio_solicitud_resultado" FOREIGN KEY ("idSolicitudEstudio") REFERENCES "Solicitud_Estudio"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "solicitud_resultado" ADD CONSTRAINT "fk_usuario_solicitud_resultado" FOREIGN KEY ("idMedico") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
