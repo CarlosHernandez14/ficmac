@@ -5,6 +5,20 @@ import IconosAvance from "./IconosAvance";
 import { useRouter } from "next/navigation";
 import ButtonNext from "./ButtonNext";
 
+const validatePhoneNumber = (phone) => {
+  const phoneRegex = /^\d{10}$/; 
+  return phoneRegex.test(phone);
+};
+
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+  return emailRegex.test(email);
+};
+const validateName = (name) => {
+  const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/; 
+  return nameRegex.test(name);
+};
+
 const Formulario = () => {
   const router = useRouter();
 
@@ -43,8 +57,30 @@ const Formulario = () => {
         newErrors[key] = "Este campo es obligatorio";
       }
     }
+    if (!validatePhoneNumber(formData.telefono)) {
+      newErrors.telefono = "El teléfono debe tener exactamente 10 números";
+    }
+  
+    if (!validatePhoneNumber(formData.telefonoFamiliar)) {
+      newErrors.telefonoFamiliar = "El teléfono debe tener exactamente 10 números";
+    }
+  
+    if (!validateEmail(formData.correo)) {
+      newErrors.correo = "El correo electrónico no es válido";
+    }
+  
     if (!formData.aceptaPolitica) {
       newErrors.aceptaPolitica = "Acepta la política y privacidad de datos*";
+    }
+    if (!validateName(formData.nombre)) {
+      newErrors.nombre = "El nombre solo debe contener letras y espacios";
+    }
+  
+    if (!validateName(formData.apellidos)) {
+      newErrors.apellidos = "Los apellidos solo deben contener letras y espacios";
+    }
+    if (!validateName(formData.ciudad)) {
+      newErrors.ciudad = "La ciudad solo debe contener letras y espacios";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -58,6 +94,8 @@ const Formulario = () => {
       alert("Por favor, completa todos los campos obligatorios.");
     }
   };
+
+  
   return (
     <div className="flex h-screen ">
       <div className="w-1/5 p-4 flex flex-col items-center justify-start mr-48 ml-10">

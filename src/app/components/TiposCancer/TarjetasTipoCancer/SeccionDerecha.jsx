@@ -21,9 +21,11 @@ const SeccionDerecha = ({ titulo, descripcion, instructivo }) => {
         >
           Instructivo
         </button>
+        <a href="https://api.whatsapp.com/send?phone=4431386613">
         <button className="bg-[#753350] text-white font-bold rounded-full px-16 py-1 text-sm hover:bg-transparent hover:text-black hover:border-[#753350] hover:border">
           Comunicarse
         </button>
+        </a>
       </div>
 
       {isPopupVisible && (

@@ -4,19 +4,19 @@ import Tarjetas from "../TarjetasTipoCancer/Tarjetas";
 
 const Estudios = () => {
   return (
-    <div className="relative">
-      <img
-        src="/EstudioDisponibles/fondo.jpeg"
-        alt="Fondo"
-        className="w-full h-80 object-cover opacity-75"
-      />
-      <div>
-        <div className="absolute bottom-0 left-0 w-full h-1/5 bg-gradient-to-t from-white to-transparent " />
+    <div className="relative min-h-screen flex flex-col">
+      <div className="relative">
+        <img
+          src="/EstudioDisponibles/fondo.jpeg"
+          alt="Fondo"
+          className="w-full h-80 object-cover opacity-75"
+        />
+        <div className="absolute bottom-0 left-0 w-full h-1/5 bg-gradient-to-t from-white to-transparent" />
         <h1 className="absolute bottom-10 left-1/3 text-center text-[#753350] text-3xl font-bold">
           Selecciona el tipo de biopsia a solicitar
         </h1>
       </div>
-      <div className="absolute left-72 space-y-12">
+      <div className="flex flex-col items-center space-y-12 mt-12 px-8">
         <Tarjetas
           texto={"Biopsia Liquida (sangre)"}
           titulo={"No requiere preparación"}
@@ -36,14 +36,14 @@ const Estudios = () => {
           }
           imagen={"/EstudioDisponibles/biopsiaSolida.png"}
           instructivo={
-            " En biopsias guiadas por imágenes, quirúrgicas o endoscópicas, es común que te pidan no comer ni beber por al menos 6-8 horas antes del procedimiento.Es posible que te pidan suspenderlos varios días antes como anticoagulantes o aspirina. "
+            "En biopsias guiadas por imágenes, quirúrgicas o endoscópicas, es común que te pidan no comer ni beber por al menos 6-8 horas antes del procedimiento. Es posible que te pidan suspenderlos varios días antes como anticoagulantes o aspirina."
           }
         />
-        <div className="flex justify-center mt-8 p-4">
-          <button className="bg-[#367B99] text-white font-medium rounded-full px-24 py-3 text-sm">
-            Continuar
-          </button>
-        </div>
+      </div>
+      <div className="flex justify-center mt-8 p-4">
+        <button className="bg-[#367B99] text-white font-medium rounded-full px-24 py-3 text-sm">
+          Continuar
+        </button>
       </div>
     </div>
   );
