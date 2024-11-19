@@ -37,6 +37,7 @@ const Documentos = () => {
       }
       else{
         console.log("Faltan documentos por adjuntar")
+        window.alert("Faltan documentos por adjuntar")
       }
     })
   }
