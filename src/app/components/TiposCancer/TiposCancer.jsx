@@ -17,8 +17,9 @@ function TiposCancer() {
         <div className='flex justify-evenly items-center'>
           <MenuTipoCancer setCanceres={setCanceres}/>
           <div className='space-y-2'>
-            <TipoCancer nombre={canceres.nombre}/>
-            <InfoTipoCancer img={canceres.path_imagen} descripcion={canceres.descripcion}/>
+            <TipoCancer nombre={canceres.nombre || "Seleccione el tipo de cancer"}/>
+            <InfoTipoCancer img={canceres.path_imagen || "/EstudioDisponibles/biopsiaLiquida.png"} 
+              descripcion={canceres.descripcion || "Si identificas señales de posible cancer, este debe ser tratado en su mayor brevedad"}/>
             <Sintomas sintomas={canceres.Tipo_Cancer_Sintoma}/>
           </div>
         </div>
