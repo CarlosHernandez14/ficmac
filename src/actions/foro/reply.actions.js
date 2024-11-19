@@ -1,3 +1,4 @@
+"use server"
 import {prisma as db} from "@/libs/db";
 
 // Funcion para obtener las respuestas de un post

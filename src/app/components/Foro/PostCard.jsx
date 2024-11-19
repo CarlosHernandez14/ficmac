@@ -16,15 +16,14 @@ const PostCard = ({ question, description, categories, likes, responses, compact
       <p className="text-white mb-4">{description}</p>
 
       {/* Categorías */}
-      <div className="flex space-x-2 mb-4">
-        {categories.map((category, index) => (
-          <span
-            key={index}
-            className="bg-gray-200 text-gray-700 rounded-xl px-3 py-1 text-sm font-medium"
-          >
-            {category}
+      <div className="mb-4">
+        {categories ? (
+          <span className="bg-gray-200 text-gray-700 rounded-lg px-3 py-1 text-sm font-medium">
+            {categories}
           </span>
-        ))}
+        ) : (
+          <span className="text-gray-400 italic">Sin categoría</span>
+        )}
       </div>
 
       {/* Separador */}
