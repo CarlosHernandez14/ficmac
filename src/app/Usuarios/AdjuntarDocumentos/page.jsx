@@ -1,5 +1,5 @@
 import React from 'react'
-import AdjuntarDocs from '../components/FormularioEstudios/AdjuntarDocs';
+import AdjuntarDocs from '../../components/FormularioEstudios/AdjuntarDocs';
 
 
 
