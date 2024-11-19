@@ -21,18 +21,15 @@ function ButtonTipoCancer({ id, tipo, setCanceres, isClicked, onClick }) {
           ? "bg-white text-black rounded-full"
           : "hover:bg-white hover:text-black hover:rounded-full text-white"
       }`}
-      whileHover={{ scale: 1.1 }}
+      whileHover={{ scale: 0.9 }}
       whileTap={{ scale: 0.9 }}
       transition={{ duration: 0.2 }}
     >
-      <motion.button
+      <button
         className="px-4 py-1 rounded-md text-center"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        transition={{ duration: 0.2 }}
       >
         {tipo}
-      </motion.button>
+      </button>
     </motion.div>
   );
 }

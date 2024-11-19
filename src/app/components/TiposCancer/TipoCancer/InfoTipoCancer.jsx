@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 function InfoTipoCancer({ img, descripcion }) {
   return (
     <motion.div
-      key={img} // Esto asegura que la animación se aplique cada vez que la imagen o la descripción cambien
+      key={img+descripcion} // Esto asegura que la animación se aplique cada vez que la imagen o la descripción cambien
       className="flex justify-between items-center space-x-8 py-6"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
