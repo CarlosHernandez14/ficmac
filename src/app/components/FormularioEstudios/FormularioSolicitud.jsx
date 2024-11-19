@@ -16,7 +16,7 @@ const FormularioSolicitud = () => {
           Solicitud de Formulario
         </h1>
       </div>
-      <div className="flex-1 mt-4 p-4 mb-32 mr-32">
+      <div className="flex-1 mt-4 p-4 mb-48 mr-32">
         <Formulario />
       </div>
       </div>
