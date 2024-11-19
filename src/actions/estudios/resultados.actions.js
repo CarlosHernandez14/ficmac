@@ -1,3 +1,4 @@
+"use server"
 // CRUD Server actions para manejar los resultados de las solicitudes de estudios
 import { prisma as db, Especialidad, TipoEstudio, UserRole } from "@/libs/db";
 import { connect } from "net";
@@ -98,26 +99,27 @@ export const getResultadoById = async (id) => {
 
 export const getResultadosByMedicoId = async (id) => {
     try {
-        const resultados = await db.resultado.findMany({
+        const resultados = await db.solicitud_resultado.findMany({
             where: {
-                idMedico: parseInt(id),
-            },
-            include: {
-                // Medico
+                idMedico: id,
+              },
+              include: {
                 usuario: {
-                    include: {
-                        medico: true
-                    }
+                  include: {
+                    Medico: true, // Incluye la relación Medico para el primer usuario
+                  },
                 },
-                tipo_cancer: true,
-                // Solicitud de estudio
+                tipo_cancer: true, // Incluye el tipo de cáncer relacionado
                 solicitud_estudio: {
-                    include: {
-                        // Paciente
-                        usuario: true,
-                    }
-                }
-            }
+                  include: {
+                    usuario: {
+                      include: {
+                        Paciente: true, // Incluye la relación Paciente para el segundo usuario
+                      },
+                    },
+                  },
+                },
+              },
         });
 
         return { OK: true, message: "Resultados encontrados", data: resultados };
