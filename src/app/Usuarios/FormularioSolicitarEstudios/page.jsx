@@ -1,5 +1,5 @@
 import React from 'react'
-import FormularioSolicitud from '../components/FormularioEstudios/FormularioSolicitud';
+import FormularioSolicitud from '../../components/FormularioEstudios/FormularioSolicitud';
 
 
 

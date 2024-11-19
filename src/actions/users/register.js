@@ -7,6 +7,26 @@ import { revalidatePath } from "next/cache"
 
 //Función para registrar un usuario
 export const register = async (values) =>{
+    if (!values.email || !values.password || !values.name || !values.num_celular){
+        return {error: "Faltan datos"}
+    }
+    const nameContainsNumbers = /\d/.test(values.name)
+    if (nameContainsNumbers) {
+        return {error: "El nombre no puede contener números"}
+    }
+    if (values.password.length < 6){
+        return {error: "La contraseña debe tener al menos 6 caracteres"}
+    }
+    if (values.num_celular.length < 10){
+        return {error: "El número de celular debe tener al menos 10 dígitos"}
+    }
+    if (values.num_celular.length > 10){
+        return {error: "El número de celular no puede tener más de 10 dígitos"}
+    }
+    const numeroCelularEsNumero = /^\d+$/.test(values.num_celular)
+    if (!numeroCelularEsNumero){
+        return {error: "El número de celular debe contener solo números"}
+    }
     //Encriptar la contraseña
     const hash = await bcrypt.hash(values.password, 10)
     try{

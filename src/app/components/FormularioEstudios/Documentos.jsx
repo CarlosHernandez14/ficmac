@@ -7,6 +7,7 @@ import DocumentosAdjuntar from "./DocumentosAdjuntar";
 import ButtonAzul from "../General/ButtonAzul";
 import { getFilesFromUser, uploadFile } from "@/actions/documentos/documentos";
 import { useRouter } from "next/navigation";
+import { createSolicitud } from "@/actions/estudios/solicitud.actions";
 
 const Documentos = () => {
   //TODO: Corregir fallo, se guarda en la lista el archivo cada que se cambia el documento en cualquier campo, lo cual puede hacer que se generen muchos mas archivos de los necesarios
@@ -32,6 +33,26 @@ const Documentos = () => {
             console.log(response.success)
             window.alert("Documentos enviados correctamente")
             router.push('/')
+            // Llama a createSolicitud después de subir los documentos
+            createSolicitud({
+              idPaciente: 'cm3nu5igd0000rpkwze2hk230',
+              idEstudio: 2,
+              path_orden_medica: response.links[0],
+              path_identificacion: response.links[1],
+              path_concentimiento: response.links[2],
+              path_voucher: response.links[3],
+              path_historia_clinica: response.links[4],
+              path_informe_patologia: response.links[5]
+            }).then((solicitudResponse) => {
+              if (solicitudResponse.error) {
+                console.log(solicitudResponse.error);
+              }
+              if (solicitudResponse.success) {
+                console.log('Solicitud creada:', solicitudResponse);
+              }
+            }).catch((error) => {
+              console.error('Error al crear la solicitud:', error);
+            });
           }
         })
       }
@@ -41,6 +62,8 @@ const Documentos = () => {
       }
     })
   }
+
+  
 
 
   return (
