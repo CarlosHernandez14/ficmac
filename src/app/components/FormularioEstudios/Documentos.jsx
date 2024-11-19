@@ -6,11 +6,13 @@ import Texto from "./Texto";
 import DocumentosAdjuntar from "./DocumentosAdjuntar";
 import ButtonAzul from "../General/ButtonAzul";
 import { getFilesFromUser, uploadFile } from "@/actions/documentos/documentos";
+import { useRouter } from "next/navigation";
 
 const Documentos = () => {
   //TODO: Corregir fallo, se guarda en la lista el archivo cada que se cambia el documento en cualquier campo, lo cual puede hacer que se generen muchos mas archivos de los necesarios
   const [fileList, setFileList] = useState([]);
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
   const fileListFunction = (file) => {
     const newFileList = fileList
     newFileList.push(file)
@@ -28,7 +30,8 @@ const Documentos = () => {
           }
           if(response.success){
             console.log(response.success)
-            
+            window.alert("Documentos enviados correctamente")
+            router.push('/')
           }
         })
       }
