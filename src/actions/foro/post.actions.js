@@ -1,3 +1,4 @@
+"use server"
 import {prisma as db} from "@/libs/db";
 
 
