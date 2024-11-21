@@ -29,8 +29,10 @@ const PaypalBtn = () => {
   }
 
   // Cuando el usuario ya pago y se aprobo la compra con el backend 
-  const handleApprove = async () => {
+  const handleApprove = async (data, actions) => {
     //console.log(data)
+    // Capturamos la orden de compra
+    const order = await actions
   }
 
 
@@ -47,6 +49,16 @@ const PaypalBtn = () => {
                     label: 'pay',
                 }}
                 createOrder={handleCreateOrder}
+                onApprove={(data, actions) => {
+                  // Data de la orden de compra
+                  console.log("Order data: ", data);
+                  // Captura la orden de compra
+                  actions.order.capture()
+                }}
+                onCancel={(data) => {
+                  // Recibe el orderID de la orden cancelada
+                  console.log("Orden cancelada: ", data.orderID);
+                }}
             />
         </PayPalScriptProvider>
     </div>
