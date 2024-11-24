@@ -23,7 +23,7 @@ function FlotadorDonacion() {
       </motion.div>
 
       {isOpen && (
-        <PopupDonacion togglePopup={togglePopup} />
+        <PopupDonacion togglePopup={togglePopup} setIsOpen={setIsOpen}/>
       )}
     </div>
   );
