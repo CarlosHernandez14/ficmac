@@ -80,6 +80,8 @@ model Donacion {
 model Paciente {
   id              Int    @id @default(autoincrement())
   nombre_completo String
+  edad            Int
+  direccion       String
   idUsuario       String
   sexo            String
   num_celular     String
@@ -105,11 +107,13 @@ model Medico {
 model Publicacion_Cientifica {
   id              Int      @id @default(autoincrement())
   idUsuario       String
+  idTipoCancer    Int
   titulo          String
   resumen         String
   fecha_publicado DateTime @db.Date
   link            String
   usuario         User     @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_publicacion")
+  Tipo_Cancer     Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_publicacion")
 
   @@index([idUsuario], map: "fk_usuario_publicacion_inx")
 }
@@ -133,6 +137,7 @@ model Tipo_Cancer {
   descripcion         String
   path_imagen         String
   Post                Post[]
+  Publicacion_Cientifica Publicacion_Cientifica[]
   Tipo_Cancer_Sintoma Tipo_Cancer_Sintoma[]
   solicitud_resultado solicitud_resultado[]
 }

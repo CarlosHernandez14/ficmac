@@ -3,9 +3,9 @@ import NavbarGeneral from "../components/Navbar/NavbarGeneral";
 
 export default function UsuariosLayout({ children }) {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen">
       <NavbarGeneral />
-      <main>{children}</main>
+      <main className="flex-grow">{children}</main>
       <FooterGeneral />
     </div>
   );
