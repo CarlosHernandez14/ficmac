@@ -4,6 +4,12 @@ import {userByEmail} from "./data"
 import { enviarCorreoReset } from "../mail/reset"
 import { generatePasswordResetToken } from "@/libs/tokens"
 
+/**
+ * Enviar correo de reseteo de contraseña
+ * @param {String} email 
+ * @returns Success o Error
+ */
+
 export const reset = async (email) =>{
     const existingUser = await userByEmail(email)
     if(!existingUser){
