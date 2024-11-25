@@ -46,6 +46,7 @@ const Carrusel = ({ slides }) => {
                 <h1 className="text-2xl font-bold mt-10 mb-4 text-justify">
                   {slide.texto2}
                 </h1>
+                <a href={slide.enlace}>
                 <button
                   className={`px-16 py-2 mt-10 bg-white  hover:bg-[#CB1662] rounded-[20px] hover:text-white text-[#CB1662] font-bold ${
                     slide.botonPosicion === "derecha" ? "ml-auto" : "mr-auto"
@@ -53,6 +54,7 @@ const Carrusel = ({ slides }) => {
                 >
                   {slide.botonTexto}
                 </button>
+                </a>
               </div>
             </div>
           </SwiperSlide>

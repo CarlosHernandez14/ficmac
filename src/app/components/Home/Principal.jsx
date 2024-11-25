@@ -2,11 +2,15 @@ import React from "react";
 import Carrusel from "./Carrusel";
 import Cifras from "./Cifras";
 import NuestrosNumeros from "./NuestrosNumeros";
+import CuadroAzul from "./CuadroAzul";
+import TextoDerecho from "./TextoDerecho";
+import CuadroTexto from "./CuadroTexto";
 
 const Principal = () => {
   const slides = [
     {
       imagen: "/Home/Carrusel_vista_1.jpg",
+      enlace:"/Usuarios/Home/1",
       texto:
         "En Ontec, creemos en un futuro donde cada tratamiento contra el cáncer sea una oportunidad para vivir plenamente.",
       texto2:
@@ -16,6 +20,7 @@ const Principal = () => {
       textoAlineacion: "izquierda", // Alineación del texto (izquierda o derecha)
       botonTexto: "Saber más",
       botonPosicion: "izquierda", // Posición del botón (izquierda, derecha o centrado)
+
     },
     {
       imagen: "/Home/Carrusel_vista_2.jpg",
@@ -45,6 +50,7 @@ const Principal = () => {
     <div>
       <Carrusel slides={slides} />
       <NuestrosNumeros />
+      <CuadroTexto/>
     </div>
   );
 };
