@@ -1,10 +1,10 @@
 import React from 'react'
 
-function ImagenCircular() {
+function ImagenCircular({ imageSrc }) {
   return (
     <div className="flex justify-center items-center">
       <img
-        src="/Perfil/image.png"
+        src={imageSrc}
         alt="Imagen Circular"
         className="w-56 h-56 rounded-full object-cover"
       />

@@ -1,5 +1,6 @@
 import ImagenPerfil from "@/app/components/Perfil/ImagenPerfil";
-import CajaInformacion from "@/app/components/Perfil/CajaInformacion";
+import CajaGeneral from "@/app/components/Perfil/CajaGeneral";
+
 
 function page() {
   return (
@@ -14,7 +15,8 @@ function page() {
       <div className="absolute inset-0 w-full h-full bg-gradient-to-t from-[#D9D9D9] to-transparent"></div>
       <div className="flex justify-between relative z-10 px-20 py-24 space-x-20">
         <ImagenPerfil />
-        <CajaInformacion />
+        <CajaGeneral />
+        
       </div>
     </div>
   );
