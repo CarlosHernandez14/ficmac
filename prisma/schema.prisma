@@ -18,6 +18,7 @@ model User {
   updatedAt                  DateTime                 @updatedAt
   num_celular                String?
   accounts                   Account[]
+  Documento                  Documento[]
   Donacion                   Donacion[]
   Medico                     Medico[]
   Paciente                   Paciente[]
@@ -27,7 +28,6 @@ model User {
   Solicitud_Estudio_Paciente Solicitud_Estudio[]      @relation("PacienteToSolicitud")
   Voto                       Voto[]
   solicitud_resultado        solicitud_resultado[]
-  Documento                  Documento[]
 }
 
 model Account {
@@ -87,8 +87,6 @@ model Paciente {
   num_celular     String
   imagen_path     String
   usuario         User   @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_paciente")
-
-  @@index([idUsuario], map: "fk_usuario_paciente_inx")
 }
 
 model Medico {
@@ -105,16 +103,15 @@ model Medico {
 }
 
 model Publicacion_Cientifica {
-  id              Int      @id @default(autoincrement())
+  id              Int         @id @default(autoincrement())
   idUsuario       String
   idTipoCancer    Int
   titulo          String
   resumen         String
-  fecha_publicado DateTime @db.Date
+  fecha_publicado DateTime    @db.Date
   link            String
   usuario         User     @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_publicacion")
   Tipo_Cancer     Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_publicacion")
-
   @@index([idUsuario], map: "fk_usuario_publicacion_inx")
 }
 
@@ -205,11 +202,11 @@ model Solicitud_Estudio {
   path_informe_patologia String
   fecha_solicitud        DateTime              @default(now())
   idMedico               String?
+  Documento              Documento[]
   estudio                Estudio               @relation(fields: [idEstudio], references: [id], onDelete: Cascade, map: "fk_estudio_solicitud")
   medico                 User?                 @relation("MedicoToSolicitud", fields: [idMedico], references: [id], map: "fk_medico_solicitud")
   usuario                User                  @relation("PacienteToSolicitud", fields: [idPaciente], references: [id], onDelete: Cascade, map: "fk_usuario_solicitud")
   solicitud_resultado    solicitud_resultado[]
-  Documento              Documento[]
 
   @@index([idPaciente], map: "fk_usuario_solicitud_inx")
   @@index([idEstudio], map: "fk_estudio_solicitud_inx")

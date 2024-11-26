@@ -1,5 +1,6 @@
 import FooterGeneral from "../components/Footer/FooterGeneral";
 import NavbarGeneral from "../components/Navbar/NavbarGeneral";
+import FlotadorDonacion from "../components/Donacion/FlotadorDonacion";
 
 export default function UsuariosLayout({ children }) {
   return (
@@ -7,6 +8,7 @@ export default function UsuariosLayout({ children }) {
       <NavbarGeneral />
       <main className="flex-grow">{children}</main>
       <FooterGeneral />
+      <FlotadorDonacion />
     </div>
   );
 }
