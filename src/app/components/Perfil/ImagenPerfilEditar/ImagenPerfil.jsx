@@ -1,7 +1,9 @@
 'use client'
 import React, { useRef, useState } from "react";
+
+import Boton from "../General/Boton";
 import ImagenCircular from "./ImagenCircular";
-import Boton from "./Boton";
+
 
 
 function ImagenPerfil() {

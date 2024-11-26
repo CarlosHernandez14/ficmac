@@ -1,47 +1,75 @@
 "use client";
-import { useState } from "react";
-import Boton from "./Boton";
-import CajaGeneral from "./CajaGeneral";
+import { useEffect, useState } from "react";
+import CajaGeneral from "../General/CajaGeneral";
+import { userById } from "@/actions/users/data";
+import { createPaciente, updatePaciente } from "@/actions/users/edit";
+import { getPacienteByIdUser } from "@/actions/users/edit";
+import { FaEdit } from "react-icons/fa";
 
 function InputEditarPerfil() {
   const [mostrarCajaGeneral, setMostrarCajaGeneral] = useState(false);
+  const [existePaciente, setExistePaciente] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [numCelular, setNumCelular] = useState("");
+  const [edad, setEdad] = useState("");
+  const [sexo, setSexo] = useState("");
 
- 
-  const [formData, setFormData] = useState({
-    nombre: "",
-    apellidos: "",
-    correo: "",
-    telefono: "",
-    edad: "",
-    sexo: "",
-  });
-const handleCajaGeneral= () => {
-  setMostrarCajaGeneral(true);
-};
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Nombre:", name);
+    console.log("Correo Electrónico:", email);
+    console.log("Teléfono:", numCelular);
+    console.log("Edad:", edad);
+    console.log("Género:", sexo);
   };
 
- const handleSubmit = async (e) => {
-   e.preventDefault();
-   // Aquí puedes manejar el envío del formulario
-   try {
-     // Suponiendo que tienes una función para guardar los datos en la base de datos
-    //  await saveToDatabase(formData);
-    //  console.log("Datos guardados:", formData);
-     setMostrarCajaGeneral(true); // Volver al componente Información Básica
-   } catch (error) {
-     console.error("Error al guardar los datos:", error);
-   }
- };
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await userById("cm3xysmy90000dyig77wbdvtd");
+      setName(user.name);
+      setEmail(user.email);
+      setNumCelular(user.num_celular);
+    };
+    const fetchExistePaciente = async () => {
+      const led = await getPacienteByIdUser("cm3xysmy90000dyig77wbdvtd");
+      setExistePaciente(led);
+    };
+    fetchUser();
+    fetchExistePaciente();
+  }, []);
+
+  const handleCajaGeneral = () => {
+    setMostrarCajaGeneral(true);
+  };
+
+  //Funcion para llamar a la API createPaciente CON EL onClick del boton
+  //Si el ExistePaciente es true llama a updatePaciente si es false llama a createPaciente
+  
+  const handleCreatePaciente = async () => {
+    const values = {
+      nombre: name,
+      email: email,
+      num_celular: numCelular,
+      edad: edad,
+      sexo: sexo,
+    };
+    if (existePaciente) {
+      const response = await updatePaciente(values);
+      console.log(response);
+    } else {
+      const response = await createPaciente(values);
+      console.log(response);
+    }
+  }
+  
 
   return (
     <div>
       {mostrarCajaGeneral ? (
         <CajaGeneral />
       ) : (
-        <div className="px-28">
+        <div>
           <div className="flex justify-center py-20">
             <img
               src="/General/logoblanco.png"
@@ -52,33 +80,15 @@ const handleCajaGeneral= () => {
           <form onSubmit={handleSubmit} className="space-y-4 px-40 ">
             <div>
               <label className="block text-xl font-medium text-black">
-                Nombre
+                Nombre completo
               </label>
               <input
                 type="text"
-                name="nombre"
-                // value={" "formData.nombre}
-                value={"  Juan Perez"}
-                onChange={handleChange}
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
-                required
-                pattern="[A-Za-z\s]+"
-                title="Solo se permiten letras y espacios"
-              />
-            </div>
-            <div>
-              <label className="block text-xl font-medium text-black">
-                Apellidos
-              </label>
-              <input
-                type="text"
-                name="apellidos"
-                value={formData.apellidos}
-                onChange={handleChange}
-                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
-         focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
-                required
                 pattern="[A-Za-z\s]+"
                 title="Solo se permiten letras y espacios"
               />
@@ -89,12 +99,11 @@ const handleCajaGeneral= () => {
               </label>
               <input
                 type="email"
-                name="correo"
-                value={formData.correo}
-                onChange={handleChange}
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
-                required
                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                 title="Debe ser un correo electrónico válido"
               />
@@ -105,12 +114,11 @@ const handleCajaGeneral= () => {
               </label>
               <input
                 type="tel"
-                name="telefono"
-                value={formData.telefono}
-                onChange={handleChange}
+                name="num_celular"
+                value={numCelular}
+                onChange={(e) => setNumCelular(e.target.value)}
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
-                required
                 pattern="\d{10}"
                 title="Debe ser un número de teléfono válido de 10 dígitos"
               />
@@ -122,14 +130,10 @@ const handleCajaGeneral= () => {
               <input
                 type="number"
                 name="edad"
-                value={formData.edad}
-                onChange={handleChange}
+                value={edad}
+                onChange={(e) => setEdad(e.target.value)}
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
-                required
-                min="0"
-                max="100"
-                title="Debe ser un número válido entre 0 y 120"
               />
             </div>
             <div>
@@ -138,11 +142,10 @@ const handleCajaGeneral= () => {
               </label>
               <select
                 name="sexo"
-                value={formData.sexo}
-                onChange={handleChange}
+                value={sexo}
+                onChange={(e) => setSexo(e.target.value)}
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
-                required
               >
                 <option value="">Seleccione una opción</option>
                 <option value="femenino">Femenino</option>
@@ -159,7 +162,14 @@ const handleCajaGeneral= () => {
                   Cancelar
                 </p>
               </button>
-              <Boton texto={"Guardar"} onClick={handleSubmit} />
+              <button
+                onClick={handleCreatePaciente}
+                type="submit"
+                className="flex items-center px-10 py-2 rounded-2xl text-white bg-[#753350] shadow-lg"
+              >
+                <FaEdit className="mr-2" />
+                <p className="text-white whitespace-nowrap">Guardar</p>
+              </button>
             </div>
           </form>
         </div>

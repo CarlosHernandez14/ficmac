@@ -1,9 +1,9 @@
 "use client";
 import { FaEdit } from "react-icons/fa";
-import CajaInformacionBasica from "./CajaInformacionBasica";
+import CajaInformacionBasica from "../Basica/CajaInformacionBasica";
 import Boton from "./Boton";
 import { useState } from "react";
-import CajaEditarPerfil from "./CajaEditarPerfil";
+import CajaEditarPerfil from "../Editar/CajaEditarPerfil";
 
 function CajaInformacion() {
   const [mostrarEditarPerfil, setMostrarEditarPerfil] = useState(false);
@@ -12,11 +12,11 @@ function CajaInformacion() {
     setMostrarEditarPerfil(true);
   };
   return (
-    <div >
+    <div>
       {mostrarEditarPerfil ? (
         <CajaEditarPerfil />
       ) : (
-        <div className="w-[1000px] ">
+        <div className=" relative">
           <div className="flex justify-between items-center space-x-80 px-10 py-12">
             <div className="">
               <p className="text-[#753350] font-semibold text-2xl whitespace-nowrap">

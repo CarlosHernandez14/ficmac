@@ -75,6 +75,8 @@ CREATE TABLE "Donacion" (
 CREATE TABLE "Paciente" (
     "id" SERIAL NOT NULL,
     "nombre_completo" TEXT NOT NULL,
+    "edad" INTEGER NOT NULL,
+    "direccion" TEXT NOT NULL,
     "idUsuario" TEXT NOT NULL,
     "sexo" TEXT NOT NULL,
     "num_celular" TEXT NOT NULL,
@@ -100,6 +102,7 @@ CREATE TABLE "Medico" (
 CREATE TABLE "Publicacion_Cientifica" (
     "id" SERIAL NOT NULL,
     "idUsuario" TEXT NOT NULL,
+    "idTipoCancer" INTEGER NOT NULL,
     "titulo" TEXT NOT NULL,
     "resumen" TEXT NOT NULL,
     "fecha_publicado" DATE NOT NULL,
@@ -211,6 +214,18 @@ CREATE TABLE "solicitud_resultado" (
     CONSTRAINT "solicitud_resultado_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Documento" (
+    "id" SERIAL NOT NULL,
+    "idUsuario" TEXT,
+    "idDocumento" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "mimeType" TEXT NOT NULL,
+    "idSolicitudEstudio" INTEGER,
+
+    CONSTRAINT "Documento_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -228,9 +243,6 @@ CREATE UNIQUE INDEX "PasswordResetToken_email_token_key" ON "PasswordResetToken"
 
 -- CreateIndex
 CREATE INDEX "fk_usuario_inx" ON "Donacion"("idUsuario");
-
--- CreateIndex
-CREATE INDEX "fk_usuario_paciente_inx" ON "Paciente"("idUsuario");
 
 -- CreateIndex
 CREATE INDEX "fk_usuario_medico_inx" ON "Medico"("idUsuario");
@@ -287,6 +299,9 @@ ALTER TABLE "Paciente" ADD CONSTRAINT "fk_usuario_paciente" FOREIGN KEY ("idUsua
 ALTER TABLE "Medico" ADD CONSTRAINT "fk_usuario_medico" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Publicacion_Cientifica" ADD CONSTRAINT "fk_tipo_cancer_publicacion" FOREIGN KEY ("idTipoCancer") REFERENCES "Tipo_Cancer"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Publicacion_Cientifica" ADD CONSTRAINT "fk_usuario_publicacion" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -327,3 +342,9 @@ ALTER TABLE "solicitud_resultado" ADD CONSTRAINT "fk_tipo_cancer_solicitud_resul
 
 -- AddForeignKey
 ALTER TABLE "solicitud_resultado" ADD CONSTRAINT "fk_usuario_solicitud_resultado" FOREIGN KEY ("idMedico") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Documento" ADD CONSTRAINT "fk_solicitud_estudio_documento" FOREIGN KEY ("idSolicitudEstudio") REFERENCES "Solicitud_Estudio"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Documento" ADD CONSTRAINT "fk_usuario_documento" FOREIGN KEY ("idUsuario") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
