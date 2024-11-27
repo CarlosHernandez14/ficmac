@@ -83,24 +83,30 @@ export const updatePaciente = async (values) => {
         idUsuario: session.user.id,
       },
     });
-    const [response, pacResponse] = await db.$transaction([
-      db.User.update({
-        where: {
-          id: session.user.id,
-        },
-        data: updateData,
-      }),
-      db.Paciente.update({
-        where: {
-          id: paciente.id,
-        },
-        data: updatePac,
-      }),
-    ]);
-    if (response && pacResponse) {
-      console.log(pacResponse);
-      return { success: "Usuario actualizado" };
+    if(paciente){
+      const [response, pacResponse] = await db.$transaction([
+        db.User.update({
+          where: {
+            id: session.user.id,
+          },
+          data: updateData,
+        }),
+        db.Paciente.update({
+          where: {
+            id: paciente.id,
+          },
+          data: updatePac,
+        }),
+      ]);
+      if (response && pacResponse) {
+        console.log(pacResponse);
+        return { success: "Usuario actualizado" };
+      }
     }
+    else{
+      createPaciente(values)
+    }
+    
   } catch (ex) {
     console.log(ex);
     return { error: ex.message };
