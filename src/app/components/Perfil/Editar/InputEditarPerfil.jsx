@@ -56,13 +56,8 @@ function InputEditarPerfil() {
       edad: edad,
       sexo: sexo,
     };
-    if (existePaciente) {
-      const response = await updatePaciente(values);
-      console.log("paciente editado",response);
-    } else {
-      const response = await createPaciente(values);
-      console.log("paciente creado",response);
-    }
+    const response = await updatePaciente(values);
+    console.log("paciente editado",response);
   }
   
 

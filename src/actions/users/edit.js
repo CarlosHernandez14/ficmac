@@ -21,25 +21,20 @@ export const getPacienteByIdUser = async (id) => {
 
 //Función para actualizar los datos de un paciente
 export const updatePaciente = async (values) => {
-  const session = await auth();
+  const session = await auth()
+  const user = await getUser()
   const updateData = {};
   const updatePac = {};
-  if (values.name) {
-    const nameContainsNumbers = /\d/.test(values.name);
-    updateData.name = values.name;
-    updatePac.nombre_completo = values.name;
+  if (values.nombre) {
+    const nameContainsNumbers = /\d/.test(values.nombre)
     if (nameContainsNumbers) {
-      return { error: "El nombre no puede contener números" };
+      return { error: "El nombre no puede contener números" }
     }
   }
-  if (values.password) {
-    if (values.password.length < 6) {
-      return { error: "La contraseña debe tener al menos 6 caracteres" };
-    }
-    const hash = await bcrypt.hash(values.password, 10);
-    updateData.password = hash;
+  if(user.name!= values.nombre){
+    updateData.name = values.nombre
+    updatePac.nombre_completo = values.nombre
   }
-
   if (values.num_celular) {
     if (values.num_celular.length < 10) {
       return { error: "El número de celular debe tener al menos 10 dígitos" };
@@ -51,17 +46,12 @@ export const updatePaciente = async (values) => {
     if (!numeroCelularEsNumero) {
       return { error: "El número de celular debe contener solo números" };
     }
-    updateData.num_celular = values.num_celular;
   }
-  if (values.fecha_nac) {
-    updatePac.edad =
-      new Date().getFullYear() - new Date(values.fecha_nac).getFullYear();
-    console.log(updatePac.edad);
+  if(user.num_celular!= values.num_celular){
+    updateData.num_celular = values.num_celular
+    updatePac.num_celular = values.num_celular
   }
-  if (values.sexo) {
-    updatePac.sexo = values.sexo;
-  }
-  if (values.email) {
+  if (user.email != values.email) {
     updateData.email = values.email;
     try {
       db.User.update({
@@ -84,6 +74,12 @@ export const updatePaciente = async (values) => {
       },
     });
     if(paciente){
+      if(paciente.edad!= values.edad){
+        updatePac.edad = parseInt(values.edad)
+      }
+      if(paciente.sexo!= values.sexo){
+        updatePac.sexo = values.sexo
+      }
       const [response, pacResponse] = await db.$transaction([
         db.User.update({
           where: {
@@ -104,6 +100,17 @@ export const updatePaciente = async (values) => {
       }
     }
     else{
+      try{
+        await db.User.update({
+          where: {
+            id: session.user.id,
+          },
+          data: updateData
+        })
+      }catch(ex){
+        console.log(ex);
+        return { error: ex.message}
+      }
       createPaciente(values)
     }
     
