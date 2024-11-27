@@ -32,8 +32,10 @@ function InputEditarPerfil() {
       setNumCelular(user.num_celular);
     };
     const fetchExistePaciente = async () => {
-      const led = await getPacienteByIdUser("cm3xysmy90000dyig77wbdvtd");
+      const user = await getUser();
+      const led = await getPacienteByIdUser(user.id);
       setExistePaciente(led);
+      console.log("existe paciente", led);
     };
     fetchUser();
     fetchExistePaciente();
@@ -56,10 +58,10 @@ function InputEditarPerfil() {
     };
     if (existePaciente) {
       const response = await updatePaciente(values);
-      console.log(response);
+      console.log("paciente editado",response);
     } else {
       const response = await createPaciente(values);
-      console.log(response);
+      console.log("paciente creado",response);
     }
   }
   

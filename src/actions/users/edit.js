@@ -131,7 +131,7 @@ export const createPaciente = async (values) => {
     });
     return {
       OK: true,
-      message: "Paciente creado",
+      message: "Paciente creado en edit",
       data: paciente,
     };
   }catch(error){
