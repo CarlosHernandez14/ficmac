@@ -2,6 +2,7 @@ import Image from "next/image";
 import MailBtn from "./components/MailBtn-Test";
 import { signOut } from "@/auth";
 import PaypalBtn from "./components/paypal/paypal-btn";
+import UploadImage from "./components/tests/upload";
 
 export default function Home() {
 
@@ -17,6 +18,7 @@ export default function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <button onClick={handleLogout}>Logout</button>
         <PaypalBtn />
+        <UploadImage />
         <Image
           className="dark:invert"
           src="/next.svg"
