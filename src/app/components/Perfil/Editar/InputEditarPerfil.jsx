@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import CajaGeneral from "../General/CajaGeneral";
 import { userById } from "@/actions/users/data";
-import { createPaciente, updatePaciente } from "@/actions/users/edit";
+import { createPaciente, getUser, updatePaciente } from "@/actions/users/edit";
 import { getPacienteByIdUser } from "@/actions/users/edit";
 import { FaEdit } from "react-icons/fa";
 
@@ -26,7 +26,7 @@ function InputEditarPerfil() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await userById("cm3xysmy90000dyig77wbdvtd");
+      const user = await getUser();
       setName(user.name);
       setEmail(user.email);
       setNumCelular(user.num_celular);

@@ -23,6 +23,7 @@ export const userByEmail = async (email) => {
  * @returns user
  */
 export const userById = async (id) => {
+    //const foundUser = await auth() 
     const user = await db.User.findUnique({
         where:{
             id:id

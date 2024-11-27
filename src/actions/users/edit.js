@@ -143,3 +143,13 @@ export const createPaciente = async (values) => {
     };
   }
 };
+
+export const getUser = async () => {
+  const session = await auth();
+  const user = await db.User.findUnique({
+    where: {
+      id: session.user.id,
+    },
+  });
+  return user;
+}
