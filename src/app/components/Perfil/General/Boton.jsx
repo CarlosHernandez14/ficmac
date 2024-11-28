@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
 function Boton({ onClick, texto }) {
   return (
