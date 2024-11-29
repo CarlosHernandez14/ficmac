@@ -1,23 +1,52 @@
 'use client'
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
+
+import Boton from "../General/Boton";
 import ImagenCircular from "./ImagenCircular";
-import Boton from "./Boton";
+import { uploadImage } from "@/actions/cloudinary/cloudinary.actions";
+import { getPaciente, updateImagePaciente } from "@/actions/users/edit";
+
 
 
 function ImagenPerfil() {
    const [imageSrc, setImageSrc] = useState("/ruta/a/tu/imagen.jpg");
    const fileInputRef = useRef(null);
+   const [isPending, startTransition] = useTransition()
+
+   const uploadImage = async (form) => {
+      const paciente = await getPaciente()
+      if(paciente.imagen_url){
+        setImageSrc(paciente.imagen_url)
+      }
+   }
+
+   useEffect(() => {
+      uploadImage()
+   },[])
 
    const handleButtonClick = () => {
      fileInputRef.current.click();
    };
 
-   const handleFileChange = (e) => {
+   const handleFileChange = async (e) => {
      const file = e.target.files[0];
      if (file) {
        const reader = new FileReader();
-       reader.onloadend = () => {
-         setImageSrc(reader.result);
+       const form = new FormData();
+        form.append("files", file);
+       startTransition(() => {
+        updateImagePaciente(form).then((response) => {
+          
+          if (response.OK) {
+            setImageSrc(response.data[0].secure_url)
+          } else {
+            console.log("Error al actualizar la imagen");
+          }
+        }).catch((error) => {
+          console.log(error);
+        })
+      })
+       reader.onloadend = () => {  
        };
        reader.readAsDataURL(file);
      }
@@ -42,7 +71,7 @@ function ImagenPerfil() {
         />
       </div>
       <div className=" py-4">
-        <ImagenCircular src={imageSrc} />
+        <ImagenCircular imageSrc={imageSrc} />
       </div>
       <div className="flex justify-center py-5">
         <Boton texto={"Editar"} onClick={handleButtonClick} />

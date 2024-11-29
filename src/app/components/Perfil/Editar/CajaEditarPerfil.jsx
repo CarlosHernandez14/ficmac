@@ -1,4 +1,4 @@
-import InputEditarPerfil from "@/app/components/Perfil/InputEditarPerfil";
+import InputEditarPerfil from "@/app/components/Perfil/Editar/InputEditarPerfil";
 
 function CajaEditarPerfil() {
   return (

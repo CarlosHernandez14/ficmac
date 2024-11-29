@@ -1,5 +1,5 @@
 import React from "react";
-import LineaDivisora from "./LineaDivisora";
+
 
 function InformacionBasica() {
   return (
