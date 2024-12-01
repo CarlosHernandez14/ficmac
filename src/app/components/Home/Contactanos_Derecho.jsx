@@ -2,6 +2,10 @@
 import React, { useState } from "react";
 
 const Contactanos_Derecho = () => {
+//Este componente es el form de contacto la parte derecha donde salen los datos como nombre, apellido, municipio
+//**En tipo de persona preguntar si si es Paciente y doctor 
+
+
   const municipios = [
   "Acuitzio",
   "Aguililla",
@@ -259,8 +263,8 @@ const Contactanos_Derecho = () => {
             className="shadow-md appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
             <option value="">Tipo de persona*</option>
-            <option value="Fisica">Persona Física</option>
-            <option value="Moral">Persona Moral</option>
+            <option value="Fisica">Paciente</option>
+            <option value="Moral">Doctor</option>
           </select>
         </div>
 

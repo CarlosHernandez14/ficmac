@@ -13,17 +13,8 @@ const PyR = () => {
 
       <div className="relative z-10">
         <Preguntas
-          pregunta={" 1.-¿En qué consisten estas pruebas?"}
-          respuesta={
-            "Por medio de biopsias (sólidas o líquidas) se puede obtener ADN, ARN,proteínas u otras moléculas que expresa el tumor, y que le permitirána su médico tratante establecer con mayor precisión cuál es la mejor terapia para su tipo de cáncer en particular."
-          }
         />
-        <Preguntas
-          pregunta={" 1.-¿En qué consisten estas pruebas?"}
-          respuesta={
-            "Por io de biopsias (sólidas o líquidas) se puede obtener ADN, ARN,proteínas u otras moléculas que expresa el tumor, y que le permitirána su médico tratante establecer con mayor precisión cuál es la mejor terapia para su tipo de cáncer en particular."
-          }
-        />
+       
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Contactanos_Izquierdo = () => {
+  //Este componente simplemente muestra el texto situado de lado izq, es decir a lado del forms
   return (
   <div className='m-16'>
     <h1 className='text-[#367B99] font-bold text-xl '>
