@@ -78,15 +78,16 @@ model Donacion {
 }
 
 model Paciente {
-  id              Int    @id @default(autoincrement())
+  id              Int     @id @default(autoincrement())
   nombre_completo String
   edad            Int
   direccion       String
   idUsuario       String
   sexo            String
   num_celular     String
-  imagen_path     String
-  usuario         User   @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_paciente")
+  imagen_id       String?
+  imagen_url      String?
+  usuario         User    @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_paciente")
 }
 
 model Medico {
@@ -134,6 +135,7 @@ model Tipo_Cancer {
   nombre                 String
   descripcion            String
   path_imagen            String
+  Medicamento            Medicamento[]
   Post                   Post[]
   Publicacion_Cientifica Publicacion_Cientifica[]
   Tipo_Cancer_Sintoma    Tipo_Cancer_Sintoma[]
@@ -241,6 +243,15 @@ model Documento {
   idSolicitudEstudio Int?
   solicitud_estudio  Solicitud_Estudio? @relation(fields: [idSolicitudEstudio], references: [id], onDelete: Cascade, map: "fk_solicitud_estudio_documento")
   usuario            User?              @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_documento")
+}
+
+model Medicamento {
+  id                  Int         @id @default(autoincrement())
+  nombre              String
+  descripcion         String
+  efectos_secundarios String
+  idTipoCancer        Int
+  Tipo_Cancer         Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_medicamento")
 }
 
 enum TipoEstudio {
