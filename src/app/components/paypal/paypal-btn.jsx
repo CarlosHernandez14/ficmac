@@ -1,12 +1,17 @@
 "use client";
 import React from "react";
-import { PayPalScriptProvider, PayPalButtons, FUNDING } from "@paypal/react-paypal-js";
+import {
+  PayPalScriptProvider,
+  PayPalButtons,
+  FUNDING,
+} from "@paypal/react-paypal-js";
 import { createPaypalOrder } from "@/actions/payments/checkout.actions";
+import { createDonacion } from "@/actions/payments/paypal.actions";
 
-const PaypalBtn = () => {
+const PaypalBtn = ({ valor, descripcion, onApprove }) => {
   // Poder crear una orden de compra
   const handleCreateOrder = async () => {
-    const response = await createPaypalOrder();
+    const response = await createPaypalOrder({ valor, descripcion });
     if (response.OK) {
       // Order id
       console.log("ORDER ID: ", response.orderID);
@@ -51,10 +56,14 @@ const PaypalBtn = () => {
           fundingSource={FUNDING.PAYPAL}
           createOrder={handleCreateOrder}
           onApprove={(data, actions) => {
+            //Llamada a crear la donación
+            createDonacion(valor, "cm3usohw20000121ocf73yyvs");
             // Data de la orden de compra
             console.log("Order data: ", data);
             // Captura la orden de compra
-            actions.order.capture();
+            return actions.order.capture().then(() => {
+              onApprove();
+            });
           }}
           onCancel={(data) => {
             // Recibe el orderID de la orden cancelada

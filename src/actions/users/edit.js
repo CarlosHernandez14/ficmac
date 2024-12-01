@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import bcrypt from "bcryptjs";
 import { generateVerificationToken } from "@/libs/tokens";
 import { enviarCorreoConfirmacion } from "../mail/confirmation";
+import { uploadImage } from "../cloudinary/cloudinary.actions";
 
 //Obtener pacientes byIdUser (Si no existe, retornar false y si si retornar true)
 export const getPacienteByIdUser = async (id) => {
@@ -133,7 +134,51 @@ export const updatePaciente = async (values) => {
 //Función para actualizar la imagen de un paciente
 export const updateImagePaciente = async (values) => {
   const session = await auth();
-  //TODO: Subir imagen a cloudinary y agreagar lógica para actualizar la imagen del paciente
+  const paciente = await db.Paciente.findFirst({
+    where: {
+      idUsuario: session.user.id,
+    },
+  });
+  if(paciente){
+    try {
+      const res = await uploadImage(values)
+      if(res.OK){
+        console.log("Entre");
+        await db.Paciente.update({
+          where: {
+            id: paciente.id,
+          },
+          data: {
+            imagen_url: res.data[0].secure_url,
+            imagen_id: res.data[0].public_id,
+          },
+        });
+        console.log(res.data);
+        return {OK: true, success: "Imagen actualizada", data: res.data };
+      }else {
+        return {OK:false,  error: res.error };
+      }
+    } catch (error) {
+      return { error: error.message };
+    }
+  }else{
+    return { error: "No existe el paciente" };
+  }
+};
+
+//Función para obtener el paciente de la sesión
+export const getPaciente = async () => {
+  const session = await auth();
+  try {
+    const paciente = await db.Paciente.findFirst({
+      where: {
+        idUsuario: session.user.id,
+      },
+    });
+    return paciente;
+  } catch (error) {
+    return { error: error.message };
+  }
 };
 
 //Funcion para crear un paciente await prisma.Paciente.create
@@ -166,6 +211,7 @@ export const createPaciente = async (values) => {
   }
 };
 
+//Funcion para obtener un usuario
 export const getUser = async () => {
   const session = await auth();
   const user = await db.User.findUnique({

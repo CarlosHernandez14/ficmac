@@ -16,20 +16,18 @@ function InformacionEstudio({ resultado }) {
         <p className="text-xl mr-40">
           {resultado.solicitud_estudio.usuario.Paciente[0].nombre_completo}
         </p>
-        <p className="text-xl ml-40">*edad*</p>
+        <p className="text-xl ml-40">{resultado.solicitud_estudio.usuario.Paciente[0].nombre_completo}</p>
       </div>
       <hr className="w-full my-1 border-t-1 border-black" />
       <div className="flex justify-between">
         <div>
           <p className="text-sm">
-            Genero: {resultado.solicitud_estudio.usuario.Paciente[0].sexo}
+            Genero: {resultado.solicitud_estudio.usuario.Paciente[0].edad}
           </p>
           <p className="text-sm">
             Celular: {resultado.solicitud_estudio.usuario.num_celular}
           </p>
-          <p className="text-sm">Ciudad: *CIUDAD*</p>
-          <p className="text-sm">Dirección: *DIRECCION*</p>
-          <p className="text-sm">Nacionalidad: *NACIONALIDAD*</p>
+          <p className="text-sm">Dirección: {resultado.solicitud_estudio.usuario.Paciente[0].direccion}</p>
           <p className="text-sm">
             Correo: {resultado.solicitud_estudio.usuario.email}
           </p>

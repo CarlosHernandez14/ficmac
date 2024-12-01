@@ -22,7 +22,7 @@ function BolaSintoma({nombre, descripcion}) {
         onClick={handleTogglePopup}
       >
         <div className="h-20 w-20 rounded-full flex justify-center items-center">
-          <p className='text-center text-[#367B99]'>{nombre}</p>
+          <p className='text-center text-[#367B99] text-sm'>{nombre}</p>
         </div>
       </motion.div>
 

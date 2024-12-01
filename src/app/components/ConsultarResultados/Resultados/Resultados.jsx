@@ -11,7 +11,7 @@ function Resultados() {
   const getInfoResultados = async () => {
     startAction(() => {
       console.log("Getting resultados");
-      getResultadosByMedicoId("cm3mk1lwx00009jo40m196ezt").then((response) => {
+      getResultadosByMedicoId("cm3usohw20000121ocf73yyvs").then((response) => {
         if (response.OK === false) {
           console.log(response.error);
         }

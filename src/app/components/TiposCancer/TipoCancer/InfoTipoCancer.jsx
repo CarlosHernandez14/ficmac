@@ -17,8 +17,8 @@ function InfoTipoCancer({ img, descripcion }) {
         sm:w-64 md:w-72 lg:w-80 xl:w-80 2xl:w-96
         sm:h-64 md:h-72 lg:h-80 xl:h-80 2xl:h-96 
         rounded-md"
-        src={img}
-        alt="Cáncer de mama"
+        src={`/TiposCancer${img}`}
+        alt="Cáncer"
       />
       <InfoCancer descripcion={descripcion} />
     </motion.div>
