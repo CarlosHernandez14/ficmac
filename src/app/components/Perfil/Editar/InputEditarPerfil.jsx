@@ -1,27 +1,31 @@
 "use client";
 import { useEffect, useState } from "react";
 import CajaGeneral from "../General/CajaGeneral";
-import { userById } from "@/actions/users/data";
-import { createPaciente, getUser, updatePaciente } from "@/actions/users/edit";
+import { FaCheck } from "react-icons/fa";
+import {
+  createPaciente,
+  getPacienteDataByIdUser,
+  getUser,
+  updatePaciente,
+} from "@/actions/users/edit";
 import { getPacienteByIdUser } from "@/actions/users/edit";
 import { FaEdit } from "react-icons/fa";
 
 function InputEditarPerfil() {
   const [mostrarCajaGeneral, setMostrarCajaGeneral] = useState(false);
   const [existePaciente, setExistePaciente] = useState(false);
+  const [paciente, setPaciente] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [numCelular, setNumCelular] = useState("");
   const [edad, setEdad] = useState("");
   const [sexo, setSexo] = useState("");
+  const [direccion, setdireccion] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Nombre:", name);
-    console.log("Correo Electrónico:", email);
-    console.log("Teléfono:", numCelular);
-    console.log("Edad:", edad);
-    console.log("Género:", sexo);
+    setSuccessMessage("Usuario editado Correctamente");
   };
 
   useEffect(() => {
@@ -30,12 +34,20 @@ function InputEditarPerfil() {
       setName(user.name);
       setEmail(user.email);
       setNumCelular(user.num_celular);
+
+      const pacienteData = await getPacienteDataByIdUser(user.id);
+
+      if (pacienteData) {
+        setPaciente(pacienteData);
+        setEdad(pacienteData.edad);
+        setSexo(pacienteData.sexo);
+        setdireccion(pacienteData.direccion);
+      }
     };
     const fetchExistePaciente = async () => {
       const user = await getUser();
       const led = await getPacienteByIdUser(user.id);
       setExistePaciente(led);
-      console.log("existe paciente", led);
     };
     fetchUser();
     fetchExistePaciente();
@@ -45,9 +57,6 @@ function InputEditarPerfil() {
     setMostrarCajaGeneral(true);
   };
 
-  //Funcion para llamar a la API createPaciente CON EL onClick del boton
-  //Si el ExistePaciente es true llama a updatePaciente si es false llama a createPaciente
-  
   const handleCreatePaciente = async () => {
     const values = {
       nombre: name,
@@ -55,11 +64,18 @@ function InputEditarPerfil() {
       num_celular: numCelular,
       edad: edad,
       sexo: sexo,
+      direccion: direccion,
     };
-    const response = await updatePaciente(values);
-    console.log("paciente editado",response);
-  }
-  
+
+    console.log("Paciente", values);
+
+    if (existePaciente) {
+      const response = await updatePaciente(values);
+    } else {
+      const response = await createPaciente(values);
+    }
+    setMostrarCajaGeneral(true);
+  };
 
   return (
     <div>
@@ -150,6 +166,19 @@ function InputEditarPerfil() {
                 <option value="otro">Otro</option>
               </select>
             </div>
+            <div>
+              <label className="block text-xl font-medium text-black">
+                Dirección
+              </label>
+              <input
+                type="text"
+                name="direccion"
+                value={direccion}
+                onChange={(e) => setName(e.target.value)}
+                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
+         focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+              />
+            </div>
             <div className="flex justify-between py-8 space-x-32">
               <button
                 onClick={handleCajaGeneral}
@@ -169,6 +198,12 @@ function InputEditarPerfil() {
               </button>
             </div>
           </form>
+          {successMessage && (
+            <div className="mt-4 text-[#753350] font-bold flex justify-center items-center">
+              <FaCheck className="mr-2 text-xl" />
+              <span>{successMessage}</span>
+            </div>
+          )}
         </div>
       )}
     </div>
