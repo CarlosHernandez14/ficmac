@@ -10,7 +10,7 @@ const Principal = () => {
   const slides = [
     {
       imagen: "/Home/Carrusel_vista_1.jpg",
-      enlace:"/Usuarios/Home/1",
+      enlace:"/1",
       texto:
         "En Ontec, creemos en un futuro donde cada tratamiento contra el cáncer sea una oportunidad para vivir plenamente.",
       texto2:
@@ -25,6 +25,7 @@ const Principal = () => {
     {
       imagen: "/Home/Carrusel_vista_2.jpg",
       texto: "Tratamientos con propósito",
+      enlace:"/2",
       texto2:
         "Desarrolamos innovación para dar esperanza a quienes luchan contra el cáncer.",
       colorDegradado: "#367B99", // Color degradado
