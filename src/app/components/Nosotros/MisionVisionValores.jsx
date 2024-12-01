@@ -1,6 +1,7 @@
-"use client";
-import Image from "next/image";
-import React, { useState } from "react";
+"use client"
+import Image from "next/image"
+import React, { useRef, useState } from "react"
+import { motion, useInView } from "framer-motion"
 
 export const MisionVisionValores = () => {
   const [buttonSelected, setButtonSelected] = useState("Mision");
@@ -8,6 +9,8 @@ export const MisionVisionValores = () => {
     "Implementamos técnicas innovadoras para el análisis molecular en muestras de pacientes con cáncer, facilitando información confiable al cuerpo médico que le permite identificar el pronóstico y el tratamiento de la enfermedad con mayor precisión."
   );
   const [image, setImage] = useState("/nosotros/mision_valores.png");
+  const sectionRef = useRef(null); // Referencia para la detección
+  const isInView = useInView(sectionRef, { once: true });
 
   const handleClick = (button) => {
     setButtonSelected(button);
@@ -60,53 +63,51 @@ export const MisionVisionValores = () => {
             Valores
           </button>
         </div>
-        {buttonSelected != "Valores" && (
-          <div className="flex justify-center items-center h-[70%]">
+        {buttonSelected !== "Valores" && (
+          <motion.div
+            key={buttonSelected}
+            ref={sectionRef}
+            className="flex justify-center items-center h-[70%]"
+            initial={{ opacity: 0, y: 50 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
             <p className="text-white pt-10 text-xl pl-10">{text}</p>
-          </div>
+          </motion.div>
         )}
         {buttonSelected == "Valores" && (
-          <div className="flex flex-wrap pl-10 gap-6 justify-center items-center pb-10 pt-10">
+          <div
+            className="flex flex-wrap pl-10 gap-6 justify-center items-center pb-10 pt-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             {[
-              {
-                src: "/nosotros/confiabilidad_icon.png",
-                label: "Confiabilidad",
-              },
-              {
-                src: "/nosotros/liderazgo_icon.png",
-                label: "Liderazgo y experiencia",
-              },
-              {
-                src: "/nosotros/transparencia_icon.png",
-                label: "Transparencia",
-              },
+              { src: "/nosotros/confiabilidad_icon.png", label: "Confiabilidad" },
+              { src: "/nosotros/liderazgo_icon.png", label: "Liderazgo y experiencia" },
+              { src: "/nosotros/transparencia_icon.png", label: "Transparencia" },
               { src: "/nosotros/oportunidad_icon.png", label: "Oportunidad" },
               { src: "/nosotros/calidez_icon.png", label: "Calidad y empatía" },
-              {
-                src: "/nosotros/productividad_icon.png",
-                label: "Productividad y mejora continua",
-              },
+              { src: "/nosotros/productividad_icon.png", label: "Productividad y mejora continua" },
               { src: "/nosotros/pasion_icon.png", label: "Pasión" },
-              { src: "", label: "Innovación" }, // Ejemplo para innovación sin imagen
+              { src: "/nosotros/innovation_icon.png", label: "Innovación" },
             ].map((item, index) => (
-              <div
+              <motion.div
                 key={index}
                 className="flex items-center gap-4 w-56 p-4 rounded-xl"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: index * 0.1 }}
               >
                 <div className="w-20 h-20 flex justify-center items-center bg-[#753350] rounded-lg">
-                  {item.src ? (
-                    <Image
-                      src={item.src}
-                      height={60}
-                      width={60}
-                      alt={item.label}
-                    />
-                  ) : null}
+                  {item.src && (
+                    <Image src={item.src} height={60} width={60} alt={item.label} />
+                  )}
                 </div>
                 <div className="w-24">
                   <p className="text-white text-lg">{item.label}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}

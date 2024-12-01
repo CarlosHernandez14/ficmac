@@ -1,8 +1,12 @@
 "use client"
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import {inView, motion, useInView} from "framer-motion";
 
 export const TimeLine = () => {
+
+    const sectionRef = useRef(null); // Referencia para la detección
+    const isInView = useInView(sectionRef, { once: true });
 
     const [imageSrcs, setImageSrcs] = useState({
         img1: "/nosotros/arrow_1.png",
@@ -103,19 +107,35 @@ export const TimeLine = () => {
 
   return (
     <div className="m-10 flex gap-10 shadow-2xl rounded-2xl shadow-[#00000065]">
-      <Image
-        src={image}
-        width={300}
-        height={300}
-        alt="timelineImage"
-        className="h-full object-cover"
-      />
+      <motion.div
+        key={text}
+        ref={sectionRef}
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={isInView ? { scale: 1, opacity: 1 }:{}}
+        transition={{ duration: 0.3}}
+      >
+        <Image
+          src={image}
+          width={300}
+          height={300}
+          alt="timelineImage"
+          className="h-full object-cover"
+        />
+      </motion.div>
       <div className="flex flex-col items-center w-full pr-5">
-        <h1 className="text-center text-4xl font-bold text-black pb-2 pt-5">{year}</h1>
+        <motion.h1 className="text-center text-4xl font-bold text-black pb-2 pt-5"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={isInView ? { scale: 1, opacity: 1 }:{}}
+          transition={{ duration: 0.3}}
+        >{year}</motion.h1>
         <div className="h-[2px] w-full bg-[#753350]" />
-        <p className="pt-5 pb-5 text-xl">
+        <motion.p className="pt-5 pb-5 text-xl" 
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={isInView ? { scale: 1, opacity: 1 }:{}}
+          transition={{ duration: 0.3}}
+        >
           {text}
-        </p>
+        </motion.p>
         <div className="flex justify-between flex-grow items-end pb-5">
             <h3 className="text-2xl font-bold pr-4">2008</h3>
             <Image onMouseEnter={() => handleMouseEnter('img1')} onMouseLeave={() => handleMouseLeave('img1')} onClick={() => handleClick('img1')}
