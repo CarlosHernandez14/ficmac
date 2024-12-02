@@ -69,7 +69,7 @@ export default function Forum() {
 
 
   return (
-    <div className="w-full min-h-screen bg-white flex p-10 justify-between">
+    <div className="relative w-full min-h-screen bg-white flex p-10 justify-between">
 
       <div className="absolute inset-0">
         <Image
