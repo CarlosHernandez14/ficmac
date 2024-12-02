@@ -1,9 +1,13 @@
 "use client"
 import { useState, useEffect } from "react";
 import Image from 'next/image';
+
 import PostCard from "@/app/components/Foro/PostCard";
+import ModalNewPost from "@/app/components/Foro/ModalNewPost";
+
 import { getPosts } from "@/actions/foro/post.actions";
 import { getTiposCancer } from "@/actions/tipos_cancer/tiposCancer";
+import { createPost } from "@/actions/foro/post.actions";
 
 export default function Forum() {
 
@@ -62,10 +66,24 @@ export default function Forum() {
   };
 
   // Filtrar publicaciones según la categoría seleccionada
-  const filteredPosts = selectedCategory
-  ? posts.filter((post) => post.Tipo_Cancer?.nombre === selectedCategory)
-  : posts;
+  const filteredPosts = selectedCategory ? posts.filter((post) => post.Tipo_Cancer?.nombre === selectedCategory) : posts;
 
+  // Crear post
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCreatePost = async (newPost) => {
+    try {
+      const response = await createPost(newPost);
+      if (response.OK) {
+        alert("Publicación creada exitosamente");
+        setShowModal(false);
+      } else {
+        alert(response.message);
+      }
+    } catch (error) {
+      alert("Error al crear la publicación");
+    }
+  };
 
 
   return (
@@ -139,7 +157,12 @@ export default function Forum() {
 
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-[#753350]">Mis Posts</h3>
-            <button className="text-sm text-[#753350] hover:underline">Ver todos</button>
+            <button
+              onClick={() => setShowModal(true)}
+              className="px-4 py-2 mr-4 bg-[#753350] text-white rounded-lg hover:bg-[#5a2530]"
+            >
+              + Crear Post
+            </button>
           </div>
 
           <div className="h-[14rem] overflow-y-scroll pr-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
@@ -155,6 +178,15 @@ export default function Forum() {
               />
             ))}
           </div>
+
+          {/* Modal */}
+          {showModal && (
+            <ModalNewPost
+              onClose={() => setShowModal(false)}
+              onSubmit={handleCreatePost}
+              categories={categories}
+            />
+          )}
 
         </div>
 

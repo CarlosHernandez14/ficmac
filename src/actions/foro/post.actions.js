@@ -1,6 +1,6 @@
 "use server"
 import {prisma as db} from "@/libs/db";
-
+import { auth } from "@/auth";
 
 // Función que se encarga de obtener las publicaciones del foro
 /* 
@@ -91,22 +91,18 @@ export const getPostById = async (id) => {
 */
 export const createPost = async (data) => {
     try {
+        const session = await auth();
+        const idUsuario = session.user.id; 
+
         // Se crea la publicación
         const publicacion = await db.Post.create({
             data: {
-                ...data,
+                titulo: data.titulo,
+                cuerpo: data.cuerpo,
+                idUsuario: idUsuario,
+                idTipoCancer: data.idTipoCancer,
                 idPostPadre: null,
-                idUsuario: {
-                    connect: {
-                        id: data.idUsuario
-                    }
-                },
-                idTipoCancer: {
-                    connect: {
-                        id: data.idTipoCancer
-                    }
-                }
-            }
+              },
         });
 
         // Se retorna la publicación creada
@@ -120,7 +116,7 @@ export const createPost = async (data) => {
         // Retornamos un objeto de error
         return {
             error: true,
-            message: "No se pudo crear la publicación"
+            message: error.message || "No se pudo crear la publicación"
         }
     }
 }
