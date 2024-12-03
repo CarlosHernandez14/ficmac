@@ -6,7 +6,7 @@ export default function UsuariosLayout({ children }) {
   return (
     <div className="flex flex-col min-h-screen">
       <NavbarGeneral />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow mt-24">{children}</main>
       <FooterGeneral />
       <FlotadorDonacion />
     </div>
