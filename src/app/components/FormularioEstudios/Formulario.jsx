@@ -89,7 +89,7 @@ const Formulario = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      router.push("/AdjuntarDocumentos"); 
+      router.push("/Usuarios/AdjuntarDocumentos"); 
     } else {
       alert("Por favor, completa todos los campos obligatorios.");
     }
