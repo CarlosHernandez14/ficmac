@@ -250,14 +250,14 @@ function NavbarGeneral() {
                     <NavbarItemGeneral
                       icon={FaEdit}
                       name="Editar perfil"
-                      href="/Usuarios/EditarPerfil"
+                      href="/Usuarios/Perfil"
                       className={
-                        isActive("/Usuarios/EditarPerfil")
+                        isActive("/Usuarios/Perfil")
                           ? "bg-[#a13c68]"
                           : "text-white"
                       }
                       onClick={() =>
-                        handleNavItemClick("/Usuarios/EditarPerfil")
+                        handleNavItemClick("/Usuarios/Perfil")
                       }
                     />
                   </li>
@@ -265,7 +265,7 @@ function NavbarGeneral() {
                     <NavbarItemGeneral
                       icon={FaSignOutAlt}
                       name="Cerrar sesión"
-                      href="#"
+                      href="/auth/login"
                       className="text-white"
                       onClick={handleLogout}
                     />
