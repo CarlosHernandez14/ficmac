@@ -9,37 +9,37 @@ async function main() {
         nombre_completo: "Juan Pérez",
         edad: 35,
         direccion: "Calle Falsa 123",
-        idUsuario: "cm3uscikc0000z6vbvh2s2xlc",
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         sexo: "Masculino",
         num_celular: "5551234567",
-        imagen_path: "imagen",
+        imagen_url: "imagen",
       },
       {
         nombre_completo: "María Gómez",
         edad: 40,
         direccion: "Avenida Siempreviva 123",
-        idUsuario: "cm3uscikc0000z6vbvh2s2xlc",
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         sexo: "Femenino",
         num_celular: "5557654321",
-        imagen_path: "imagen",
+        imagen_url: "imagen",
       },
       {
         nombre_completo: "Alejandro Gutiérrez",
         edad: 50,
         direccion: "Calle Falsa 456",
-        idUsuario: "cm3usohw20000121ocf73yyvs",
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         sexo: "Masculino",
         num_celular: "5552345678",
-        imagen_path: "imagen",
+        imagen_url: "imagen",
       },
       {
         nombre_completo: "Judith Martinez",
         edad: 28,
         direccion: "Avenida Siempreviva 456",
-        idUsuario: "cm3usohw20000121ocf73yyvs",
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         sexo: "Femenino",
         num_celular: "5559876543",
-        imagen_path: "imagen",
+        imagen_url: "imagen",
       },
     ],
   });
@@ -51,7 +51,7 @@ async function main() {
     data: [
       {
         nombre_completo: "Dr. José Gómez",
-        idUsuario: "cm3usohw20000121ocf73yyvs", // Asegúrate de que este ID de usuario ya exista
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut", // Asegúrate de que este ID de usuario ya exista
         rfc: "GOME840101ABC",
         matricula: "MED123456",
         num_celular: "5556543210",
@@ -59,7 +59,7 @@ async function main() {
       },
       {
         nombre_completo: "Dra. Ana Pérez",
-        idUsuario: "cm3usohw20000121ocf73yyvs", // Asegúrate de que este ID de usuario ya exista
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut", // Asegúrate de que este ID de usuario ya exista
         rfc: "PERA840101ABC",
         matricula: "MED654321",
         num_celular: "5554321098",
@@ -67,7 +67,7 @@ async function main() {
       },
       {
         nombre_completo: "Dr. Juan Hernández",
-        idUsuario: "cm3usohw20000121ocf73yyvs", // Asegúrate de que este ID de usuario ya exista
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut", // Asegúrate de que este ID de usuario ya exista
         rfc: "HERN840101ABC",
         matricula: "MED789012",
         num_celular: "5552109876",
@@ -75,7 +75,7 @@ async function main() {
       },
       {
         nombre_completo: "Dra. María López",
-        idUsuario: "cm3usohw20000121ocf73yyvs", // Asegúrate de que este ID de usuario ya exista
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut", // Asegúrate de que este ID de usuario ya exista
         rfc: "LOPE840101ABC",
         matricula: "MED890123",
         num_celular: "5551098765",
@@ -200,7 +200,7 @@ async function main() {
   const publicacion = await prisma.publicacion_Cientifica.createMany({
     data: [
       {
-        idUsuario: "cm3usohw20000121ocf73yyvs", // ID del usuario existente
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut", // ID del usuario existente
         idTipoCancer: 1, // ID del tipo de cáncer existente
         titulo: "Investigación sobre tratamiento de cáncer",
         fecha_publicado: new Date(),
@@ -209,7 +209,7 @@ async function main() {
         link: "https://www.cancer.gov/espanol/noticias/temas-y-relatos-blog/2021/pobreza-persistente-aumento-riesgo-morir-cancer",
       },
       {
-        idUsuario: "cm3usohw20000121ocf73yyvs", // ID del usuario existente
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut", // ID del usuario existente
         idTipoCancer: 2, // ID del tipo de cáncer existente
         titulo: "Investigación sobre tratamiento de cáncer",
         fecha_publicado: new Date(),
@@ -218,7 +218,7 @@ async function main() {
         link: "https://www.cancer.gov/espanol/noticias/temas-y-relatos-blog/2021/pobreza-persistente-aumento-riesgo-morir-cancer",
       },
       {
-        idUsuario: "cm3usohw20000121ocf73yyvs", // ID del usuario existente
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut", // ID del usuario existente
         idTipoCancer: 3, // ID del tipo de cáncer existente
         titulo: "Investigación sobre el cancer de prostata",
         fecha_publicado: new Date(),
@@ -227,7 +227,7 @@ async function main() {
         link: "https://www.cancer.gov/espanol/noticias/temas-y-relatos-blog/2021/pobreza-persistente-aumento-riesgo-morir-cancer",
       },
       {
-        idUsuario: "cm3uscikc0000z6vbvh2s2xlc", // ID del usuario existente
+        idUsuario: "cm42a1y9y0000shb6uyvhkbut", // ID del usuario existente
         idTipoCancer: 4, // ID del tipo de cáncer existente
         titulo: "Investigación sobre el cancer de colon",
         fecha_publicado: new Date(),
@@ -513,7 +513,7 @@ async function main() {
         cuerpo:
           "Me dio cancer de mama, en el pasado y lo que me sirvio fue ser paciente, mis papas me ayudaron y mi familia, se que es una lucha fuerte pero ustedes pueden",
         fecha: new Date(),
-          idUsuario: "cm3uscikc0000z6vbvh2s2xlc",
+          idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         idTipoCancer: 2,
       },
       {
@@ -521,7 +521,7 @@ async function main() {
         cuerpo:
           "Me diagnosticaron cancer de pulmon y estoy muy asustado, alguien que haya pasado por esto y me pueda dar consejos",
           fecha: new Date(),  
-          idUsuario: "cm3uscikc0000z6vbvh2s2xlc",
+          idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         idTipoCancer: 1,
       },
       {
@@ -529,7 +529,7 @@ async function main() {
         cuerpo:
           "Me diagnosticaron cancer de prostata y estoy muy asustado, alguien que haya pasado por esto y me pueda dar consejos",
           fecha: new Date(),
-          idUsuario: "cm3uscikc0000z6vbvh2s2xlc",
+          idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         idTipoCancer: 3,
       },
       {
@@ -537,7 +537,7 @@ async function main() {
         cuerpo:
           "Me diagnosticaron cancer de colon y estoy muy asustado, alguien que haya pasado por esto y me pueda dar consejos",
           fecha: new Date(),
-          idUsuario: "cm3uscikc0000z6vbvh2s2xlc",
+          idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         idTipoCancer: 4,
       },
       {
@@ -545,7 +545,7 @@ async function main() {
         cuerpo:
           "Me diagnosticaron cancer de mama y estoy muy asustado, alguien que haya pasado por esto y me pueda dar consejos",
           fecha: new Date(),
-          idUsuario: "cm3uscikc0000z6vbvh2s2xlc",
+          idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         idTipoCancer: 2,
       },
       {
@@ -553,7 +553,7 @@ async function main() {
         cuerpo:
           "Me diagnosticaron cancer de pulmon y estoy muy asustado, alguien que haya pasado por esto y me pueda dar consejos",
           fecha: new Date(),
-          idUsuario: "cm3uscikc0000z6vbvh2s2xlc",
+          idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         idTipoCancer: 1,
       },
       {
@@ -561,7 +561,7 @@ async function main() {
         cuerpo:
           "Me diagnosticaron cancer de prostata y estoy muy asustado, alguien que haya pasado por esto y me pueda dar consejos",
           fecha: new Date(),
-          idUsuario: "cm3uscikc0000z6vbvh2s2xlc",
+          idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         idTipoCancer: 3,
       },
       {
@@ -569,7 +569,7 @@ async function main() {
         cuerpo:
           "Me diagnosticaron cancer de colon y estoy muy asustado, alguien que haya pasado por esto y me pueda dar consejos",
           fecha: new Date(),
-          idUsuario: "cm3uscikc0000z6vbvh2s2xlc",
+          idUsuario: "cm42a1y9y0000shb6uyvhkbut",
         idTipoCancer: 4,
       },
     ],

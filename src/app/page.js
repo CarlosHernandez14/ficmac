@@ -15,14 +15,8 @@ export default function Home() {
   
 
   return (
-    <div className="">
-   
-        <button onClick={handleLogout}>Logout</button>
-        <Principal/>
-        {/* <PaypalBtn />*/}
-       {/*<UploadImage /> */}
-      
-    
+    <div>
+     Hola
     </div>
   );
 }

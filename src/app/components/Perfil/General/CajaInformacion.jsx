@@ -4,6 +4,7 @@ import CajaInformacionBasica from "../Basica/CajaInformacionBasica";
 import Boton from "./Boton";
 import { useState } from "react";
 import CajaEditarPerfil from "../Editar/CajaEditarPerfil";
+import CajaInformacionContacto from "../Contacto/CajaInformacionContacto";
 
 function CajaInformacion() {
   const [mostrarEditarPerfil, setMostrarEditarPerfil] = useState(false);
@@ -36,7 +37,7 @@ function CajaInformacion() {
             </p>
           </div>
           <div className="px-10 py-5">
-            <CajaInformacionBasica />
+            <CajaInformacionContacto />
           </div>
         </div>
       )}

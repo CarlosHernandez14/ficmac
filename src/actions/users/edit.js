@@ -20,6 +20,16 @@ export const getPacienteByIdUser = async (id) => {
   return false;
 };
 
+//Función para obtener los datos de un paciente
+export const getPacienteDataByIdUser = async (id) => {
+  const paciente = await db.Paciente.findFirst({
+    where: {
+      idUsuario: id,
+    },
+  });
+  return paciente;
+};
+
 //Función para actualizar los datos de un paciente
 export const updatePaciente = async (values) => {
   const session = await auth()
@@ -174,8 +184,8 @@ export const getPaciente = async () => {
 //Funcion para crear un paciente await prisma.Paciente.create
 export const createPaciente = async (values) => {
   const session = await auth();
-  
-  try{
+
+  try {
     const paciente = await db.Paciente.create({
       data: {
         nombre_completo: values.nombre,
@@ -184,7 +194,6 @@ export const createPaciente = async (values) => {
         sexo: values.sexo,
         num_celular: values.num_celular,
         idUsuario: session.user.id,
-        imagen_path: "foto",
       },
     });
     return {
@@ -192,7 +201,7 @@ export const createPaciente = async (values) => {
       message: "Paciente creado en edit",
       data: paciente,
     };
-  }catch(error){
+  } catch (error) {
     return {
       OK: false,
       message: "Error al crear el paciente",
