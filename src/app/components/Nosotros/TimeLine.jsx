@@ -108,7 +108,6 @@ export const TimeLine = () => {
   return (
     <div className="m-10 flex gap-10 shadow-2xl rounded-2xl shadow-[#00000065]">
       <motion.div
-        key={text}
         ref={sectionRef}
         initial={{ scale: 0.8, opacity: 0 }}
         animate={isInView ? { scale: 1, opacity: 1 }:{}}
