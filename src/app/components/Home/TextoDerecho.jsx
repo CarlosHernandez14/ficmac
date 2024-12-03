@@ -7,13 +7,11 @@ const TextoDerecho = ({titulo, descripcion, boton=""}) => {
       <h1 className="font-bold text-[#367B99] text-[40px]">
         {titulo}
       </h1>
-      <p className="text-xl text-justify mt-20">
+      <p className="text-xl font-medium text-justify mt-20">
         {descripcion}
       </p>
       <div className="w-full justify-center flex items-center">
-        <div className=" w-1/2  mt-24">
-          <ButtonRosa text={boton} />
-        </div>
+       
       </div>
     </div>
   );

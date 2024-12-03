@@ -2,6 +2,8 @@ import React from "react";
 import Check from "./Check";
 
 const CuadroAzul = () => {
+  //Este componente es la sección del cuadro azul que se encuentra en la parte inferior de la sección de cifras.
+
   return (
     <div className="w-[826px] h-[506px] rounded-[20px] bg-[#367B99] flex">
       <div className="w-1/2">
@@ -27,13 +29,16 @@ const CuadroAzul = () => {
           alt="Fondo"
           className="absolute inset-0 w-full h-full object-cover opacity-20"
         />
-       <div className="mt-36">
-        <Check texto={"Diagnóstico preciso."}/>
-       </div>
-       <Check texto={"Terapias dirigidas."}/>
-       <Check texto={"Monitorización continua del progreso."}/>
-       <Check texto={"Pronóstico y prevención avanzados Innovación en investigación y desarrollo."}/>
-        
+        <div className="mt-36">
+          <Check texto={"Diagnóstico preciso."} />
+        </div>
+        <Check texto={"Terapias dirigidas."} />
+        <Check texto={"Monitorización continua del progreso."} />
+        <Check
+          texto={
+            "Pronóstico y prevención avanzados Innovación en investigación y desarrollo."
+          }
+        />
       </div>
     </div>
   );

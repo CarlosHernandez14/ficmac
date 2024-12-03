@@ -4,7 +4,7 @@ const InformacionCarrusel = () => {
   return (
     <div className="relative p-5 h-screen">
       <img
-        src="/Home/Carrusel_vista_1.jpg"
+        src="/Home/Redireccion_Carrusel_1.jpg"
         alt="Fondo"
         className="absolute inset-0 w-full h-full object-cover"
       />
