@@ -17,7 +17,7 @@ export const medicalRoutes = [
 ]
 
 export const adminRoutes = [
-
+    "/Admin/preguntasFrecuentes"
 ]
 export const pacientRoutes = [
 
