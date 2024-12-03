@@ -85,9 +85,9 @@ model Paciente {
   idUsuario       String
   sexo            String
   num_celular     String
-  imagen_url      String?
   imagen_id       String?
-  usuario         User   @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_paciente")
+  imagen_url      String?
+  usuario         User    @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_paciente")
 }
 
 model Medico {
@@ -251,6 +251,8 @@ model Medicamento {
   descripcion         String
   efectos_secundarios String
   idTipoCancer        Int
+  id_imagen           String?
+  url_imagen          String?
   Tipo_Cancer         Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_medicamento")
 }
 

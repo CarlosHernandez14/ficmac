@@ -15,7 +15,7 @@ function ImagenPerfil() {
 
    const uploadImage = async (form) => {
       const paciente = await getPaciente()
-      if(paciente.imagen_url){
+      if(paciente && paciente.imagen_url){
         setImageSrc(paciente.imagen_url)
       }
    }
