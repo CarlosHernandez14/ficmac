@@ -3,7 +3,8 @@ export const publicRoutes = [
     "/auth/new-verification",
     "/auth/new-password",
     "/auth/forgot-password",
-    "/TiposCancer"
+    "/TiposCancer",
+    "/nosotros"
 ]
 
 export const authRoutes = [
