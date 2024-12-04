@@ -5,6 +5,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
+//El componente carrusel, es para la parte del inicio, en el cual se incluyen diferentes imagenes, cada 3 segundos cambia 
+//la imagen y abarca toda la pantalla
+
+
 const Carrusel = ({ slides }) => {
   return (
     <div className="relative h-screen">

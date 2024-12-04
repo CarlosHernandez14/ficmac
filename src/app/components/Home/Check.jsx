@@ -1,6 +1,7 @@
 import React from "react";
 
 const Check = ({texto}) => {
+  //
   return (
     <div className="flex">
       <img

@@ -10,7 +10,7 @@ const Principal = () => {
   const slides = [
     {
       imagen: "/Home/Carrusel_vista_1.jpg",
-      enlace:"/Usuarios/Home/1",
+      enlace:"/1",
       texto:
         "En Ontec, creemos en un futuro donde cada tratamiento contra el cáncer sea una oportunidad para vivir plenamente.",
       texto2:
@@ -25,8 +25,9 @@ const Principal = () => {
     {
       imagen: "/Home/Carrusel_vista_2.jpg",
       texto: "Tratamientos con propósito",
+      enlace:"/2",
       texto2:
-        "Desarrolamos innovación para dar esperanza a quienes luchan contra el cáncer.",
+        "Desarrollamos innovación para dar esperanza a quienes luchan contra el cáncer.",
       colorDegradado: "#367B99", // Color degradado
       degradadoDireccion: "to right", // Degradado de derecha a izquierda
       textoAlineacion: "izquierda", // Alineación del texto
@@ -37,6 +38,7 @@ const Principal = () => {
       imagen: "/Home/Carrusel_vista_3_Y_fondo.jpg",
       texto:
         "Ontec ofrece análisis avanzados que revolucionan la precisión en el diágnostico del cáncer, utilizando las tecnologías más innovadoras para brindar resultados confiables y personalizados.",
+        enlace:"/3",
       texto2:
         "Avanzamos contigo, transformando datos en soluciones para un tratamiento más preciso y efectivo.",
       colorDegradado: "#521C32", // Color degradado
