@@ -1,8 +1,36 @@
+"use client";
 import React from "react";
 import Cifras from "./Cifras";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.25,
+    },
+  },
+};
+const gridSquareVariants = {
+  hidden: { opacity: 0, y: 50 }, // Comienza un poco más abajo y con opacidad 0.
+  show: { opacity: 1, y: 0 }, // Anima hacia la opacidad 1 y su posición original en y.
+};
 
 const NuestrosNumeros = () => {
+  const controls = useAnimation();
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1, // El contenedor debe estar al 10% en el viewport para iniciar la animación
+  });
+
+  React.useEffect(() => {
+    if (inView) {
+      controls.start("show");
+    }
+  }, [controls, inView]);
+
   return (
     <div className="relative p-5">
       <img
@@ -18,91 +46,115 @@ const NuestrosNumeros = () => {
           Cifras qué hablan por si solas
         </h1>
 
-        <div className="flex flex-wrap gap-4 items-center justify-center mt-32">
-          <Cifras
-            imagen={"/Home/icono_pacientes.png"}
-            numeros={"22.000"}
-            texto={
-              <span>
-                Pacientes
-                <br /> <strong className="font-bold">evaluados</strong>
-              </span>
-            }
-            altImagen={"pacientes evaluados icono"}
-          />
-          <Cifras
-            imagen={"/Home/icono_pruebas.png"}
-            numeros={"92.000"}
-            texto={
-              <span>
-                Pruebas
-                <br /> <strong className="font-bold">ejecutadas</strong>
-              </span>
-            }
-            altImagen={"pruebas evaluados icono"}
-          />
-          <Cifras
-            imagen={"/Home/icono_muestras_2.png"}
-            numeros={"9.000"}
-            texto={
-              <span>
-                Muestras actuales
-                <br /> en el <strong className="font-bold">biobanco</strong>
-              </span>
-            }
-            altImagen={"muestras evaluados icono"}
-          />
-          <Cifras
-            imagen={"/Home/icono_muestras_1.png"}
-            numeros={"12.000"}
-            texto={
-              <span>
-                Muestras actuales
-                <br /> en <strong className="font-bold">seroteca</strong>
-              </span>
-            }
-            altImagen={"muestras actuales icono"}
-          />
-          <Cifras
-            imagen={"/Home/icono_articulos.png"}
-            numeros={"154"}
-            texto={
-              <span>
-                Artículos
-                <strong className="font-bold">
-                {" "} publicados
-                  <br />
-                </strong>
-                en la última década
-              </span>
-            }
-            altImagen={"artículos publicados icono"}
-          />
-          <Cifras
-            imagen={"/Home/icono_grant.png"}
-            numeros={"+ 15"}
-            texto={
-              <span>
-                Grants nacionales e<br /> internacionales
-                <strong className="font-bold"> ejecutados</strong>
-              </span>
-            }
-            altImagen={"grants ejecutados icono"}
-          />
-          <Cifras
-            imagen={"/Home/vida_icono.png"}
-            numeros={"+ 98.000"}
-            texto={
-              <span>
-                Años de vida <strong className="font-bold">ganados</strong>
-                <br /> gracias al diagnóstico
-                <br />
-                de precisión
-              </span>
-            }
-            altImagen={"años de vida ganados icono"}
-          />
-        </div>
+        <motion.div
+          ref={ref}
+          variants={containerVariants}
+          initial="hidden"
+          animate={controls}
+        >
+          <div className="flex flex-wrap gap-4 items-center justify-center mt-32">
+            <motion.div variants={gridSquareVariants}>
+              <Cifras
+                imagen={"/Home/icono_pacientes.png"}
+                numeros={"22.000"}
+                texto={
+                  <span>
+                    Pacientes
+                    <br /> <strong className="font-bold">evaluados</strong>
+                  </span>
+                }
+                altImagen={"pacientes evaluados icono"}
+              />
+            </motion.div>
+
+            <motion.div variants={gridSquareVariants}>
+              <Cifras
+                imagen={"/Home/icono_pruebas.png"}
+                numeros={"92.000"}
+                texto={
+                  <span>
+                    Pruebas
+                    <br /> <strong className="font-bold">ejecutadas</strong>
+                  </span>
+                }
+                altImagen={"pruebas evaluados icono"}
+              />
+            </motion.div>
+
+            <motion.div variants={gridSquareVariants}>
+              <Cifras
+                imagen={"/Home/icono_muestras_2.png"}
+                numeros={"9.000"}
+                texto={
+                  <span>
+                    Muestras actuales
+                    <br /> en el <strong className="font-bold">biobanco</strong>
+                  </span>
+                }
+                altImagen={"muestras evaluados icono"}
+              />
+            </motion.div>
+            <motion.div variants={gridSquareVariants}>
+              <Cifras
+                imagen={"/Home/icono_muestras_1.png"}
+                numeros={"12.000"}
+                texto={
+                  <span>
+                    Muestras actuales
+                    <br /> en <strong className="font-bold">seroteca</strong>
+                  </span>
+                }
+                altImagen={"muestras actuales icono"}
+              />
+            </motion.div>
+            <motion.div variants={gridSquareVariants}>
+              <Cifras
+                imagen={"/Home/icono_articulos.png"}
+                numeros={"154"}
+                texto={
+                  <span>
+                    Artículos
+                    <strong className="font-bold">
+                      {" "}
+                      publicados
+                      <br />
+                    </strong>
+                    en la última década
+                  </span>
+                }
+                altImagen={"artículos publicados icono"}
+              />
+            </motion.div>
+            <motion.div variants={gridSquareVariants}>
+              <Cifras
+                imagen={"/Home/icono_grant.png"}
+                numeros={"+ 15"}
+                texto={
+                  <span>
+                    Grants nacionales e<br /> internacionales
+                    <strong className="font-bold"> ejecutados</strong>
+                  </span>
+                }
+                altImagen={"grants ejecutados icono"}
+              />
+            </motion.div>
+            <motion.div variants={gridSquareVariants}>
+              <Cifras
+                imagen={"/Home/vida_icono.png"}
+                numeros={"+ 98.000"}
+                texto={
+                  <span>
+                    Años de vida <strong className="font-bold">ganados</strong>
+                    <br /> gracias al diagnóstico
+                    <br />
+                    de precisión
+                  </span>
+                }
+                altImagen={"años de vida ganados icono"}
+              />
+            </motion.div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

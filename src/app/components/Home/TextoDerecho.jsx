@@ -1,5 +1,4 @@
 import React from "react";
-import ButtonRosa from "../General/ButtonRosa";
 import Link from "next/link";
 
 const TextoDerecho = ({ titulo, descripcion, boton = "" }) => {

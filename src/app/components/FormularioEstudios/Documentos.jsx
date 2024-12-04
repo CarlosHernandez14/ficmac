@@ -67,7 +67,8 @@ const Documentos = () => {
 
 
   return (
-    <div className="flex h-screen justify-center">
+
+    <div className="flex min-h-screen  justify-center">
       <div className="p-4 flex flex-col items-center justify-start ml-10">
         <IconosAvance
           imagen={"/FormularioSolicitarEstudios/carpeta blanca.png"}

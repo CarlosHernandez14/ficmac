@@ -1,9 +1,5 @@
 import React from "react";
 
-
-
-
-
 const Cifras = ({ imagen, texto, altImagen, numeros }) => {
   return (
     //Este componente funciona para la parte de carrusel vista 1
