@@ -1,18 +1,36 @@
-import React from 'react'
+"use client"
+import { createPreguntaFrecuente } from '@/actions/admin/preguntasFrecuentes'
+import React, { useTransition } from 'react'
 
-export const Modal = ({closeModal}) => {
 
-    const handleSubmit = (e) => {
+export const Modal = ({closeModal, mode}) => {
+
+    const [isPending, startTransition] = useTransition()
+
+    const handleSubmit =async  (e) => {
         e.preventDefault()
         const pregunta = e.target.pregunta.value
         const respuesta = e.target.respuesta.value
-        console.log(pregunta, respuesta)
+        const data = {
+          pregunta,
+          respuesta
+        }
+        if(mode === "Nueva"){
+          startTransition(() => {
+            createPreguntaFrecuente(data).then(()=>{
+              window.alert("Pregunta creada")
+              closeModal()
+            })
+          })
+        }else{
+          console.log("Edito: ", pregunta, respuesta)
+        }
     }
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
             <div className='bg-[#D4D4D4] p-5 rounded-lg w-1/2'>
-              <h2 className='text-2xl font-bold mb-4 text-[#753350]'>Nueva pregunta*</h2>
+              <h2 className='text-2xl font-bold mb-4 text-[#753350]'>{mode} pregunta*</h2>
               
               <form onSubmit={handleSubmit}>
                 <div className='bg-[#753350] rounded-xl text-white font-bold'>
@@ -22,14 +40,18 @@ export const Modal = ({closeModal}) => {
                         className='bg-transparent w-full py-2 px-3 text-white placeholder-[#e2e2e2d3] focus:outline-none'
                         id='pregunta'
                         type='text'
+                        required={true}
+                        maxLength={200}
                         placeholder='Escribe aquí tu pregunta'
                     />
                     </div>
                     <div className='h-[1px] w-full bg-white'/>
                     <div className='mb-4 mt-2'>
                     <textarea
+                        required={true}
                         className='bg-transparent w-full py-2 px-3 text-white placeholder-[#e2e2e2d3] focus:outline-none'
                         id='respuesta'
+                        maxLength={600}
                         placeholder='Escribe tu respuesta'
                     />
                     </div>

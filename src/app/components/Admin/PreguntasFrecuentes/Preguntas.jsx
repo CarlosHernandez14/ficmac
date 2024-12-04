@@ -1,12 +1,15 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { FiPlusCircle } from 'react-icons/fi'
 import { Pregunta } from './Pregunta'
 import { Modal } from './Modal'
+import { getPreguntas } from '@/actions/admin/preguntasFrecuentes'
 
 export const Preguntas = () => {
 
     const [isNewQuestionOpen, setIsNewQuestionOpen] = useState(false)
+    const [preguntas, setPreguntas] = useState([])
+    const [isPending, startTransition] = useTransition()
 
     const openModal = () => {
         setIsNewQuestionOpen(true)
@@ -15,6 +18,19 @@ export const Preguntas = () => {
       const closeModal = () => {
         setIsNewQuestionOpen(false)
       }
+     
+    const readData = async () =>{
+      startTransition(() =>{
+        getPreguntas().then((res) => {
+          console.log(res)
+          setPreguntas(res)
+        })
+      })
+    }
+
+    useEffect(() => {
+      readData()
+    }, [])
     
 
   return (
@@ -25,12 +41,16 @@ export const Preguntas = () => {
             </button>
         </div>
         <div className='pl-10 pr-10 pb-10 pt-5'>
-            <Pregunta/>
+          {preguntas &&     
+            preguntas.map((pregunta) => (
+              <Pregunta id={pregunta.idPregunta} pregunta={pregunta.pregunta} respuesta = {pregunta.respuesta}/>
+            ))
+          }
             
         </div>
 
         {isNewQuestionOpen && (
-          <Modal closeModal={closeModal}/>
+          <Modal closeModal={closeModal} mode={"Nueva"}/>
         )}
         
     </div>
