@@ -91,6 +91,31 @@ export const updatePaciente = async (values) => {
       if(paciente.sexo!= values.sexo){
         updatePac.sexo = values.sexo
       }
+      if(paciente.direccion!= values.direccion){
+        updatePac.direccion = values.direccion
+      }
+      if(paciente.tipoDocumento!= values.tipoDocumento){
+        updatePac.tipoDocumento = values.tipoDocumento
+      }
+      if(paciente.numDocumento!= values.numDocumento){
+        updatePac.numDocumento = values.numDocumento
+      }
+      if(paciente.nacionalidad!= values.nacionalidad){
+        updatePac.nacionalidad = values.nacionalidad
+      }
+      if(paciente.IPS!= values.IPS){
+        updatePac.IPS = values.IPS
+      }
+      if(paciente.EPS!= values.EPS){
+        updatePac.EPS = values.EPS
+      }
+      if(paciente.ParentescoFamiliar!= values.parentescoFamiliar){
+        updatePac.ParentescoFamiliar = values.parentescoFamiliar
+      }
+      if(paciente.contactoFamiliar!= values.contactoFamiliar){
+        updatePac.contactoFamiliar = values.contactoFamiliar
+      }
+      
       const [response, pacResponse] = await db.$transaction([
         db.User.update({
           where: {
@@ -190,10 +215,17 @@ export const createPaciente = async (values) => {
       data: {
         nombre_completo: values.nombre,
         edad: parseInt(values.edad),
-        direccion: "direccion",
+        direccion: values.direccion,
         sexo: values.sexo,
         num_celular: values.num_celular,
         idUsuario: session.user.id,
+        tipoDocumento: values.tipoDocumento,
+        numDocumento: values.numDocumento,
+        nacionalidad: values.nacionalidad,
+        IPS: values.IPS,
+        EPS: values.EPS,
+        ParentescoFamiliar: values.parentescoFamiliar,
+        contactoFamiliar: values.contactoFamiliar,
       },
     });
     return {

@@ -78,16 +78,23 @@ model Donacion {
 }
 
 model Paciente {
-  id              Int     @id @default(autoincrement())
-  nombre_completo String
-  edad            Int
-  direccion       String
-  idUsuario       String
-  sexo            String
-  num_celular     String
-  imagen_id       String?
-  imagen_url      String?
-  usuario         User    @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_paciente")
+  id                 Int     @id @default(autoincrement())
+  nombre_completo    String
+  edad               Int
+  tipo_documento     String?
+  num_documento      String?
+  nacionalidad       String?
+  IPS                String?
+  EPS                String?
+  ParentescoFamiliar String?
+  contactoFamiliar   String?
+  direccion          String
+  idUsuario          String
+  sexo               String
+  num_celular        String
+  imagen_id          String?
+  imagen_url         String?
+  usuario            User    @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_paciente")
 }
 
 model Medico {
@@ -251,6 +258,8 @@ model Medicamento {
   descripcion         String
   efectos_secundarios String
   idTipoCancer        Int
+  id_imagen           String?
+  url_imagen          String?
   Tipo_Cancer         Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_medicamento")
 }
 
