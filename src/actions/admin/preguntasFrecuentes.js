@@ -1,5 +1,12 @@
 "use server"
 import db from "@/libs/db"
+
+
+/**
+ * Crea una pregunta frecuente
+ * @param {Object} data {pregunta, respuesta}
+ * @returns {Object} pregunta={id, pregunta, respuesta}
+ */
 export const createPreguntaFrecuente = async (data) =>{
     const pregunta = data.pregunta
     const respuesta = data.respuesta
@@ -17,6 +24,10 @@ export const createPreguntaFrecuente = async (data) =>{
     }
 }
 
+/**
+ * Leer las preguntas frecuentes
+ * @returns {List<Pregunta>} pregunta={id, pregunta, respuesta}
+ */
 export const getPreguntas = async () =>{
     try {
         const preguntas = await db.Pregunta_Frecuente.findMany()
@@ -26,6 +37,10 @@ export const getPreguntas = async () =>{
     }
 }
 
+/**
+ * leer una pregunta frecuente
+ * @returns {Object} pregunta={id, pregunta, respuesta}
+ */
 export const getPregunta = async (id) =>{
     try {
         const pregunta = await db.Pregunta_Frecuente.findUnique({
@@ -39,6 +54,12 @@ export const getPregunta = async (id) =>{
     }
 }
 
+/**
+ * Actualizar una pregunta frecuente
+ * @param {int} id
+ * @param {Object} data {pregunta, respuesta
+ * @returns {Object} pregunta={id, pregunta, respuesta}
+ */ 
 export const updatePregunta = async (id, data) =>{
     try {
         const res = await db.Pregunta_Frecuente.update({
@@ -56,6 +77,11 @@ export const updatePregunta = async (id, data) =>{
     }
 }
 
+/**
+ * Eliminar una pregunta frecuente
+ * @param {int} id
+ * @returns {Object} pregunta={id, pregunta, respuesta}
+ */
 export const deletePregunta = async (id) =>{
     try {
         const res = await db.Pregunta_Frecuente.delete({
