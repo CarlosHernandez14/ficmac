@@ -12,22 +12,34 @@ import { getPacienteByIdUser } from "@/actions/users/edit";
 import { FaEdit } from "react-icons/fa";
 
 function InputEditarPerfil() {
+  //Estado para mostrar la caja general
   const [mostrarCajaGeneral, setMostrarCajaGeneral] = useState(false);
+  //Estados para los datos del paciente
   const [existePaciente, setExistePaciente] = useState(false);
+  //Estados para los datos del paciente
   const [paciente, setPaciente] = useState(null);
+  //Estados para los datos del paciente
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [numCelular, setNumCelular] = useState("");
   const [edad, setEdad] = useState("");
   const [sexo, setSexo] = useState("");
-  const [direccion, setdireccion] = useState("");
+  const [direccion, setDireccion] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [tipoDocumento, setTipoDocumento] = useState("");
+  const[numDocumento, setNumDocumento] = useState("");
+  const[nacionalidad, setNacionalidad] = useState("");
+  const[IPS, setIPS] = useState("");
+  const[EPS, setEPS] = useState("");
+  const[parentescoFamiliar, setParentescoFamiliar] = useState("");
+  const[contactoFamiliar, setContactoFamiliar] = useState("");
 
+  //maneja el submit del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     setSuccessMessage("Usuario editado Correctamente");
   };
-
+  //efecto para obtener los datos del usuario y del paciente
   useEffect(() => {
     const fetchUser = async () => {
       const user = await getUser();
@@ -41,7 +53,14 @@ function InputEditarPerfil() {
         setPaciente(pacienteData);
         setEdad(pacienteData.edad);
         setSexo(pacienteData.sexo);
-        setdireccion(pacienteData.direccion);
+        setDireccion(pacienteData.direccion);
+        setTipoDocumento(pacienteData.tipoDocumento);
+        setNumDocumento(pacienteData.numDocumento);
+        setNacionalidad(pacienteData.nacionalidad);
+        setIPS(pacienteData.IPS);
+        setEPS(pacienteData.EPS);
+        setParentescoFamiliar(pacienteData.parentescoFamiliar);
+        setContactoFamiliar(pacienteData.contactoFamiliar);
       }
     };
     const fetchExistePaciente = async () => {
@@ -53,10 +72,11 @@ function InputEditarPerfil() {
     fetchExistePaciente();
   }, []);
 
+//Metodo para manejar el estado de la caja general
   const handleCajaGeneral = () => {
     setMostrarCajaGeneral(true);
   };
-
+//Metodo para crear o actualizar un paciente
   const handleCreatePaciente = async () => {
     const values = {
       nombre: name,
@@ -65,6 +85,13 @@ function InputEditarPerfil() {
       edad: edad,
       sexo: sexo,
       direccion: direccion,
+      tipoDocumento: tipoDocumento,
+      numDocumento: numDocumento,
+      nacionalidad: nacionalidad,
+      IPS: IPS,
+      EPS: EPS,
+      parentescoFamiliar: parentescoFamiliar,
+      contactoFamiliar: contactoFamiliar,
     };
 
     console.log("Paciente", values);
@@ -174,11 +201,108 @@ function InputEditarPerfil() {
                 type="text"
                 name="direccion"
                 value={direccion}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setDireccion(e.target.value)}
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
               />
             </div>
+            <div>
+              <label className="block text-xl font-medium text-black">
+                Tipo documento
+              </label>
+              <select
+                name="tipo_documento"
+                value={tipoDocumento}
+                onChange={(e) => setTipoDocumento(e.target.value)}
+                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
+         focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+              >
+                <option value="">Seleccione una opción</option>
+                <option value="femenino">INE</option>
+                <option value="masculino">Pasaporte</option>
+                <option value="otro">Licencia de conducir</option>
+                <option value="otro">Cartilla militar</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xl font-medium text-black">
+                Número documento
+              </label>
+              <input
+                type="text"
+                name="num_documento"
+                value={numDocumento}
+                onChange={(e) => setNumDocumento(e.target.value)}
+                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
+          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+              />
+            </div>
+            <div>
+              <label className="block text-xl font-medium text-black">
+                Nacionalidad
+              </label>
+              <input
+                type="text"
+                name="nacionalidad"
+                value={nacionalidad}
+                onChange={(e) => setNacionalidad(e.target.value)}
+                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
+          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+              />
+            </div>
+            <div>
+              <label className="block text-xl font-medium text-black">
+                IPS
+              </label>
+              <input
+                type="text"
+                name="IPS"
+                value={IPS}
+                onChange={(e) => setIPS(e.target.value)}
+                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
+          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+              />
+            </div>
+            <div>
+              <label className="block text-xl font-medium text-black">
+                EPS
+              </label>
+              <input
+                type="text"
+                name="EPS"
+                value={EPS}
+                onChange={(e) => setEPS(e.target.value)}
+                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
+          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+              />
+            </div>
+            <div>
+              <label className="block text-xl font-medium text-black">
+                Parentesco familiar
+              </label>
+              <input
+                type="text"
+                name="parentesco_familiar"
+                value={parentescoFamiliar}
+                onChange={(e) => setParentescoFamiliar(e.target.value)}
+                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
+          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+              />
+            </div>
+            <div>
+              <label className="block text-xl font-medium text-black">
+                Contacto familiar
+              </label>
+              <input
+                type="tel"
+                name="contacto_familiar"
+                value={contactoFamiliar}
+                onChange={(e) => setContactoFamiliar(e.target.value)}
+                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
+          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+              />
+            </div>
+
             <div className="flex justify-between py-8 space-x-32">
               <button
                 onClick={handleCajaGeneral}
