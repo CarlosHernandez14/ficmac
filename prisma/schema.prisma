@@ -251,6 +251,8 @@ model Medicamento {
   descripcion         String
   efectos_secundarios String
   idTipoCancer        Int
+  id_imagen           String?
+  url_imagen          String?
   Tipo_Cancer         Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_medicamento")
 }
 
