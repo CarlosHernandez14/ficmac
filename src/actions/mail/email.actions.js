@@ -29,6 +29,7 @@ export async function enviarCorreo(destinatario, mensaje, subject) {
     }];
 
     const htmlMessage = generarHtmlCorreo(destinatario.name, mensaje);
+    
 
     try {
         const result = await sendEmail({

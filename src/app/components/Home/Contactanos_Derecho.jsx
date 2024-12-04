@@ -1,127 +1,126 @@
-"use client"
+"use client";
 import React, { useState } from "react";
+import { enviarCorreo } from "@/actions/mail/email.actions";
 
 const Contactanos_Derecho = () => {
-//Este componente es el form de contacto la parte derecha donde salen los datos como nombre, apellido, municipio
-//**En tipo de persona preguntar si si es Paciente y doctor 
-
+  //Este componente es el form de contacto la parte derecha donde salen los datos como nombre, apellido, municipio
+  //**En tipo de persona preguntar si si es Paciente y doctor
 
   const municipios = [
-  "Acuitzio",
-  "Aguililla",
-  "Álvaro Obregón",
-  "Angamacutiro",
-  "Angangueo",
-  "Apatzingán",
-  "Aporo",
-  "Aquila",
-  "Ario",
-  "Arteaga",
-  "Briseñas",
-  "Buenavista",
-  "Caracuaro",
-  "Coahuayana",
-  "Coalcomán de Vázquez Pallares",
-  "Coeneo",
-  "Contepec",
-  "Copándaro",
-  "Cotija",
-  "Cuitzeo",
-  "Charapan",
-  "Charo",
-  "Chavinda",
-  "Cherán",
-  "Chilchota",
-  "Chinicuila",
-  "Chucándiro",
-  "Churintzio",
-  "Churumuco",
-  "Ecuandureo",
-  "Epitacio Huerta",
-  "Erongarícuaro",
-  "Gabriel Zamora",
-  "Hidalgo",
-  "La Huacana",
-  "Huandacareo",
-  "Huaniqueo",
-  "Huetamo",
-  "Huiramba",
-  "Indaparapeo",
-  "Irimbo",
-  "Ixtlán",
-  "Jacona",
-  "Jiménez",
-  "Jiquilpan",
-  "Juárez",
-  "Jungapeo",
-  "Lagunillas",
-  "Madero",
-  "Maravatío",
-  "Marcos Castellanos",
-  "Lázaro Cárdenas",
-  "Morelia",
-  "Morelos",
-  "Múgica",
-  "Nahuatzen",
-  "Nocupétaro",
-  "Nuevo Parangaricutiro",
-  "Nuevo Urecho",
-  "Numarán",
-  "Ocampo",
-  "Pajacuarán",
-  "Panindícuaro",
-  "Parácuaro",
-  "Paracho",
-  "Pátzcuaro",
-  "Penjamillo",
-  "Peribán",
-  "La Piedad",
-  "Purépero",
-  "Puruándiro",
-  "Queréndaro",
-  "Quiroga",
-  "Cojumatlán de Régules",
-  "Los Reyes",
-  "Sahuayo",
-  "San Lucas",
-  "Santa Ana Maya",
-  "Salvador Escalante",
-  "Senguio",
-  "Susupuato",
-  "Tacámbaro",
-  "Tancítaro",
-  "Tangamandapio",
-  "Tangancícuaro",
-  "Tanhuato",
-  "Taretan",
-  "Tarímbaro",
-  "Tepalcatepec", 
+    "Acuitzio",
+    "Aguililla",
+    "Álvaro Obregón",
+    "Angamacutiro",
+    "Angangueo",
+    "Apatzingán",
+    "Aporo",
+    "Aquila",
+    "Ario",
+    "Arteaga",
+    "Briseñas",
+    "Buenavista",
+    "Caracuaro",
+    "Coahuayana",
+    "Coalcomán de Vázquez Pallares",
+    "Coeneo",
+    "Contepec",
+    "Copándaro",
+    "Cotija",
+    "Cuitzeo",
+    "Charapan",
+    "Charo",
+    "Chavinda",
+    "Cherán",
+    "Chilchota",
+    "Chinicuila",
+    "Chucándiro",
+    "Churintzio",
+    "Churumuco",
+    "Ecuandureo",
+    "Epitacio Huerta",
+    "Erongarícuaro",
+    "Gabriel Zamora",
+    "Hidalgo",
+    "La Huacana",
+    "Huandacareo",
+    "Huaniqueo",
+    "Huetamo",
+    "Huiramba",
+    "Indaparapeo",
+    "Irimbo",
+    "Ixtlán",
+    "Jacona",
+    "Jiménez",
+    "Jiquilpan",
+    "Juárez",
+    "Jungapeo",
+    "Lagunillas",
+    "Madero",
+    "Maravatío",
+    "Marcos Castellanos",
+    "Lázaro Cárdenas",
+    "Morelia",
+    "Morelos",
+    "Múgica",
+    "Nahuatzen",
+    "Nocupétaro",
+    "Nuevo Parangaricutiro",
+    "Nuevo Urecho",
+    "Numarán",
+    "Ocampo",
+    "Pajacuarán",
+    "Panindícuaro",
+    "Parácuaro",
+    "Paracho",
+    "Pátzcuaro",
+    "Penjamillo",
+    "Peribán",
+    "La Piedad",
+    "Purépero",
+    "Puruándiro",
+    "Queréndaro",
+    "Quiroga",
+    "Cojumatlán de Régules",
+    "Los Reyes",
+    "Sahuayo",
+    "San Lucas",
+    "Santa Ana Maya",
+    "Salvador Escalante",
+    "Senguio",
+    "Susupuato",
+    "Tacámbaro",
+    "Tancítaro",
+    "Tangamandapio",
+    "Tangancícuaro",
+    "Tanhuato",
+    "Taretan",
+    "Tarímbaro",
+    "Tepalcatepec",
 
-  "Tingambato",
-  "Tingüindín",
-  "Tiquicheo de Nicolás Romero",
-  "Tlalpujahua",
-  "Tlazazalca",
-  "Tocumbo",
-  "Tumbiscatío",
-  "Turicato",
-  "Tuxpan",
-  "Tuzantla",
-  "Tzintzuntzan",
-  "Tzitzio", 
+    "Tingambato",
+    "Tingüindín",
+    "Tiquicheo de Nicolás Romero",
+    "Tlalpujahua",
+    "Tlazazalca",
+    "Tocumbo",
+    "Tumbiscatío",
+    "Turicato",
+    "Tuxpan",
+    "Tuzantla",
+    "Tzintzuntzan",
+    "Tzitzio",
 
-  "Uruapan",
-  "Venustiano Carranza",
-  "Villamar",
-  "Vista Hermosa",
-  "Yurécuaro",
-  "Zacapu",
-  "Zamora",
-  "Zináparo",
-  "Zinapécuaro",
-  "Ziracuaretiro",
-  "Zitácuaro"
-
+    "Uruapan",
+    "Venustiano Carranza",
+    "Villamar",
+    "Vista Hermosa",
+    "Yurécuaro",
+    "Zacapu",
+    "Zamora",
+    "Zináparo",
+    "Zinapécuaro",
+    "Ziracuaretiro",
+    "Zitácuaro",
   ];
 
   const [formData, setFormData] = useState({
@@ -145,41 +144,28 @@ const Contactanos_Derecho = () => {
   const handleSubmit = async (e) => {
     e.preventDefault(); // Evitar recargar la página
 
-    const { nombres, apellidos, email, municipio, tipoPersona, mensaje,aceptaPolitica } = formData;
+    // Datos del formulario
+    const destinatario = {
+      name: formData.nombres, 
+      address: "onteccorp@gmail.com", 
+    };
 
-    // Validación simple
-    if (!nombres || !apellidos || !email || !municipio || !tipoPersona || !mensaje || !aceptaPolitica) {
-      setMensajeEnvio("Por favor, completa todos los campos.");
-      return;
-    }
+    const mensaje = formData.mensaje; 
+    const subject = "Contacto ONTEC"; 
 
     try {
-      // Llamar a la función para enviar el correo
-      const response = await fetch("/actions/mail/email.actions.js", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          destinatario: email,
-          mensaje: `
-            <p><strong>Nombres:</strong> ${nombres}</p>
-            <p><strong>Apellidos:</strong> ${apellidos}</p>
-            <p><strong>Municipio:</strong> ${municipio}</p>
-            <p><strong>Tipo de Persona:</strong> ${tipoPersona}</p>
-            <p><strong>Mensaje:</strong> ${mensaje}</p>
-          `,
-          subject: `Nuevo mensaje de ${nombres} ${apellidos}`,
-        }),
-      });
+      // Llamar a la función enviarCorreo
+      const response = await enviarCorreo(destinatario, mensaje, subject);
 
-      const result = await response.json();
-      if (result.OK) {
-        setMensajeEnvio("Correo enviado correctamente.");
+      // Manejo de la respuesta
+      if (response.OK) {
+        alert("Correo enviado exitosamente.");
       } else {
-        setMensajeEnvio("Error al enviar el correo.");
+        alert("Hubo un problema al enviar el correo: " + response.message);
       }
     } catch (error) {
-      console.error("Error:", error);
-      setMensajeEnvio("Error al enviar el correo.");
+      console.error("Error al enviar el formulario:", error);
+      alert("Ocurrió un error inesperado.");
     }
   };
 
@@ -197,7 +183,8 @@ const Contactanos_Derecho = () => {
               className="shadow-md appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Nombres*"
               style={{
-                boxShadow: "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
+                boxShadow:
+                  "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
               }}
             />
           </div>
@@ -210,7 +197,8 @@ const Contactanos_Derecho = () => {
               className="shadow-md appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Apellidos*"
               style={{
-                boxShadow: "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
+                boxShadow:
+                  "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
               }}
             />
           </div>
@@ -227,7 +215,8 @@ const Contactanos_Derecho = () => {
               className="shadow-md appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Correo electrónico*"
               style={{
-                boxShadow: "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
+                boxShadow:
+                  "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
               }}
             />
           </div>
@@ -237,7 +226,8 @@ const Contactanos_Derecho = () => {
               value={formData.municipio}
               onChange={handleChange}
               style={{
-                boxShadow: "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
+                boxShadow:
+                  "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
               }}
               className="shadow-md appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
@@ -258,7 +248,8 @@ const Contactanos_Derecho = () => {
             value={formData.tipoPersona}
             onChange={handleChange}
             style={{
-              boxShadow: "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
+              boxShadow:
+                "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
             }}
             className="shadow-md appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
@@ -275,7 +266,8 @@ const Contactanos_Derecho = () => {
             value={formData.mensaje}
             onChange={handleChange}
             style={{
-              boxShadow: "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
+              boxShadow:
+                "0 6px 2px -2px rgba(54, 123, 153, 0.5), 0 2px 4px -1px rgba(54, 123, 153, 0.25)",
             }}
             className="shadow-md appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             placeholder="Mensaje*"
@@ -291,16 +283,11 @@ const Contactanos_Derecho = () => {
           >
             Enviar
           </button>
-       
         </div>
 
         <div className="flex items-center justify-center">
-        <label className="flex items-center col-span-2 text-[#666666] font-semibold">
-            <input
-              type="checkbox"
-              name="aceptaPolitica"
-              className="mr-2 "
-            />
+          <label className="flex items-center col-span-2 text-[#666666] font-semibold">
+            <input type="checkbox" name="aceptaPolitica" className="mr-2 " />
             Autorizo la{" "}
             <span className="ml-1 text-[#367B99]">
               política y privacidad de datos
@@ -313,10 +300,7 @@ const Contactanos_Derecho = () => {
           <p className="text-center text-red-500 mt-4">{mensajeEnvio}</p>
         )}
       </form>
-
-      
     </div>
-    
   );
 };
 
