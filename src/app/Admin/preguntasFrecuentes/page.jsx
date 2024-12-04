@@ -4,6 +4,7 @@ import React from 'react'
 const Page = () => {
   return (
     <div>
+        {/* Fondo superior */}
         <div style={{
             width: '100%',
             height: '40vh',
@@ -11,11 +12,12 @@ const Page = () => {
             backgroundSize: 'cover', 
             backgroundPosition: 'top', 
         }}>
-            <div className='pt-[9%] pl-16 font-bold'>
+            <div className='pt-[9%] pl-10 font-bold'>
                 <h1 className='text-white text-3xl'>Preguntas frecuentes</h1>
                 <h1 className='text-white text-3xl'>de los pacientes</h1>
             </div>
         </div>
+        {/* Fondo inferior */}
         <div style={{
             backgroundImage: 'url(/Admin/preguntasFrecuentes/Background2preguntas.png)',
             backgroundSize: 'cover', 
@@ -23,6 +25,7 @@ const Page = () => {
             flex: 1,
             minHeight:'60vh'
         }}>
+            {/* Componente de preguntas */}
             <Preguntas/>
         </div>
     </div>

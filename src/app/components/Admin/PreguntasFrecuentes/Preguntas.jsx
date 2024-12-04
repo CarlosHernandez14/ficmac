@@ -11,14 +11,17 @@ export const Preguntas = () => {
     const [preguntas, setPreguntas] = useState([])
     const [isPending, startTransition] = useTransition()
 
+    //Funciones para abrir y cerrar el modal
     const openModal = () => {
         setIsNewQuestionOpen(true)
       }
     
       const closeModal = () => {
         setIsNewQuestionOpen(false)
+        readData()
       }
      
+    //Función para leer los datos
     const readData = async () =>{
       startTransition(() =>{
         getPreguntas().then((res) => {
@@ -28,6 +31,7 @@ export const Preguntas = () => {
       })
     }
 
+    //Se ejecuta al cargar la página
     useEffect(() => {
       readData()
     }, [])
@@ -35,20 +39,22 @@ export const Preguntas = () => {
 
   return (
     <div className='pt-5'>
-        <div className='flex justify-end pr-5'>
+        <div className='flex justify-end pr-10'>
+        {/* Botón para añadir preguntas */}
         <button onClick={openModal} className='w-14 h-14 bg-[#753350] rounded-full flex justify-center items-center transform transition-transform duration-300 hover:scale-110'>
                 <FiPlusCircle className='text-white w-10 h-10'/>
             </button>
         </div>
         <div className='pl-10 pr-10 pb-10 pt-5'>
+          {/* Mapeo de preguntas */}
           {preguntas &&     
             preguntas.map((pregunta) => (
-              <Pregunta id={pregunta.idPregunta} pregunta={pregunta.pregunta} respuesta = {pregunta.respuesta}/>
+              <Pregunta updateData={readData} key={pregunta.id} id={pregunta.id} pregunta={pregunta.pregunta} respuesta = {pregunta.respuesta}/>
             ))
           }
             
         </div>
-
+        {/* Modal para añadir preguntas */}
         {isNewQuestionOpen && (
           <Modal closeModal={closeModal} mode={"Nueva"}/>
         )}
