@@ -2,7 +2,7 @@ import React from 'react'
 import { FaUserCircle, FaStethoscope, FaMicroscope, FaComments } from 'react-icons/fa';
 import NavbarItemGeneral from '../../Navbar/NavbarItemGeneral'
 
-function Dashboard() {
+function SidebarAdmin() {
   return (
     <div className='bg-[#753350] w-auto px-8 h-screen'>
         <div className='p-4 flex justify-center'>
@@ -21,4 +21,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+export default SidebarAdmin

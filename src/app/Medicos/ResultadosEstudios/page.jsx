@@ -1,5 +1,5 @@
 import React from "react";
-import Resultados from "../../../components/ConsultarResultados/Resultados/Resultados";
+import Resultados from "../../components/ConsultarResultados/Resultados/Resultados";
 
 function page() {
   return (
