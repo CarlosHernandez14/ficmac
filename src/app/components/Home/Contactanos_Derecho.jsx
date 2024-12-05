@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { enviarCorreo } from "@/actions/mail/email.actions";
 
 const Contactanos_Derecho = () => {
-  //Este componente es el form de contacto la parte derecha donde salen los datos como nombre, apellido, municipio
-  //**En tipo de persona preguntar si si es Paciente y doctor
+  //Este componente es el form de contactanos la parte derecha donde salen los datos como nombre, apellido, municipio
+  
 
   const municipios = [
     "Acuitzio",

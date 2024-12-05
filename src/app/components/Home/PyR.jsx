@@ -1,6 +1,8 @@
 import React from "react";
 import Preguntas from "./Preguntas";
 
+//Componente de preguntas.
+
 const PyR = () => {
   return (
     <div className="relative w-full min-h-screen p-5">

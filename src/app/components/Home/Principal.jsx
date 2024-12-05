@@ -3,6 +3,10 @@ import Carrusel from "./Carrusel";
 import NuestrosNumeros from "./NuestrosNumeros";
 import CuadroTexto from "./CuadroTexto";
 
+//Componente de la pagina principal "/Usuarios/Home" en donde se muestra 
+//el carrusel, la sección de nuestros números y una sección "promocional"
+
+
 const Principal = () => {
   const slides = [
     {

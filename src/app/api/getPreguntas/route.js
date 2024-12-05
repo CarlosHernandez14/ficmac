@@ -1,4 +1,5 @@
 // src/app/api/getPreguntas/route.js
+
 import db from "@/libs/db"; 
 
 export async function GET() {

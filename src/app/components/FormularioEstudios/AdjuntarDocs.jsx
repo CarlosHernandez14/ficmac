@@ -1,7 +1,16 @@
 import React from "react";
 import Documentos from "./Documentos";
-import ExaminarArchivo from "./ExaminarArchivo";
 
+/**
+ * Componente `AdjuntarDocs`:
+ * 
+ * Este componente se utiliza para crear una interfaz donde los usuarios puedan adjuntar documentos.
+ * 
+ * Estructura:
+ * - Imagen de fondo.
+ * - Título principal centrado sobre la imagen.
+ * - Componente `Documentos` para la funcionalidad de adjuntar archivos.
+ */
 const AdjuntarDocs = () => {
   return (
     <div className="relative min-h-screen flex flex-col">

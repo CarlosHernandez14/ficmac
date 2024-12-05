@@ -3,6 +3,17 @@ import Texto from "./Texto";
 import ExaminarArchivo from "./ExaminarArchivo";
 import Linea from "./Linea";
 
+/**
+ * Componente `DocumentosAdjuntar`:
+ * 
+ * Este componente combina un texto descriptivo, un botón para examinar archivos, y un separador (línea).
+ * Se utiliza para adjuntar documentos específicos y registrar su cambio mediante la función `onFileChange`.
+ * 
+ * Props:
+ * - `texto`: Descripción del archivo que se espera cargar.
+ * - `onFileChange`: Función callback para manejar los cambios en el archivo seleccionado.
+ */
+
 const DocumentosAdjuntar = ({ texto,onFileChange }) => {
   return (
     <div>

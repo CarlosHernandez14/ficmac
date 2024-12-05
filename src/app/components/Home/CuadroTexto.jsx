@@ -3,6 +3,10 @@ import CuadroAzul from './CuadroAzul'
 import Texto from '../FormularioEstudios/Texto'
 import TextoDerecho from './TextoDerecho'
 
+//Este componente es la parte de la derecha en la sección principal
+
+
+
 const CuadroTexto = () => {
   return (
     <div className="flex my-20 bg-transparent">

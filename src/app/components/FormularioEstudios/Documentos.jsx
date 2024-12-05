@@ -9,6 +9,19 @@ import { getFilesFromUser, uploadFile } from "@/actions/documentos/documentos";
 import { useRouter } from "next/navigation";
 import { createSolicitud } from "@/actions/estudios/solicitud.actions";
 
+/**
+ * Componente `Documentos`:
+ * 
+ * Este componente permite al usuario adjuntar una lista de documentos necesarios.
+ * Al adjuntar todos los archivos requeridos, el usuario puede enviarlos a través de la acción `uploadFile`.
+ * 
+ * Funcionalidad:
+ * - Usa un estado local (`fileList`) para manejar la lista de archivos.
+ * - Incluye validación para asegurarse de que se hayan adjuntado al menos 6 documentos antes de enviarlos.
+ * - Integra acciones para subir los documentos y crear una solicitud asociada.
+ */
+
+
 const Documentos = () => {
   //TODO: Corregir fallo, se guarda en la lista el archivo cada que se cambia el documento en cualquier campo, lo cual puede hacer que se generen muchos mas archivos de los necesarios
   const [fileList, setFileList] = useState([]);

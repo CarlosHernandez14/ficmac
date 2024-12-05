@@ -1,5 +1,18 @@
 import React from "react";
 import Link from "next/link";
+/**
+ * Componente TextoDerecho:
+ * 
+ * Este componente es una sección de texto alineada a la derecha que incluye un título,
+ * una descripción, y un botón opcional que redirige a una página específica.
+ * 
+ * Props:
+ * - `titulo` (string): El título que se muestra en la parte superior.
+ * - `descripcion` (string): El texto descriptivo que se muestra debajo del título.
+ * - `boton` (string): Texto opcional para personalizar el botón (por defecto está vacío).
+ */
+
+
 
 const TextoDerecho = ({ titulo, descripcion, boton = "" }) => {
   return (

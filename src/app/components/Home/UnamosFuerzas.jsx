@@ -2,6 +2,20 @@ import React from "react";
 import TextoDerecho from "./TextoDerecho";
 import CuadroRosa from "./CuadroRosa";
 
+/**
+ * Componente `UnamosFuerzas`:
+ * 
+ * Este componente muestra una sección de la página donde se invita a los usuarios a unirse
+ * a la comunidad de ONTEC, resaltando los beneficios de participar y colaborar con su misión.
+ * 
+ * Estructura:
+ * - Imagen de fondo
+ * - Títulos
+ * - Contenido dividido en dos partes: 
+ *   1. Imagen y descripción (usando el componente `TextoDerecho`).
+ *   2. Bloques destacados (usando el componente `CuadroRosa`).
+ */
+
 const UnamosFuerzas = () => {
   return (
     <div className="relative p-5">

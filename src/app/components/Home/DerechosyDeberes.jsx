@@ -2,9 +2,8 @@
 import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
-
-
-
+//Este componente muestra los derechos y deberes en la sección 3 del 
+//carrusel 
 
 const DerechosyDeberes = ({derechos,deberes}) => {
     const [mostrarDeberes, setMostrarDeberes] = useState(false);

@@ -1,5 +1,9 @@
 import React from 'react'
 
+
+
+// Este componente es para la información del carrusel, la imagen y el texto. 
+
 const InformacionCarrusel2 = () => {
   return (
     <div className="relative p-5 h-screen">

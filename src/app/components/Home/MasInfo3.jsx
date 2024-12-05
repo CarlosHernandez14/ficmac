@@ -5,6 +5,20 @@ import PyR from "./PyR";
 import DyD from "./DyD";
 import DyDMedicos from "./DyDMedicos";
 
+/**
+ * Componente principal `MasInfo3`:
+ * 
+ * Este componente es un contenedor que organiza y presenta secciones adicionales de información 
+ * en la página. Agrupa los siguientes subcomponentes:
+ * 
+ * - `InformacionCarrusel3`: Componente que muestra un carrusel con información relevante.
+ * - `PyR`: Sección que incluye las preguntas y respuestas
+ * - "DyD" : Sección que incluye los derechos y deberes de los pacientes
+ * - "DyDMedicos" : Sección que incluye los derechos y deberes de los médicos.
+ * 
+ *
+ */
+
 const MasInfo3 = () => {
   return (
     <div>

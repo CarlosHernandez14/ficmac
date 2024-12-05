@@ -4,6 +4,9 @@ import Cifras from "./Cifras";
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
+
+//Componente de la sección principal, en donde salen estadísticas y datos.
+
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {

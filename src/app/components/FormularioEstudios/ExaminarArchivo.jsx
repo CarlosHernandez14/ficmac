@@ -3,6 +3,16 @@ import React, { useRef, useState, useTransition } from "react";
 import ButtonImage from "./ButtonImage";
 import { uploadFile } from "@/actions/documentos/documentos";
 
+/**
+ * Componente `ExaminarArchivo`:
+ * 
+ * Este componente permite al usuario seleccionar un archivo desde su sistema. 
+ * Incluye un botón con texto y una imagen, y muestra el nombre del archivo seleccionado.
+ * 
+ * Props:
+ * - `onFileChange`: Función callback que se ejecuta cuando el usuario selecciona un archivo.
+ */
+
 
 const ExaminarArchivo = ({onFileChange}) => {
   const fileInputRef = useRef(null);
