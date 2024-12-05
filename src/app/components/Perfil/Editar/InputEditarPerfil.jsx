@@ -27,17 +27,35 @@ function InputEditarPerfil() {
   const [direccion, setDireccion] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [tipoDocumento, setTipoDocumento] = useState("");
-  const[numDocumento, setNumDocumento] = useState("");
-  const[nacionalidad, setNacionalidad] = useState("");
-  const[IPS, setIPS] = useState("");
-  const[EPS, setEPS] = useState("");
-  const[parentescoFamiliar, setParentescoFamiliar] = useState("");
-  const[contactoFamiliar, setContactoFamiliar] = useState("");
+  const [numDocumento, setNumDocumento] = useState("");
+  const [nacionalidad, setNacionalidad] = useState("");
+  const [IPS, setIPS] = useState("");
+  const [EPS, setEPS] = useState("");
+  const [parentescoFamiliar, setParentescoFamiliar] = useState("");
+  const [contactoFamiliar, setContactoFamiliar] = useState("");
 
   //maneja el submit del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+    if (!validatePhone(numCelular||contactoFamiliar)) {
+      alert("El número de celular debe tener 10 dígitos.");
+      return;
+    }
+
+    if (
+      !validateText(name) ||
+      !validateText(direccion) ||
+      !validateText(nacionalidad)
+    ) {
+      alert("Los campos de texto solo deben contener letras.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      alert("El correo electrónico no es válido.");
+      return;
+    }
+
   };
   //efecto para obtener los datos del usuario y del paciente
   useEffect(() => {
@@ -72,11 +90,11 @@ function InputEditarPerfil() {
     fetchExistePaciente();
   }, []);
 
-//Metodo para manejar el estado de la caja general
+  //Metodo para manejar el estado de la caja general
   const handleCajaGeneral = () => {
     setMostrarCajaGeneral(true);
   };
-//Metodo para crear o actualizar un paciente
+  //Metodo para crear o actualizar un paciente
   const handleCreatePaciente = async () => {
     const values = {
       nombre: name,
@@ -94,21 +112,31 @@ function InputEditarPerfil() {
       contactoFamiliar: contactoFamiliar,
     };
 
-    console.log("Paciente", values);
-
+    //Funcipon para editar un paciente
     updatePaciente(values).then((res) => {
-      if(res.success){
-        setMostrarCajaGeneral(true)
+      if (res.success) {
+        setMostrarCajaGeneral(true);
         setSuccessMessage("Usuario editado Correctamente");
+      } else {
+        window.alert(res.error);
       }
-      else{
-        window.alert(res.error)
-      }
-    })
-
-    
+    });
   };
-
+//Funcion para validar el telefono
+  const validatePhone = (phone) => {
+    const phoneRegex = /^\d{10}$/;
+    return phoneRegex.test(phone);
+  };
+//Funcion para validar el texto
+  const validateText = (text) => {
+    const textRegex = /^[a-zA-Z\s]+$/;
+    return textRegex.test(text);
+  };
+//Funcion para validar el email
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
   return (
     <div>
       {mostrarCajaGeneral ? (
@@ -132,6 +160,11 @@ function InputEditarPerfil() {
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                onBlur={() => {
+                  if (!validateText(name)) {
+                    alert("El nombre solo debe contener letras.");
+                  }
+                }}
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
                 pattern="[A-Za-z\s]+"
@@ -147,6 +180,11 @@ function InputEditarPerfil() {
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={() => {
+                  if (!validateEmail(email)) {
+                    alert("El correo electrónico no es válido.");
+                  }
+                }}
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
@@ -162,6 +200,11 @@ function InputEditarPerfil() {
                 name="num_celular"
                 value={numCelular}
                 onChange={(e) => setNumCelular(e.target.value)}
+                onBlur={() => {
+                  if (!validatePhone(numCelular)) {
+                    alert("El número de celular debe tener 10 dígitos.");
+                  }
+                }}
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
                 pattern="\d{10}"
@@ -238,6 +281,7 @@ function InputEditarPerfil() {
                 name="num_documento"
                 value={numDocumento}
                 onChange={(e) => setNumDocumento(e.target.value)}
+                pattern="\d{8}"
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
           focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
               />
@@ -251,6 +295,7 @@ function InputEditarPerfil() {
                 name="nacionalidad"
                 value={nacionalidad}
                 onChange={(e) => setNacionalidad(e.target.value)}
+                pattern="[A-Za-z\s]+"
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
           focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
               />
@@ -264,6 +309,7 @@ function InputEditarPerfil() {
                 name="IPS"
                 value={IPS}
                 onChange={(e) => setIPS(e.target.value)}
+                pattern="\d{8}"
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
           focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
               />
@@ -277,6 +323,7 @@ function InputEditarPerfil() {
                 name="EPS"
                 value={EPS}
                 onChange={(e) => setEPS(e.target.value)}
+                pattern="\d{8}"
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
           focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
               />
@@ -290,6 +337,7 @@ function InputEditarPerfil() {
                 name="parentesco_familiar"
                 value={parentescoFamiliar}
                 onChange={(e) => setParentescoFamiliar(e.target.value)}
+                pattern="[A-Za-z\s]+"
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
           focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
               />
@@ -303,6 +351,11 @@ function InputEditarPerfil() {
                 name="contacto_familiar"
                 value={contactoFamiliar}
                 onChange={(e) => setContactoFamiliar(e.target.value)}
+                onBlur={() => {
+                  if (!validatePhone(contactoFamiliar)) {
+                    alert("El número de celular debe tener 10 dígitos.");
+                  }
+                }}
                 className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
           focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
               />

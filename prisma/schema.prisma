@@ -81,19 +81,19 @@ model Paciente {
   id                 Int     @id @default(autoincrement())
   nombre_completo    String
   edad               Int
-  tipo_documento     String?
-  num_documento      String?
-  nacionalidad       String?
-  IPS                String?
-  EPS                String?
-  ParentescoFamiliar String?
-  contactoFamiliar   String?
   direccion          String
   idUsuario          String
   sexo               String
   num_celular        String
   imagen_id          String?
   imagen_url         String?
+  EPS                String?
+  IPS                String?
+  ParentescoFamiliar String?
+  contactoFamiliar   String?
+  nacionalidad       String?
+  num_documento      String?
+  tipo_documento     String?
   usuario            User    @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_paciente")
 }
 
