@@ -54,7 +54,7 @@ function InputEditarPerfil() {
         setEdad(pacienteData.edad);
         setSexo(pacienteData.sexo);
         setDireccion(pacienteData.direccion);
-        setTipoDocumento(pacienteData.tipoDocumento);
+        setTipoDocumento(pacienteData.tipo_documento);
         setNumDocumento(pacienteData.num_documento);
         setNacionalidad(pacienteData.nacionalidad);
         setIPS(pacienteData.IPS);
