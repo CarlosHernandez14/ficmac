@@ -3,7 +3,7 @@ import React from "react";
 const Cifras = ({ imagen, texto, altImagen, numeros }) => {
   return (
     //Este componente funciona para la parte de carrusel vista 1
-    //Para la parte de la cifras
+    //Para la parte de las cifras
     <div className="w-96 h-40">
       <div className="flex flex-row">
         <div className="mt-12">

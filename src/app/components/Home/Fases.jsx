@@ -1,10 +1,12 @@
 import React from "react";
 import CardFases from "./CardFases";
 
+
+//Este componente se utiliza para mostrar las "fases del cáncer", se necesita el color, la imagen, titulo y descripción.
+//Se utiliza en la redirección 2 del carrusel. 
 const Fases = () => {
   return (
     <div className="relative w-full min-h-screen">
-      {/* Imagen de fondo */}
       <img
         src="/Home/Carrusel_vista_3_Y_Fondo.jpg"
         alt="Fondo"

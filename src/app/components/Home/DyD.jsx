@@ -1,6 +1,8 @@
 import React from "react";
 import DerechosyDeberes from "./DerechosyDeberes";
 
+//Este componente hace referencia a los derechos y deberes de los pacientes.
+
 const DyD = () => {
   const deber = [
     "Recibir un trato digno sin discriminación alguna.",
