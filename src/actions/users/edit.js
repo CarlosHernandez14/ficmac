@@ -32,6 +32,7 @@ export const getPacienteDataByIdUser = async (id) => {
 
 //Función para actualizar los datos de un paciente
 export const updatePaciente = async (values) => {
+  console.log(values)
   const session = await auth()
   const user = await getUser()
   const updateData = {};
@@ -56,6 +57,48 @@ export const updatePaciente = async (values) => {
     const numeroCelularEsNumero = /^\d+$/.test(values.num_celular);
     if (!numeroCelularEsNumero) {
       return { error: "El número de celular debe contener solo números" };
+    }
+  }
+  if(values.contactoFamiliar){
+    if (values.contactoFamiliar.length < 10) {
+      return { error: "El número de celular del contacto familiar debe tener al menos 10 dígitos" };
+    }
+    if (values.contactoFamiliar.length > 10) {
+      return { error: "El número de celular del contacto familiar no puede tener más de 10 dígitos" };
+    }
+    const numeroCelularEsNumero = /^\d+$/.test(values.contactoFamiliar);
+    if (!numeroCelularEsNumero) {
+      return { error: "El número de celular del contacto familiar debe contener solo números" };
+    }
+  }
+  if(values.num_documento){
+    const numeroDocumentoEsNumero = /^\d+$/.test(values.num_documento);
+    if (!numeroDocumentoEsNumero) {
+      return { error: "El número de documento debe contener solo números" };
+    }
+  }
+  if(values.IPS){
+    const IPSesNumero = /^\d+$/.test(values.IPS)
+    if (!IPSesNumero) {
+      return { error: "La IPS debe contener solo números" };
+    }
+  }
+  if(values.EPS){
+    const EPSesNumero = /^\d+$/.test(values.EPS)
+    if (!EPSesNumero) {
+      return { error: "La EPS debe contener solo números" };
+    }
+  }
+  if(values.ParentescoFamiliar){
+    const parentescoFamiliarContainsNumbers = /\d/.test(values.ParentescoFamiliar)
+    if (parentescoFamiliarContainsNumbers) {
+      return { error: "El parentesco familiar no puede contener números" }
+    }
+  }
+  if(values.nacionalidad){
+    const nacionalidadContainsNumbers = /\d/.test(values.nacionalidad)
+    if (nacionalidadContainsNumbers) {
+      return { error: "La nacionalidad no puede contener números" }
     }
   }
   if(user.num_celular!= values.num_celular){
@@ -91,6 +134,31 @@ export const updatePaciente = async (values) => {
       if(paciente.sexo!= values.sexo){
         updatePac.sexo = values.sexo
       }
+      if(paciente.direccion!= values.direccion){
+        updatePac.direccion = values.direccion
+      }
+      if(paciente.tipo_documento!= values.tipo_documento){
+        updatePac.tipo_documento = values.tipo_documento
+      }
+      if(paciente.num_documento!= values.num_documento){
+        updatePac.num_documento = values.num_documento
+      }
+      if(paciente.nacionalidad!= values.nacionalidad){
+        updatePac.nacionalidad = values.nacionalidad
+      }
+      if(paciente.IPS!= values.IPS){
+        updatePac.IPS = values.IPS
+      }
+      if(paciente.EPS!= values.EPS){
+        updatePac.EPS = values.EPS
+      }
+      if(paciente.ParentescoFamiliar!= values.ParentescoFamiliar){
+        updatePac.ParentescoFamiliar = values.ParentescoFamiliar
+      }
+      if(paciente.contactoFamiliar!= values.contactoFamiliar){
+        updatePac.contactoFamiliar = values.contactoFamiliar
+      }
+      
       const [response, pacResponse] = await db.$transaction([
         db.User.update({
           where: {
@@ -111,6 +179,7 @@ export const updatePaciente = async (values) => {
       }
     }
     else{
+      console.log("No hay paciente")
       try{
         await db.User.update({
           where: {
@@ -133,6 +202,7 @@ export const updatePaciente = async (values) => {
 
 //Función para actualizar la imagen de un paciente
 export const updateImagePaciente = async (values) => {
+  console.log(values)
   const session = await auth();
   const paciente = await db.Paciente.findFirst({
     where: {
@@ -184,24 +254,33 @@ export const getPaciente = async () => {
 //Funcion para crear un paciente await prisma.Paciente.create
 export const createPaciente = async (values) => {
   const session = await auth();
-
+  console.log("Creando paciente", values);
   try {
     const paciente = await db.Paciente.create({
       data: {
         nombre_completo: values.nombre,
         edad: parseInt(values.edad),
-        direccion: "direccion",
+        direccion: values.direccion,
         sexo: values.sexo,
         num_celular: values.num_celular,
         idUsuario: session.user.id,
+        tipo_documento: values.tipo_documento,
+        num_documento: values.num_documento,
+        nacionalidad: values.nacionalidad,
+        IPS: values.IPS,
+        EPS: values.EPS,
+        ParentescoFamiliar: values.ParentescoFamiliar,
+        contactoFamiliar: values.contactoFamiliar,
       },
     });
+    
     return {
       OK: true,
       message: "Paciente creado en edit",
       data: paciente,
-    };
+    }
   } catch (error) {
+    console.log("Error", error)
     return {
       OK: false,
       message: "Error al crear el paciente",

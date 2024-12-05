@@ -1,5 +1,5 @@
 import React from 'react'
-import BotonesTipoBiopsia from './BotonesTipoBiopsia';
+
 
 function TextoTiposBiopsia() {
   return (
