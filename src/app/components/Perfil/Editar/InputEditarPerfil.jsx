@@ -37,7 +37,7 @@ function InputEditarPerfil() {
   //maneja el submit del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSuccessMessage("Usuario editado Correctamente");
+    
   };
   //efecto para obtener los datos del usuario y del paciente
   useEffect(() => {
@@ -55,11 +55,11 @@ function InputEditarPerfil() {
         setSexo(pacienteData.sexo);
         setDireccion(pacienteData.direccion);
         setTipoDocumento(pacienteData.tipoDocumento);
-        setNumDocumento(pacienteData.numDocumento);
+        setNumDocumento(pacienteData.num_documento);
         setNacionalidad(pacienteData.nacionalidad);
         setIPS(pacienteData.IPS);
         setEPS(pacienteData.EPS);
-        setParentescoFamiliar(pacienteData.parentescoFamiliar);
+        setParentescoFamiliar(pacienteData.ParentescoFamiliar);
         setContactoFamiliar(pacienteData.contactoFamiliar);
       }
     };
@@ -85,23 +85,28 @@ function InputEditarPerfil() {
       edad: edad,
       sexo: sexo,
       direccion: direccion,
-      tipoDocumento: tipoDocumento,
-      numDocumento: numDocumento,
+      tipo_documento: tipoDocumento,
+      num_documento: numDocumento,
       nacionalidad: nacionalidad,
       IPS: IPS,
       EPS: EPS,
-      parentescoFamiliar: parentescoFamiliar,
+      ParentescoFamiliar: parentescoFamiliar,
       contactoFamiliar: contactoFamiliar,
     };
 
     console.log("Paciente", values);
 
-    if (existePaciente) {
-      const response = await updatePaciente(values);
-    } else {
-      const response = await createPaciente(values);
-    }
-    setMostrarCajaGeneral(true);
+    updatePaciente(values).then((res) => {
+      if(res.success){
+        setMostrarCajaGeneral(true)
+        setSuccessMessage("Usuario editado Correctamente");
+      }
+      else{
+        window.alert(res.error)
+      }
+    })
+
+    
   };
 
   return (
@@ -255,7 +260,7 @@ function InputEditarPerfil() {
                 IPS
               </label>
               <input
-                type="text"
+                type="number"
                 name="IPS"
                 value={IPS}
                 onChange={(e) => setIPS(e.target.value)}
@@ -268,7 +273,7 @@ function InputEditarPerfil() {
                 EPS
               </label>
               <input
-                type="text"
+                type="number"
                 name="EPS"
                 value={EPS}
                 onChange={(e) => setEPS(e.target.value)}
