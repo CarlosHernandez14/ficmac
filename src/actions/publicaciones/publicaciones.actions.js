@@ -1,5 +1,6 @@
 "use server";
 import { prisma as db } from "@/libs/db";
+import { auth } from "@/auth";
 
 // Función para obtener todas las publicaciones cientificas
 // Retorna un array (publicaciones) con todas las publicaciones cientificas
@@ -73,11 +74,12 @@ export const getPublicacionCientificaByBusqueda = async (busqueda) => {
 //Retorna un mensaje de error si la publicacion no fue creada
 
 export const createPublicacionCientifica = async (data) => {
+  const session = await auth();
   try {
     await db.Publicacion_Cientifica.create({
       data: {
-        idUsuario: data.idUsuario,
-        idTipoCancer: data.idTipoCancer,
+        idUsuario: session.user.id,
+        idTipoCancer: parseInt(data.idTipoCancer),
         titulo: data.titulo,
         resumen: data.resumen,
         fecha_publicado: new Date(),
@@ -102,6 +104,7 @@ export const editPublicacionCientifica = async (data) => {
       },
       data: {
         titulo: data.titulo,
+        idTipoCancer: parseInt(data.idTipoCancer),
         resumen: data.resumen,
         link: data.link,
       },
@@ -118,13 +121,26 @@ export const editPublicacionCientifica = async (data) => {
 
 export const deletePublicacionCientifica = async (id) => {
   try {
-    await db.Publicacion_Cientifica.delete({
+    // Verificar si la publicación existe
+    const publicacion = await prisma.publicacion_Cientifica.findUnique({
       where: {
         id: id,
       },
     });
-    return { success: "Publicacion Cientifica eliminada" };
+
+    if (!publicacion) {
+      return { error: "La publicación científica no existe"};
+    }
+
+    // Eliminar la publicación
+    await prisma.publicacion_Cientifica.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return { success: "Publicación científica eliminada" };
   } catch (error) {
-    return { error: "Error al eliminar la publicacion cientifica" };
+    return { error: error.message };
   }
-}
+};

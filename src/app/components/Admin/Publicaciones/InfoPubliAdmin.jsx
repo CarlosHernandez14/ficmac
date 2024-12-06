@@ -4,10 +4,17 @@ import Buscador from "../../Publicaciones/Buscador";
 import Filtrador from "../../Publicaciones/Filtrador";
 import PublicacionesAdmin from "./PublicacionesAdmin";
 import { FaPlus } from "react-icons/fa";
+import PopupCrear from "./PopupCrear";
 
 function InfoPubliAdmin() {
   const [idTipoCancer, setIdTipoCancer] = useState("0");
   const [publicaciones, setPublicaciones] = useState([]);
+  const [popUpCrear, setPopUpCrear] = useState(false);  
+
+  //Funcion para abrir y cerrar el popUp
+  const togglePopUp = () => {
+    setPopUpCrear(!popUpCrear);
+  };
 
   return (
     <div className="py-6">
@@ -26,7 +33,7 @@ function InfoPubliAdmin() {
       <div className="flex justify-start px-16 pb-6">
         <button
           className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-green-700"
-          onClick={handleCreateClick}
+          onClick={togglePopUp}
         >
           <FaPlus />
           <span>Crear</span>
@@ -39,6 +46,9 @@ function InfoPubliAdmin() {
           idTipoCancer={idTipoCancer}
         />
       </div>
+      {popUpCrear ? (
+        <PopupCrear onClose={togglePopUp}/>
+      ) : null}
     </div>
   );
 }

@@ -31,7 +31,7 @@ function PublicacionesAdmin({ setPublicaciones, publicaciones, idTipoCancer }) {
   }, [idTipoCancer]);
 
   return (
-    <div className="flex-grow overflow-y-auto max-h-[470px] px-4">
+    <div className="flex-grow overflow-y-auto max-h-[450px] px-4">
       {publicaciones.map((publicacion) => (
         <PublicacionAdmin key={publicacion.id} publicacion={publicacion} />
       ))}
