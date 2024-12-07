@@ -1,12 +1,12 @@
 'use client';
 import React, { useEffect, useState } from "react";
-
 import CajaTexto from "./CajaTexto";
 import {getMedicamentosByTipoCancer}  from "@/actions/medicamentos/medicamento.actions";
 
 function CajaInformacion({tipo}) {
+  // Estado para almacenar los medicamentos
    const [medicamentos, setMedicamento] = useState(null);
-  
+  // Funcion para obtener los medicamentos por tipo de cancer
    useEffect(() => {
      const fetchMedicamento = async () => {
        if (tipo) {
@@ -24,20 +24,18 @@ function CajaInformacion({tipo}) {
      fetchMedicamento();
    }, [tipo]);
   return (
-    <div className="shadow-2xl flex justify-between  bg-white w-auto  mx-auto h-auto rounded-xl min-w-[50vw]">
+    <div className=" flex justify-between w-auto h-auto ">
+      {/* Hace una busqueda de lo medicamentos y manda su id a caja texto */}
       {medicamentos ? (
         <div className="">
           {medicamentos.map((medicamento) => (
-            <div key={medicamento.id}>
+            <div className="my-5" key={medicamento.id}>
               <CajaTexto tipo={medicamento} />
-              
             </div>
           ))}
         </div>
       ) : (
-        <p>
-         
-        </p>
+        <p></p>
       )}
     </div>
   );

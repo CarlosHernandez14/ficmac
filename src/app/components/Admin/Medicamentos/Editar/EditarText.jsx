@@ -1,19 +1,20 @@
-'use client';
+"use client";
 import React, { useState } from "react";
 import EditarImagen from "./EditarImagen";
 import { updateMedicamento } from "@/actions/medicamentos/medicamento.actions";
 import { FaCheck } from "react-icons/fa";
+import { on } from "form-data";
 
 function EditarText({ tipo, onSave }) {
-  
+  //Constantes para guardar los datos del medicamento
   const [nombre, setNombre] = useState(tipo.nombre);
   const [descripcion, setDescripcion] = useState(tipo.descripcion);
   const [efectosSecundarios, setEfectosSecundarios] = useState(
     tipo.efectos_secundarios
   );
   const [urlImagen, setUrlImagen] = useState(tipo.url_imagen);
-const [successMessage, setSuccessMessage] = useState("");
-
+  const [successMessage, setSuccessMessage] = useState("");
+//Metodo para guardar los cambios
   const handleSave = async () => {
     const updatedTipo = {
       nombre,
@@ -21,16 +22,22 @@ const [successMessage, setSuccessMessage] = useState("");
       efectos_secundarios: efectosSecundarios,
       url_imagen: urlImagen,
     };
-  
+//Metodo para actualizar el medicamento
     const response = await updateMedicamento(tipo.id, updatedTipo);
     if (response.OK) {
       setSuccessMessage("Medicamento actualizado correctamente");
-     
     } else {
       console.error("Error al actualizar el medicamento:", response.error);
     }
   };
-
+  //Metodo para cancelar la edicion
+  const onCancel = () => {
+  window.location.reload(); // O recargar la página
+  };
+//Metodo para seleccionar la imagen
+   const handleImageSelect = (image) => {
+     setUrlImagen(image);
+   };
 
   return (
     <div className="shadow-2xl flex  bg-white w-auto h-auto rounded-xl  ">
@@ -84,7 +91,7 @@ const [successMessage, setSuccessMessage] = useState("");
         <div className="flex justify-end space-x-4">
           <div className="">
             <button
-              onClick={handleSave}
+              onClick={onCancel}
               className="bg-white border border-[#753350] hover:bg-gray-100 text-[#753350]  py-1 px-16 rounded-xl shadow-lg "
             >
               Cancelar
@@ -100,8 +107,11 @@ const [successMessage, setSuccessMessage] = useState("");
           </div>
         </div>
       </div>
-      <div className="flex justify-end ">
-        <EditarImagen tipo={tipo.url_imagen} />
+      <div className="flex justify-end">
+        <EditarImagen
+          tipo={tipo.url_imagen}
+          onImageSelect={handleImageSelect}
+        />
       </div>
       {successMessage && (
         <div className="mt-4 text-[#753350] font-bold flex justify-center items-center">

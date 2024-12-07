@@ -29,20 +29,23 @@ function AgregarTexto() {
     };
     fetchTiposCancer();
   }, []);
+
   // metodo para guardar el medicamento
   const handleSave = async () => {
     // Validar los datos
+   
     const newErrors = {};
     if (!nombre) newErrors.nombre = "El nombre es obligatorio";
     if (!descripcion) newErrors.descripcion = "La descripción es obligatoria";
     if (!efectosSecundarios)
       newErrors.efectosSecundarios = "Los efectos secundarios son obligatorios";
-    if (!selectedImage) newErrors.selectedImage = "La imagen es obligatoria";
+    //if (!selectedImage) newErrors.selectedImage = "La imagen es obligatoria";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
+     console.log("Guardando medicamento...");
     const nuevoMedicamento = {
       idTipoCancer: tipoCancer,
       nombre,
@@ -50,16 +53,19 @@ function AgregarTexto() {
       efectos_secundarios: efectosSecundarios,
       //  url_imagen: urlImagen,
     };
+
     console.log("Datos a guardar:", nuevoMedicamento);
     // Funcion para crear un medicamento
     const response = await createMedicamento(nuevoMedicamento);
     if (response.OK) {
       console.log("Medicamento creado:", response.data);
       setSuccessMessage("Medicamento creado Correctamente");
+       window.location.reload();
     } else {
       console.error("Error al crear el medicamento:", response.error);
     }
   };
+
   //Metodo para seleccionar imagen
   const handleImageSelect = (image) => {
     setSelectedImage(image);
@@ -72,6 +78,7 @@ function AgregarTexto() {
     setDescripcion("");
     setEfectosSecundarios("");
     setUrlImagen("");
+     window.location.reload();
   };
 
   return (
@@ -90,6 +97,7 @@ function AgregarTexto() {
             onChange={(e) => setTipoCancer(e.target.value)}
             className="shadow-lg appearance-none border border-[#A0737D] rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           >
+            {/* Muestra el tipo de cáncer en una */}
             <option value="">Seleccionar tipo de cáncer</option>
             {Array.isArray(tipos) &&
               tipos.map((tipo) => (

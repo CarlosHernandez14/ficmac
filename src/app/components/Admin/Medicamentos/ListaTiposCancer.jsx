@@ -4,7 +4,7 @@ import { useState } from "react";
 import CajaInformacion from "./Mostrar/CajaInformacion";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import AgregarTexto from "./Agregar/AgregarTexto";
-import { IoReturnUpBackOutline } from "react-icons/io5";
+
 
 function ListaTiposCancer({ tipos, onSelectTipo }) {
   // Estado para almacenar el tipo seleccionado
@@ -30,9 +30,9 @@ function ListaTiposCancer({ tipos, onSelectTipo }) {
   };
 
   return (
-    <div className="mx-auto space-y-4">
-      <div className="py-5 flex justify-end px-36 space-x-5">
-        <div className="text-white hover:text-green-700 text-7xl">
+    <div className="mx-auto space-y-4 h-screen overflow-auto">
+      <div className="py-5 flex justify-end px-24 space-x-5">
+        <div className="text-white hover:text-green-700 text-5xl">
           <button onClick={handleAdd}>
             <IoIosAddCircleOutline />
           </button>
@@ -55,12 +55,6 @@ function ListaTiposCancer({ tipos, onSelectTipo }) {
       <div className="relative px-36 py-5">
         {mostrarAgregarTexto ? (
           <div>
-            <button
-              onClick={handleBack}
-              className="text-[#CB1662] text-4xl hover:text-white   py-2 px-4 "
-            >
-              <IoReturnUpBackOutline />
-            </button>
             <AgregarTexto />
           </div>
         ) : (

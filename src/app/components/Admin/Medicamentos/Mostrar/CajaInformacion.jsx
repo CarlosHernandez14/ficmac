@@ -25,7 +25,7 @@ function CajaInformacion({ tipo }) {
   }, [tipo]);
   return (
     <div
-      className=" flex justify-between w-auto h-auto   "
+      className=" flex justify-between w-auto "
     >
       {medicamentos ? (
         <div className="">
