@@ -136,10 +136,10 @@ const NewPassword = () => {
 };
 
 // Wrap with Suspense in the export
-const WrappedNewVerificationPage = () => (
+const WrappedNewPassword = () => (
   <Suspense fallback={<div>Cargando...</div>}>
-    <NewVerificationPage />
+    <NewPassword />
   </Suspense>
 );
 
-export default WrappedNewVerificationPage;
+export default WrappedNewPassword;
