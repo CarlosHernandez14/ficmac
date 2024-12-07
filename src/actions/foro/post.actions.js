@@ -43,12 +43,15 @@ export const getPosts = async () => {
     - OK: boolean // true si se obtuvo, false si no
     - data: object
 */
-export const getPostById = async (id) => {
+export const getPostById = async () => {
     try {
+        const session = await auth();
+        const idUsuario = session.user.id;
+
         // Se obtiene la publicación por id
-        const publicacion = await db.Post.findUnique({
+        const publicacion = await db.Post.findMany({
             where: {
-                id
+                idUsuario: idUsuario
             },
             // Incluimos los datos del usuario, tipo-cancer, 
             include: {

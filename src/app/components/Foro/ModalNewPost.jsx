@@ -79,7 +79,7 @@ export default function ModalNewPost({ onClose, onSubmit, categories }) {
                         onClick={handleSubmit}
                         className="w-full p-2 bg-[#753350] text-white rounded-lg hover:bg-[#5a2530]"
                     >
-                        Crear
+                        Publicar
                     </button>
                 </div>
             </div>

@@ -5,18 +5,10 @@ import Image from 'next/image';
 import PostCard from "@/app/components/Foro/PostCard";
 import ModalNewPost from "@/app/components/Foro/ModalNewPost";
 
-import { getPosts } from "@/actions/foro/post.actions";
 import { getTiposCancer } from "@/actions/tipos_cancer/tiposCancer";
-import { createPost } from "@/actions/foro/post.actions";
+import { createPost, getPosts, getPostById } from "@/actions/foro/post.actions";
 
 export default function Forum() {
-
-  const myPosts = [
-    { id: 1, question: "¿Cómo prevenir el cáncer de piel?", description: "¿Qué tipo de protector solar recomiendan para prevenir el cáncer de piel en climas cálidos?", categories: ["Cáncer de piel", "Cuidado personal"], likes: 45, responses: 10 },
-    { id: 3, question: "¿Cómo prevenir el cáncer de piel?", description: "¿Qué tipo de protector solar recomiendan para prevenir el cáncer de piel en climas cálidos?", categories: ["Cáncer de piel", "Cuidado personal"], likes: 45, responses: 10 },
-    { id: 4, question: "¿Cómo prevenir el cáncer de piel?", description: "¿Qué tipo de protector solar recomiendan para prevenir el cáncer de piel en climas cálidos?", categories: ["Cáncer de piel", "Cuidado personal"], likes: 45, responses: 10 },
-    { id: 5, question: "¿Cómo prevenir el cáncer de piel?", description: "¿Qué tipo de protector solar recomiendan para prevenir el cáncer de piel en climas cálidos?", categories: ["Cáncer de piel", "Cuidado personal"], likes: 45, responses: 10 },
-  ];
 
   const savedPosts = [
     { id: 2, question: "¿Cuáles son los síntomas iniciales del cáncer de piel?", description: "Estoy notando una nueva mancha en mi piel. ¿Cómo puedo saber si es un síntoma de alerta o solo algo benigno?", categories: ["Cáncer de piel", "Cáncer"], likes: 120, responses: 30 },
@@ -25,8 +17,10 @@ export default function Forum() {
     { id: 5, question: "¿Cuáles son los síntomas iniciales del cáncer de piel?", description: "Estoy notando una nueva mancha en mi piel. ¿Cómo puedo saber si es un síntoma de alerta o solo algo benigno?", categories: ["Cáncer de piel", "Cáncer"], likes: 120, responses: 30 },
   ];
 
-  const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
+
+  const [posts, setPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -35,9 +29,10 @@ export default function Forum() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [postsResponse, categoriesResponse] = await Promise.all([
+        const [postsResponse, categoriesResponse, myPostsResponse] = await Promise.all([
           getPosts(),
           getTiposCancer(),
+          getPostById(),
         ]);
 
         if (postsResponse.OK) {
@@ -51,6 +46,14 @@ export default function Forum() {
         } else {
           throw new Error(categoriesResponse.error || "Error al obtener las categorías");
         }
+
+        if (myPostsResponse.OK) {
+          setMyPosts(myPostsResponse.data);
+          console.log(myPostsResponse.data);
+        } else {
+          throw new Error(categoriesResponse.error || "Error al obtener los posts del usuario");
+        }
+
       } catch (err) {
         setError(err.message);
       } finally {
@@ -169,11 +172,11 @@ export default function Forum() {
             {myPosts.map((post) => (
               <PostCard
                 key={post.id}
-                question={post.question}
-                description={post.description}
-                categories={post.categories}
-                likes={post.likes}
-                responses={post.responses}
+                question={post.titulo}
+                description={post.cuerpo}
+                categories={post.Tipo_Cancer?.nombre}
+                likes={post.Voto?.length || 0} // Contar los votos
+                responses={post.responses || 0}
                 compact={true}
               />
             ))}
@@ -202,11 +205,11 @@ export default function Forum() {
             {savedPosts.map((post) => (
               <PostCard
                 key={post.id}
-                question={post.question}
-                description={post.description}
-                categories={post.categories}
-                likes={post.likes}
-                responses={post.responses}
+                question={post.titulo}
+                description={post.cuerpo}
+                categories={post.Tipo_Cancer?.nombre}
+                likes={post.Voto?.length || 0} // Contar los votos
+                responses={post.responses || 0}
                 compact={true}
               />
             ))}
