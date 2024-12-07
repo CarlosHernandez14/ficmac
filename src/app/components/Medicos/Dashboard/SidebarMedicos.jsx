@@ -14,10 +14,8 @@ function SidebarMedicos() {
             <p className='text-white text-xl'>Médicos</p>
         </div>
         <div className='flex flex-col items-center text-justify space-y-2'>
-            <NavbarItemGeneral icon={FaHospitalUser} name='Pacientes' href='' />
-            <NavbarItemGeneral  icon={FaComments} name='Foro' href='' />
             <NavbarItemGeneral icon={FaVialCircleCheck} name='Resultados' href='/Medicos/ResultadosEstudios' />
-            <NavbarItemGeneral icon={FaStethoscope} name='Solicitudes' href='/Medicos/ConsultarEstudios' />
+            <NavbarItemGeneral icon={FaStethoscope} name='Consultar Estudios' href='/Medicos/ConsultarEstudios' />
 
         </div>
     </div>
