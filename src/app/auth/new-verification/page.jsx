@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { Suspense, useCallback, useEffect, useState } from 'react'
 import {DNA} from "react-loader-spinner"
 import { newVerification } from '@/actions/users/new-verification'
 import { useSearchParams } from 'next/navigation'
