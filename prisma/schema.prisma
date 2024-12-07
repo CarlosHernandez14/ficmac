@@ -1,0 +1,286 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                         String                   @id @default(cuid())
+  name                       String?
+  email                      String?                  @unique
+  emailVerified              DateTime?
+  password                   String?
+  role                       UserRole                 @default(PACIENTE)
+  createdAt                  DateTime                 @default(now())
+  updatedAt                  DateTime                 @updatedAt
+  num_celular                String?
+  accounts                   Account[]
+  Documento                  Documento[]
+  Donacion                   Donacion[]
+  Medico                     Medico[]
+  Paciente                   Paciente[]
+  Post                       Post[]
+  Publicacion_Cientifica     Publicacion_Cientifica[]
+  Solicitud_Estudio_Medico   Solicitud_Estudio[]      @relation("MedicoToSolicitud")
+  Solicitud_Estudio_Paciente Solicitud_Estudio[]      @relation("PacienteToSolicitud")
+  Voto                       Voto[]
+  solicitud_resultado        solicitud_resultado[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model Donacion {
+  id        Int      @id @default(autoincrement())
+  idUsuario String
+  cantidad  Float
+  fecha     DateTime @default(now()) @db.Date
+  usuario   User     @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario")
+
+  @@index([idUsuario], map: "fk_usuario_inx")
+}
+
+model Paciente {
+  id                 Int     @id @default(autoincrement())
+  nombre_completo    String
+  edad               Int
+  direccion          String
+  idUsuario          String
+  sexo               String
+  num_celular        String
+  imagen_id          String?
+  imagen_url         String?
+  EPS                String?
+  IPS                String?
+  ParentescoFamiliar String?
+  contactoFamiliar   String?
+  nacionalidad       String?
+  num_documento      String?
+  tipo_documento     String?
+  usuario            User    @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_paciente")
+}
+
+model Medico {
+  id              Int          @id @default(autoincrement())
+  nombre_completo String
+  idUsuario       String
+  rfc             String
+  matricula       String
+  num_celular     String
+  especialidad    Especialidad @default(MEDICO_GENERAL)
+  usuario         User         @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_medico")
+
+  @@index([idUsuario], map: "fk_usuario_medico_inx")
+}
+
+model Publicacion_Cientifica {
+  id              Int         @id @default(autoincrement())
+  idUsuario       String
+  idTipoCancer    Int
+  titulo          String
+  resumen         String
+  fecha_publicado DateTime    @db.Date
+  link            String
+  Tipo_Cancer     Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_publicacion")
+  usuario         User        @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_publicacion")
+
+  @@index([idUsuario], map: "fk_usuario_publicacion_inx")
+}
+
+model Pregunta_Frecuente {
+  id        Int    @id @default(autoincrement())
+  pregunta  String
+  respuesta String
+}
+
+model Sintoma {
+  id                  Int                   @id @default(autoincrement())
+  nombre              String
+  descripcion         String
+  Tipo_Cancer_Sintoma Tipo_Cancer_Sintoma[]
+}
+
+model Tipo_Cancer {
+  id                     Int                      @id @default(autoincrement())
+  nombre                 String
+  descripcion            String
+  path_imagen            String
+  Medicamento            Medicamento[]
+  Post                   Post[]
+  Publicacion_Cientifica Publicacion_Cientifica[]
+  Tipo_Cancer_Sintoma    Tipo_Cancer_Sintoma[]
+  solicitud_resultado    solicitud_resultado[]
+}
+
+model Tipo_Cancer_Sintoma {
+  id           Int         @id @default(autoincrement())
+  idSintoma    Int         @map("id_sintoma")
+  idTipoCancer Int         @map("id_tipo_cancer")
+  Sintoma      Sintoma     @relation(fields: [idSintoma], references: [id], onDelete: Cascade, map: "fk_sintoma")
+  Tipo_Cancer  Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer")
+
+  @@index([idSintoma], map: "fk_sintoma_inx")
+  @@index([idTipoCancer], map: "fk_tipo_cancer_inx")
+}
+
+model Post {
+  id           Int         @id @default(autoincrement())
+  titulo       String
+  cuerpo       String
+  fecha        DateTime    @default(now())
+  idUsuario    String
+  idPostPadre  Int?
+  idTipoCancer Int
+  Post         Post?       @relation("PostToPost", fields: [idPostPadre], references: [id], onDelete: Cascade, map: "fk_post_padre")
+  PostHijos    Post[]      @relation("PostToPost")
+  Tipo_Cancer  Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_post")
+  usuario      User        @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_post")
+  Voto         Voto[]
+
+  @@index([idUsuario], map: "fk_usuario_post_inx")
+  @@index([idPostPadre], map: "fk_post_padre_inx")
+  @@index([idTipoCancer], map: "fk_tipo_cancer_post_inx")
+}
+
+model Voto {
+  id        Int      @id @default(autoincrement())
+  fecha     DateTime @default(now())
+  idUsuario String
+  idPost    Int
+  post      Post     @relation(fields: [idPost], references: [id], onDelete: Cascade, map: "fk_post_voto")
+  usuario   User     @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_voto")
+
+  @@index([idUsuario], map: "fk_usuario_voto_inx")
+  @@index([idPost], map: "fk_post_voto_inx")
+}
+
+model Estudio {
+  id                Int                 @id @default(autoincrement())
+  nombre            String
+  descripcion       String
+  precio            Float
+  tipo              TipoEstudio         @default(BIOPSIA_LIQUIDA)
+  Solicitud_Estudio Solicitud_Estudio[]
+}
+
+model Solicitud_Estudio {
+  id                     Int                   @id @default(autoincrement())
+  idPaciente             String
+  idEstudio              Int
+  path_orden_medica      String
+  path_identificacion    String
+  path_concentimiento    String
+  path_voucher           String
+  path_historia_clinica  String
+  path_informe_patologia String
+  fecha_solicitud        DateTime              @default(now())
+  idMedico               String?
+  Documento              Documento[]
+  estudio                Estudio               @relation(fields: [idEstudio], references: [id], onDelete: Cascade, map: "fk_estudio_solicitud")
+  medico                 User?                 @relation("MedicoToSolicitud", fields: [idMedico], references: [id], map: "fk_medico_solicitud")
+  usuario                User                  @relation("PacienteToSolicitud", fields: [idPaciente], references: [id], onDelete: Cascade, map: "fk_usuario_solicitud")
+  solicitud_resultado    solicitud_resultado[]
+
+  @@index([idPaciente], map: "fk_usuario_solicitud_inx")
+  @@index([idEstudio], map: "fk_estudio_solicitud_inx")
+}
+
+model solicitud_resultado {
+  id                 Int               @id @default(autoincrement())
+  idMedico           String
+  idTipoCancer       Int
+  prueba             String
+  biopsia_remitida   String
+  path_firma_sello   String
+  cedula             String
+  especialidad       String
+  idSolicitudEstudio Int
+  solicitud_estudio  Solicitud_Estudio @relation(fields: [idSolicitudEstudio], references: [id], onDelete: Cascade, map: "fk_solicitud_estudio_solicitud_resultado")
+  tipo_cancer        Tipo_Cancer       @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_solicitud_resultado")
+  usuario            User              @relation(fields: [idMedico], references: [id], onDelete: Cascade, map: "fk_usuario_solicitud_resultado")
+
+  @@index([idMedico], map: "fk_usuario_solicitud_resultado_inx")
+  @@index([idTipoCancer], map: "fk_tipo_cancer_solicitud_resultado_inx")
+  @@index([idSolicitudEstudio], map: "fk_solicitud_estudio_solicitud_resultado_inx")
+}
+
+model Documento {
+  id                 Int                @id @default(autoincrement())
+  idUsuario          String?
+  idDocumento        String
+  name               String
+  mimeType           String
+  idSolicitudEstudio Int?
+  solicitud_estudio  Solicitud_Estudio? @relation(fields: [idSolicitudEstudio], references: [id], onDelete: Cascade, map: "fk_solicitud_estudio_documento")
+  usuario            User?              @relation(fields: [idUsuario], references: [id], onDelete: Cascade, map: "fk_usuario_documento")
+}
+
+model Medicamento {
+  id                  Int         @id @default(autoincrement())
+  nombre              String
+  descripcion         String
+  efectos_secundarios String
+  idTipoCancer        Int
+  id_imagen           String?
+  url_imagen          String?
+  Tipo_Cancer         Tipo_Cancer @relation(fields: [idTipoCancer], references: [id], onDelete: Cascade, map: "fk_tipo_cancer_medicamento")
+}
+
+enum TipoEstudio {
+  BIOPSIA_LIQUIDA
+  BIOPSIA_SOLIDA
+}
+
+enum Especialidad {
+  MEDICO_GENERAL
+  ONCOLOGO
+  RADIOLOGO
+  PATOLOGO
+  CIRUJANO
+  GINECOLOGO
+  UROLOGO
+  OTRO
+}
+
+enum UserRole {
+  ADMIN
+  PACIENTE
+  MEDICO
+}
