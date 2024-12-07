@@ -14,7 +14,7 @@ const CardResultados = () => {
     const getInfoResultados = async () => {
         startAction(() => {
             console.log("Getting resultados");
-            getResultadosByMedicoId("cm3usohw20000121ocf73yyvs").then((response) => {
+            getResultadosByMedicoId("cm42a1y9y0000shb6uyvhkbut").then((response) => {
                 if (response.OK === false) {
                     console.log(response.error);
                 }
