@@ -1,5 +1,7 @@
 "use client"
 
+export const dynamic = 'force-dynamic';
+
 import React, { useCallback, useEffect, useState } from 'react'
 import {DNA} from "react-loader-spinner"
 import { newVerification } from '@/actions/users/new-verification'
@@ -75,4 +77,11 @@ const NewVerificationPage = () => {
     )
 }
 
-export default NewVerificationPage
+// Wrap with Suspense in the export
+const WrappedNewVerificationPage = () => (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <NewVerificationPage />
+    </Suspense>
+  );
+  
+  export default WrappedNewVerificationPage;
