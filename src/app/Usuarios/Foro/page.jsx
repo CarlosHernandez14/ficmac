@@ -49,7 +49,6 @@ export default function Forum() {
 
         if (myPostsResponse.OK) {
           setMyPosts(myPostsResponse.data);
-          console.log(myPostsResponse.data);
         } else {
           throw new Error(categoriesResponse.error || "Error al obtener los posts del usuario");
         }
@@ -94,7 +93,7 @@ export default function Forum() {
 
       <div className="absolute inset-0">
         <Image
-          src="/fondo_foro.jpg"
+          src="/Foro/fondo_foro.jpg"
           alt="Background Image"
           layout="fill"
           objectFit="cover"
@@ -110,10 +109,11 @@ export default function Forum() {
 
         <div className="relative flex items-center space-x-4 mb-4">
           <div className="relative flex-grow">
+            <img src="/Foro/Search_foro.png" alt="Buscar" className="absolute top-1/2 left-3 transform -translate-y-1/2 w-5 h-5" />
             <input
               type="text"
               placeholder="Buscar Post"
-              className="w-full h-[3.2rem] pl-10 p-2 border border-gray-300 text-[#666666] rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-[#A0737D]"
+              className="w-full h-[3.2rem] pl-10 p-2 border border-gray-300 text-[#666666] text-xl rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-[#A0737D]"
             />
           </div>
         </div>
@@ -123,14 +123,14 @@ export default function Forum() {
             <button
               key={category.id}
               onClick={() => handleCategoryClick(category.nombre)}
-              className={`flex-shrink-0 bg-white text-gray-700 rounded-xl px-4 py-2 text-sm border ${selectedCategory === category.nombre ? "bg-[#753350] text-gray-700 border-[#753350]" : "border-gray-300"}`}
+              className={`flex-shrink-0 bg-white text-gray-700 rounded-xl px-4 py-2 text-sm border ${selectedCategory === category.nombre ? "bg-[#753350] text-[#753350] border-[#753350]" : "border-gray-300"}`}
             >
               {category.nombre}
             </button>
           ))}
         </div>
 
-        <h1 className="text-3xl font-bold pl-1 mb-6 text-[#753350]">Post en Tendencia</h1>
+        <h1 className="text-2xl font-bold pl-1 mb-6 text-[#753350]">Post en Tendencia</h1>
 
         <div className="h-[660px] min-h-[660px] overflow-y-scroll pr-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           {filteredPosts.map((post) => (
@@ -139,8 +139,8 @@ export default function Forum() {
               question={post.titulo}
               description={post.cuerpo}
               categories={post.Tipo_Cancer.nombre}
-              likes={post.likes}
-              responses={post.responses}
+              likes={post.Voto?.length || 0} // Contar los votos
+              responses={post.responses || 0}
               compact={false}
             />
           ))}
@@ -151,21 +151,22 @@ export default function Forum() {
       <div className="flex flex-col justify-between space-y-6 w-[40%] z-10">
 
         {/* Perfil del usuario */}
-        <div className="h-[53%] bg-[#D9D9D9] rounded-3xl p-6 shadow-lg">
+        <div className="h-[60%] bg-[#D9D9D9] rounded-3xl p-6 shadow-lgs">
+
+          <div className="flex items-center justify-end">
+            <button onClick={() => setShowModal(true)} className="flex p-4 bg-[#753350] text-white rounded-full hover:bg-[#5a2530] items-end">
+              <img src="/Foro/Nuevo_post_foro.png" alt="Likes" className="w-8 h-8" />
+            </button>
+          </div>
 
           <div className="flex flex-col items-center mb-4">
-            <div className="w-24 h-24 bg-black rounded-full"></div>
+            <div className="w-[8rem] h-[8rem] bg-black rounded-full"></div>
             <h2 className="text-xl font-bold mt-4 text-[#753350]">Leonardo Aguilar</h2>
           </div>
 
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-[#753350]">Mis Posts</h3>
-            <button
-              onClick={() => setShowModal(true)}
-              className="px-4 py-2 mr-4 bg-[#753350] text-white rounded-lg hover:bg-[#5a2530]"
-            >
-              + Crear Post
-            </button>
+            <h3 className="text-xl font-bold text-[#753350] ml-2">Mis Posts</h3>
+
           </div>
 
           <div className="h-[14rem] overflow-y-scroll pr-4 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
@@ -197,7 +198,7 @@ export default function Forum() {
         <div className="h-[40%] bg-[#D9D9D9] rounded-3xl p-6 shadow-lg">
 
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-[#753350]">Post Guardados</h3>
+            <h3 className="text-xl font-bold text-[#753350]">Post Guardados</h3>
             <button className="text-sm text-[#753350] hover:underline">Ver todos</button>
           </div>
 

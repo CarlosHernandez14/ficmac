@@ -30,9 +30,17 @@ const PostCard = ({ question, description, categories, likes, responses, compact
       <hr className="my-4 border-white" />
 
       {/* Interacciones */}
-      <div className="flex justify-start space-x-10 text-white text-base">
-        <span>{likes} Votos</span>
-        <span>{responses} Respuestas</span>
+      <div className="flex justify-start space-x-10 text-white text-base items-start">
+
+        <div className="flex items-center space-x-2">
+          <img src="/Foro/like_foro.png" alt="Likes" className="w-5 h-5" />
+          <span>{likes} Votos</span>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <img src="/Foro/Comentario_foro.png" alt="Comentarios" className="w-5 h-5" />
+          <span>{responses} Respuestas</span>
+        </div>
       </div>
     </div>
   );
