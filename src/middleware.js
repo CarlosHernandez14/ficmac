@@ -1,6 +1,7 @@
 import authConfig from "@/auth.config"
 import NextAuth from "next-auth"
 import {getToken} from "next-auth/jwt"
+import { NextResponse } from "next/server"
 
 //Configuración de NextAuth
 import {
@@ -30,6 +31,12 @@ export default auth(async (req) => {
   const isAuthRoute = authRoutes.includes(nextUrl.pathname)
   const isPacientRoute = pacientRoutes.includes(nextUrl.pathname)
 
+  // Siempre redirigir de `/` a `/Usuarios/Home`
+  if (nextUrl.pathname === "/") {
+    console.log("Redirigiendo a /Usuarios/Home");
+    return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url));
+  }
+
   //Verificar si es una ruta con prefijo de autenticación
   if(isApiAuthRoute){
     return null
@@ -38,7 +45,7 @@ export default auth(async (req) => {
   //Verificar si es una ruta para autenticación
   if(isAuthRoute){
     if(isLoggedIn){
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url))
     }
     return null
   }
