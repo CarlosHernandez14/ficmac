@@ -179,6 +179,8 @@ export default function Forum() {
                 likes={post.Voto?.length || 0} // Contar los votos
                 responses={post.responses || 0}
                 compact={true}
+                myPost={true}
+                postId={post.id}
               />
             ))}
           </div>
