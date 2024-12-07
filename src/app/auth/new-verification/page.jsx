@@ -1,6 +1,8 @@
 "use client"
 
-import React, { useCallback, useEffect, useState } from 'react'
+export const dynamic = 'force-dynamic';
+
+import React, { Suspense, useCallback, useEffect, useState } from 'react'
 import {DNA} from "react-loader-spinner"
 import { newVerification } from '@/actions/users/new-verification'
 import { useSearchParams } from 'next/navigation'
@@ -75,4 +77,11 @@ const NewVerificationPage = () => {
     )
 }
 
-export default NewVerificationPage
+// Wrap with Suspense in the export
+const WrappedNewVerificationPage = () => (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <NewVerificationPage />
+    </Suspense>
+  );
+  
+  export default WrappedNewVerificationPage;

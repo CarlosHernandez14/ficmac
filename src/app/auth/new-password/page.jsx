@@ -1,5 +1,8 @@
 "use client";
-import React, { useState, useTransition } from "react";
+
+export const dynamic = 'force-dynamic';
+
+import React, { Suspense, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { newPassword } from "@/actions/users/new-password";
 import { useRouter } from "next/navigation";
@@ -132,4 +135,11 @@ const NewPassword = () => {
   );
 };
 
-export default NewPassword;
+// Wrap with Suspense in the export
+const WrappedNewPassword = () => (
+  <Suspense fallback={<div>Cargando...</div>}>
+    <NewPassword />
+  </Suspense>
+);
+
+export default WrappedNewPassword;
