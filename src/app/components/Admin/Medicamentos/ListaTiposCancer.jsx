@@ -3,26 +3,36 @@
 import { useState } from "react";
 import CajaInformacion from "./Mostrar/CajaInformacion";
 import { IoIosAddCircleOutline } from "react-icons/io";
-
+import AgregarTexto from "./Agregar/AgregarTexto";
+import { IoReturnUpBackOutline } from "react-icons/io5";
 
 function ListaTiposCancer({ tipos, onSelectTipo }) {
-  //  Estado para almacenar el tipo seleccionado
- const [selectedValue, setSelectedValue] = useState("");
-//  Funcion para manejar el cambio en el select
- const handleChange = (e) => {
-   const selectedTipo = tipos.find((tipo) => tipo.id === e.target.value);
-   setSelectedValue(e.target.value);
-   onSelectTipo(selectedTipo);
- };
-//Funcion para agregar un nuevo medicamento al tipo de cancer
+  // Estado para almacenar el tipo seleccionado
+  const [selectedValue, setSelectedValue] = useState("");
+  // Estado para controlar la vista actual
+  const [mostrarAgregarTexto, setMostrarAgregarTexto] = useState(false);
+
+  // Funcion para manejar el cambio en el select
+  const handleChange = (e) => {
+    const selectedTipo = tipos.find((tipo) => tipo.id === e.target.value);
+    setSelectedValue(e.target.value);
+    onSelectTipo(selectedTipo);
+  };
+
+  // Funcion para agregar un nuevo medicamento al tipo de cancer
   const handleAdd = () => {
-    console.log("Agregar medicamento");
+    setMostrarAgregarTexto(true);
+  };
+
+  // Funcion para regresar a la lista de tipos de cancer
+  const handleBack = () => {
+    setMostrarAgregarTexto(false);
   };
 
   return (
-    <div className=" mx-auto space-y-4">
+    <div className="mx-auto space-y-4">
       <div className="py-5 flex justify-end px-36 space-x-5">
-        <div className="text-[#753350] text-7xl ">
+        <div className="text-white hover:text-green-700 text-7xl">
           <button onClick={handleAdd}>
             <IoIosAddCircleOutline />
           </button>
@@ -42,8 +52,20 @@ function ListaTiposCancer({ tipos, onSelectTipo }) {
           ))}
         </select>
       </div>
-      <div className=" relative px-36 py-5  ">
-        <CajaInformacion tipo={selectedValue} />
+      <div className="relative px-36 py-5">
+        {mostrarAgregarTexto ? (
+          <div>
+            <button
+              onClick={handleBack}
+              className="text-[#CB1662] text-4xl hover:text-white   py-2 px-4 "
+            >
+              <IoReturnUpBackOutline />
+            </button>
+            <AgregarTexto />
+          </div>
+        ) : (
+          <CajaInformacion tipo={selectedValue} />
+        )}
       </div>
     </div>
   );

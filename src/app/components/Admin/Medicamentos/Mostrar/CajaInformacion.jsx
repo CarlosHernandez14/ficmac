@@ -30,6 +30,7 @@ function CajaInformacion({ tipo }) {
       {medicamentos ? (
         <div className="">
           {medicamentos.map((medicamento) => (
+            
             <div className="my-5" key={medicamento.id}>
               <CajaTexto tipo={medicamento} />
             </div>
