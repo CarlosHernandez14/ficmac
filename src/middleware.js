@@ -21,6 +21,16 @@ const { auth } = NextAuth(authConfig)
 export default auth(async (req) => {
   //Declaración de variables
   const token =  await getToken({req, secret: process.env.AUTH_SECRET}) 
+
+  if (!token) {
+    console.error("Token no encontrado o inválido.");
+    return NextResponse.redirect(new URL("/auth/login", req.url));
+  }
+
+  console.log("Token obtenido:", token);
+  console.log("Ruta solicitada:", nextUrl.pathname);
+  console.log("Usuario autenticado:", req.auth);
+
   const {nextUrl} = req
   const isLoggedIn = !!req.auth
   const isAdmin = isLoggedIn && token.role=== "ADMIN"
