@@ -38,13 +38,18 @@ function NavbarGeneral() {
   useEffect(() => {
     const fetchUser = async () => {
       const user = await getUser();
-      if (user) {
+
+      //console.log("LOGGED USER:", user);
+      if (user != null) {
         setUserName(user.name);
       }
     };
 
     fetchUser();
   }, []);
+
+  // Forzamos rerender al cambiar de ruta
+  //setUserName(userName);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -235,7 +240,21 @@ function NavbarGeneral() {
             }
             onClick={() => handleNavItemClick("/Usuarios/nosotros")}
           />
-          <div className="relative dropdown">
+          
+          {/* Si no hay usuario logueado mostrar el boton de login */}
+          {
+            userName === "" ? (
+              <NavbarItemGeneral
+                icon={FaUser}
+                name="Iniciar sesión"
+                href="/auth/login"
+                onClick={() => handleNavItemClick("/auth/login")}
+              />
+            ) : null
+          }
+
+          {/* Dropdown para perfil */}
+          <div className={userName === "" ? "hidden" : "relative dropdown"}>
             <button
               className={`text-white text-xl rounded-xl p-2 flex items-center space-x-3 ${
                 isProfileOpen || isProfileActive()
