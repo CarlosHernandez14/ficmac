@@ -139,7 +139,7 @@ export const createMedicamento = async (medicamento) => {
         efectos_secundarios: medicamento.efectos_secundarios,
         Tipo_Cancer: {
           connect: {
-            id: medicamento.idTipoCancer,
+            id: parseInt(medicamento.idTipoCancer),
           },
         },
       },
@@ -183,7 +183,7 @@ export const updateMedicamento = async (id, medicamento) => {
     // Verificamos si el medicamento existe
     const medicamentoExist = await db.Medicamento.findUnique({
       where: {
-        id: id,
+        id: parseInt(id),
       },
     });
 
@@ -199,7 +199,7 @@ export const updateMedicamento = async (id, medicamento) => {
     // Actualizamos el medicamento
     const updatedMedicamento = await db.Medicamento.update({
       where: {
-        id: id,
+        id: parseInt(id),
       },
       data: {
         nombre: medicamento.nombre,
