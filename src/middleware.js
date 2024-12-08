@@ -21,6 +21,7 @@ const { auth } = NextAuth(authConfig)
 export default auth(async (req) => {
   //Declaración de variables
   const token =  await getToken({req, secret: process.env.AUTH_SECRET}) 
+  console.log("Token obtenido:", token);
 
   if (!token) {
     console.error("Token no encontrado o inválido.");
