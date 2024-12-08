@@ -195,7 +195,7 @@ export const updatePaciente = async (values) => {
     }
     
   } catch (ex) {
-    console.log(ex);
+    //console.log(ex);
     return { error: ex.message };
   }
 };
