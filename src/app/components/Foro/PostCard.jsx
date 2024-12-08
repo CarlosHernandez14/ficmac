@@ -1,6 +1,26 @@
 import React from 'react';
 
-const PostCard = ({ question, description, categories, likes, responses, compact = false }) => {
+import { deletePost } from "@/actions/foro/post.actions";
+
+const PostCard = ({ question, description, categories, likes, responses, compact = false, myPost = false, postId }) => {
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este post?");
+    if (confirmDelete) {
+      try {
+        const response = await deletePost(postId);
+        if (response.OK) {
+          alert("Post eliminado exitosamente");
+          // Aquí puedes agregar lógica adicional, como actualizar la lista de posts en el estado.
+        } else {
+          alert(response.message || "No se pudo eliminar el post");
+        }
+      } catch (error) {
+        alert("Error al intentar eliminar el post");
+      }
+    }
+  };
+
   return (
     <div
       className={`bg-[#A0737D] mb-6 p-${compact ? '4' : '6'} rounded-lg shadow-lg ${compact ? 'text-sm' : 'text-base'
@@ -30,10 +50,33 @@ const PostCard = ({ question, description, categories, likes, responses, compact
       <hr className="my-4 border-white" />
 
       {/* Interacciones */}
-      <div className="flex justify-start space-x-10 text-white text-base">
-        <span>{likes} Votos</span>
-        <span>{responses} Respuestas</span>
+      <div className="flex justify-between space-x-10 text-white text-base items-center">
+
+        <div className='flex justify-start space-x-4'>
+          <div className="flex items-center space-x-2">
+            <img src="/Foro/like_foro.png" alt="Likes" className="w-5 h-5" />
+            <span>{likes} Votos</span>
+          </div>
+
+          <div className="flex items-center space-x-2">
+            <img src="/Foro/Comentario_foro.png" alt="Comentarios" className="w-5 h-5" />
+            <span>{responses} Respuestas</span>
+          </div>
+        </div>
+
+        <div className='flex items-end justify-end'>
+          {/* Botón de eliminar si es un post del usuario */}
+          {myPost && (
+            <button onClick={handleDelete} className="flex items-center justify-center bg-[#cd2c2c] text-white rounded-lg p-2 hover:bg-red-700">
+              <img src="/Foro/delete_foro.png" alt="Likes" className="w-5 h-5" />
+            </button>
+          )}
+        </div>
+
+
       </div>
+
+
     </div>
   );
 };
