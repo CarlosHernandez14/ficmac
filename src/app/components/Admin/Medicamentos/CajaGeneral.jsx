@@ -22,10 +22,12 @@ function CajaGeneral() {
 
   return (
     //  Renderizamos el componente ListaTiposCancer
-    <ListaTiposCancer
-      tipos={tipos}
-      onSelectTipo={(tipo) => setSelectedTipo(tipo)}
-    />
+    <div className="  ">
+      <ListaTiposCancer
+        tipos={tipos}
+        onSelectTipo={(tipo) => setSelectedTipo(tipo)}
+      />
+    </div>
   );
 }
 

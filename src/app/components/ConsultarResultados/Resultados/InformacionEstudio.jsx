@@ -1,5 +1,5 @@
 import React from "react";
-import ButtonRosa from "../../General/ButtonRosa";
+import ButtonRosa from "@/app/components/General/ButtonRosa";
 import { FaDownload } from "react-icons/fa";
 
 function InformacionEstudio({ resultado }) {
