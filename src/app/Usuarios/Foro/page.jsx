@@ -5,8 +5,11 @@ import Image from 'next/image';
 import PostCard from "@/app/components/Foro/PostCard";
 import ModalNewPost from "@/app/components/Foro/ModalNewPost";
 
+import { getUser } from "@/actions/users/edit";
 import { getTiposCancer } from "@/actions/tipos_cancer/tiposCancer";
 import { createPost, getPosts, getPostById } from "@/actions/foro/post.actions";
+
+import ImagenPerfil from "@/app/components/Foro/ImagenPerfil";
 
 export default function Forum() {
 
@@ -16,6 +19,8 @@ export default function Forum() {
     { id: 4, question: "¿Cuáles son los síntomas iniciales del cáncer de piel?", description: "Estoy notando una nueva mancha en mi piel. ¿Cómo puedo saber si es un síntoma de alerta o solo algo benigno?", categories: ["Cáncer de piel", "Cáncer"], likes: 120, responses: 30 },
     { id: 5, question: "¿Cuáles son los síntomas iniciales del cáncer de piel?", description: "Estoy notando una nueva mancha en mi piel. ¿Cómo puedo saber si es un síntoma de alerta o solo algo benigno?", categories: ["Cáncer de piel", "Cáncer"], likes: 120, responses: 30 },
   ];
+
+  const [userName, setUserName] = useState("");
 
   const [categories, setCategories] = useState([]);
 
@@ -61,6 +66,17 @@ export default function Forum() {
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUser();
+      if (user) {
+        setUserName(user.name);
+      }
+    };
+
+    fetchUser();
   }, []);
 
   const handleCategoryClick = (category) => {
@@ -160,8 +176,11 @@ export default function Forum() {
           </div>
 
           <div className="flex flex-col items-center mb-4">
-            <div className="w-[8rem] h-[8rem] bg-black rounded-full"></div>
-            <h2 className="text-xl font-bold mt-4 text-[#753350]">Leonardo Aguilar</h2>
+            <div className="w-[8rem] h-[8rem]">
+            <ImagenPerfil/>
+            </div>
+            
+            <h2 className="text-xl font-bold mt-4 text-[#753350]">{userName}</h2>
           </div>
 
           <div className="flex justify-between items-center mb-4">
