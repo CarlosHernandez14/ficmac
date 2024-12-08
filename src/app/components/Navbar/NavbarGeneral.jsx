@@ -68,6 +68,11 @@ function NavbarGeneral() {
     }
   };
 
+  const handleLogoutFront = () =>{
+    handleLogout()
+    setUserName("")
+  }
+
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
@@ -267,7 +272,7 @@ function NavbarGeneral() {
                       name="Cerrar sesión"
                       href="/auth/login"
                       className="text-white"
-                      onClick={handleLogout}
+                      onClick={handleLogoutFront}
                     />
                   </li>
                 </ul>
