@@ -1,6 +1,8 @@
 import React from 'react'
 import { FaUserCircle, FaStethoscope, FaMicroscope, FaComments } from 'react-icons/fa';
 import NavbarItemGeneral from '../../Navbar/NavbarItemGeneral'
+import { BiLogOut } from 'react-icons/bi';
+import { handleLogout } from '@/actions/authActions/authActions';
 
 function SidebarAdmin() {
   return (
@@ -16,6 +18,11 @@ function SidebarAdmin() {
             <NavbarItemGeneral icon={FaStethoscope} name='Medicos' href='/admin/users' />
             <NavbarItemGeneral icon={FaMicroscope} name='Estudios' href='/admin/studies' />
             <NavbarItemGeneral icon={FaComments} name='Foro' href='/admin/comments' />
+            <button onClick={handleLogout} className=' flex justify-center items-center text-xl text-white hover:bg-[#a13c68] rounded-xl' >
+              <BiLogOut size={30}/>
+              <span>Cerrar sesión</span>
+            </button>
+            
         </div>
     </div>
   )

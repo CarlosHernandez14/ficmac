@@ -12,7 +12,7 @@ export async function enviarCorreoConfirmacion(destinatario, token) {
         address: destinatario,
     }];
 
-    const confirmLink = `http://localhost:3000/auth/new-verification?token=${token}`
+    const confirmLink = process.env.NODE_ENV === "production" ? `https://ficmac.vercel.app/auth/new-verification?token=${token}`:`http://localhost:3000/auth/new-verification?token=${token}`
 
     const htmlMessage = generarHtmlCorreo(confirmLink);
 
