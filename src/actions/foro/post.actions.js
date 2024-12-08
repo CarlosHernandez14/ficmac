@@ -15,14 +15,17 @@ export const getPosts = async () => {
         const publicaciones = await db.Post.findMany({
             // Incluimos los datos del usuario, tipo-cancer, 
             include: {
-                usuario: true,
+                usuario: {
+                    include: {
+                        Paciente: true,
+                    }
+                },
                 Tipo_Cancer: true,
-                Voto: true
+                Voto: true,
             }
         });
 
         // Se retorna las publicaciones
-
         return {
             message: "Publicaciones obtenidas",
             OK: true,
@@ -55,7 +58,11 @@ export const getPostById = async () => {
             },
             // Incluimos los datos del usuario, tipo-cancer, 
             include: {
-                usuario: true,
+                usuario: {
+                    include: {
+                        Paciente: true,
+                    }
+                },
                 Tipo_Cancer: true,
                 Voto: true
             }

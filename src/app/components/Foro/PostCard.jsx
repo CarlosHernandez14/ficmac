@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { deletePost } from "@/actions/foro/post.actions";
+import ImagenPost from "@/app/components/Foro/ImagenPost";
 
-const PostCard = ({ question, description, categories, likes, responses, compact = false, myPost = false, postId }) => {
+const PostCard = ({ question, description, categories, likes, responses, compact = false, myPost = false, postId, imageSrc }) => {
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este post?");
@@ -28,7 +29,9 @@ const PostCard = ({ question, description, categories, likes, responses, compact
     >
       {/* Encabezado */}
       <div className="flex items-center mb-4">
-        <div className="w-12 h-12 bg-black rounded-full mr-4"></div>
+        <div className="w-[3rem] h-[3rem] mr-4">
+          <ImagenPost imageSrc={imageSrc || "/Perfil/PF2.webp"}/>
+        </div>
         <h2 className="text-xl font-semibold text-white">{question}</h2>
       </div>
 
