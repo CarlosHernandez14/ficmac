@@ -26,7 +26,7 @@ function ImagenPerfil() {
   }, []);
 
   return (
-    <div className="w-auto h-auto bg-[#D9D9D9] rounded-xl">
+    <div className="w-auto h-auto bg-[#D9D9D9] rounded-full">
       <div className="flex justify-center">
         <div className="flex justify-center items-center">
           <img
