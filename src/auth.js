@@ -46,7 +46,7 @@ export const {
                 session.user.id = token.sub
             } 
 
-            if(token.rol && session.user){
+            if(token.role && session.user){
                 session.user.role = token.role
             }
             return session
