@@ -12,7 +12,7 @@ export async function enviarCorreoReset(destinatario, token) {
         address: destinatario,
     }];
 
-    const resetLink = `http://localhost:3000/auth/new-password?token=${token}`
+    const resetLink = process.env.NODE_ENV === "production" ? `http://ficmac.vercel.app/auth/new-password?token=${token}` : `http://localhost:3000/auth/new-password?token=${token}`
 
     const htmlMessage = generarHtmlCorreo(resetLink);
 
