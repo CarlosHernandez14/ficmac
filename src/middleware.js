@@ -12,6 +12,8 @@ import {
   apiAuthPrefix,
   pacientRoutes,
   DEFAULT_LOGIN_REDIRECT,
+  DEFAULT_MEDICAL_REDIRECT,
+  DEFAULT_ADMIN_REDIRECT,
 } from "@/routes"
 
 const { auth } = NextAuth(authConfig)
@@ -45,7 +47,13 @@ export default auth(async (req) => {
   //Verificar si es una ruta para autenticación
   if(isAuthRoute){
     if(isLoggedIn){
-      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, req.url))
+      if(isAdmin){
+        return Response.redirect(new URL(DEFAULT_ADMIN_REDIRECT, nextUrl))
+      }
+      if(isMedical){
+        return Response.redirect(new URL(DEFAULT_MEDICAL_REDIRECT, nextUrl))
+      }
+      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
     }
     return null
   }
