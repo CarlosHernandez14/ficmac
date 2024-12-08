@@ -18,7 +18,9 @@ const authConfig = { providers: [
                 return null
             }
             const passwordMatch = await bcrypt.compare(credentials.password, user.password)
+            
             if(passwordMatch){
+                console.log("Usuario autenticado desde auth config:", user);
                 return user
             }
             return null

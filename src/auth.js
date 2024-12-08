@@ -45,6 +45,8 @@ export const {
             if(token.sub && session.user){
                 session.user.id = token.sub
             } 
+            console.log("Sesion desde callback:", session);
+            console.log("Token desde callback:", token);
 
             if(token.role && session.user){
                 session.user.role = token.role
