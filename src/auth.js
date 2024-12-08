@@ -48,6 +48,7 @@ export const {
 
             if(token.role && session.user){
                 session.user.role = token.role
+                console.log("Sesión actualizada:", session);
             }
             return session
         },
@@ -60,6 +61,7 @@ export const {
             if(!existingUser) return token
 
             token.role = existingUser.role
+            console.log("Token actualizado:", token);
             return token
         }
     },
