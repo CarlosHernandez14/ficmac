@@ -66,6 +66,8 @@ function InputEditarPerfil() {
       setErrors(newErrors);
       return;
     }
+    handleCreatePaciente();
+
   };
   //efecto para obtener los datos del usuario y del paciente
   useEffect(() => {
@@ -79,16 +81,16 @@ function InputEditarPerfil() {
 
       if (pacienteData) {
         setPaciente(pacienteData);
-        setEdad(pacienteData.edad);
-        setSexo(pacienteData.sexo);
-        setDireccion(pacienteData.direccion);
-        setTipoDocumento(pacienteData.tipo_documento);
-        setNumDocumento(pacienteData.num_documento);
-        setNacionalidad(pacienteData.nacionalidad);
-        setIPS(pacienteData.IPS);
-        setEPS(pacienteData.EPS);
-        setParentescoFamiliar(pacienteData.ParentescoFamiliar);
-        setContactoFamiliar(pacienteData.contactoFamiliar);
+        setEdad(pacienteData.edad || "");
+        setSexo(pacienteData.sexo || "");
+        setDireccion(pacienteData.direccion || "");
+        setTipoDocumento(pacienteData.tipo_documento || "");
+        setNumDocumento(pacienteData.num_documento || "");
+        setNacionalidad(pacienteData.nacionalidad || "");
+        setIPS(pacienteData.IPS || "");
+        setEPS(pacienteData.EPS || "");
+        setParentescoFamiliar(pacienteData.ParentescoFamiliar || "");
+        setContactoFamiliar(pacienteData.contactoFamiliar || "");
       }
     };
     const fetchExistePaciente = async () => {
@@ -123,14 +125,26 @@ function InputEditarPerfil() {
     };
 
     //Funcipon para editar un paciente
-    updatePaciente(values).then((res) => {
-      if (res.success) {
-        setMostrarCajaGeneral(true);
-        setSuccessMessage("Usuario editado Correctamente");
-      } else {
-        setErrors({ form: res.error });
-      }
-    });
+    // updatePaciente(values).then((res) => {
+    //   if (res.success) {
+    //     setMostrarCajaGeneral(true);
+    //     setSuccessMessage("Usuario editado Correctamente");
+    //   } else {
+    //     window.alert(res.error);
+    //   }
+    // });
+    // console.log("HANDLE CREATE");
+    // console.table(values);
+    const responseUpdate = await updatePaciente(values);
+    if (responseUpdate.success) {
+      setMostrarCajaGeneral(true);
+      console.log("USUARIO EDITADO", responseUpdate);
+      setSuccessMessage("Usuario editado Correctamente");
+    } else {
+      console.log("ERROR AL CREAR", responseUpdate.error);
+      //window.alert(responseUpdate.error);
+    }
+    
   };
   // Función para validar el teléfono
   const validatePhone = (phone) => {
@@ -409,7 +423,7 @@ function InputEditarPerfil() {
                 </p>
               </button>
               <button
-                onClick={handleCreatePaciente}
+                // onClick={handleCreatePaciente}
                 type="submit"
                 className="flex items-center px-10 py-2 rounded-2xl text-white bg-[#753350] shadow-lg"
               >
