@@ -3,7 +3,7 @@ import React from "react";
 
 function page() {
   return (
-    <div className="relative  ">
+    <div className="relative min-h-screen">
       <div
         className="absolute inset-0 w-full h-full bg-cover bg-center"
         style={{

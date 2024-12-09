@@ -3,16 +3,19 @@ import React, { useState } from "react";
 import EditarImagen from "./EditarImagen";
 import { updateMedicamento } from "@/actions/medicamentos/medicamento.actions";
 import { FaCheck } from "react-icons/fa";
-import { on } from "form-data";
 
-function EditarText({ tipo, onSave }) {
+
+function EditarText({ tipo}) {
   //Constantes para guardar los datos del medicamento
   const [nombre, setNombre] = useState(tipo.nombre);
   const [descripcion, setDescripcion] = useState(tipo.descripcion);
   const [efectosSecundarios, setEfectosSecundarios] = useState(
     tipo.efectos_secundarios
   );
-  const [urlImagen, setUrlImagen] = useState(tipo.url_imagen);
+   const [imagen, setImagen] = useState({
+     url: tipo.url_imagen,
+     id: tipo.id_imagen,
+   });
   const [successMessage, setSuccessMessage] = useState("");
 //Metodo para guardar los cambios
   const handleSave = async () => {
@@ -20,11 +23,13 @@ function EditarText({ tipo, onSave }) {
       nombre,
       descripcion,
       efectos_secundarios: efectosSecundarios,
-      url_imagen: urlImagen,
+      url_imagen: imagen.url,
+      id_imagen: imagen.id,
     };
 //Metodo para actualizar el medicamento
     const response = await updateMedicamento(tipo.id, updatedTipo);
     if (response.OK) {
+      console.log("Medicamento actualizado:", response.data);
       setSuccessMessage("Medicamento actualizado correctamente");
     } else {
       console.error("Error al actualizar el medicamento:", response.error);
@@ -32,11 +37,11 @@ function EditarText({ tipo, onSave }) {
   };
   //Metodo para cancelar la edicion
   const onCancel = () => {
-  window.location.reload(); // O recargar la página
+  window.location.reload(); // Recargar la página
   };
 //Metodo para seleccionar la imagen
    const handleImageSelect = (image) => {
-     setUrlImagen(image);
+     setImagen(image);
    };
 
   return (
@@ -109,7 +114,7 @@ function EditarText({ tipo, onSave }) {
       </div>
       <div className="flex justify-end">
         <EditarImagen
-          tipo={tipo.url_imagen}
+          initialImageUrl={imagen.url}
           onImageSelect={handleImageSelect}
         />
       </div>

@@ -1,23 +1,36 @@
-import React, { useState } from "react";
+'use client';
+import React, { useEffect, useState } from "react";
 import { IoDuplicateOutline } from "react-icons/io5";
 
-function EditarImagen({ tipo, onImageSelect }) {
+function EditarImagen({ initialImageUrl, onImageSelect }) {
+   const [imageSrc, setImageSrc] = useState(initialImageUrl);
+  //Función para obtener la imagen inicial
+  useEffect(() => {
+    setImageSrc(initialImageUrl);
+  }, [initialImageUrl]);
+
+  // Función para manejar el cambio de archivo
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        const imageDetails = {
+          url: reader.result, // Imagen en formato base64
+          name: file.name, // Nombre del archivo
+          type: file.type, // Tipo MIME
+        };
         setImageSrc(reader.result);
-        onImageSelect(reader.result); // Llamar a la función de callback con la imagen seleccionada
+        onImageSelect(imageDetails); // Pasar los detalles al padre
       };
       reader.readAsDataURL(file);
     }
   };
 
+  // Función para abrir el input file
   const handleButtonClick = () => {
     document.getElementById("fileInput").click();
   };
-
 
   return (
     <div className="bg-[#CB1662] w-80 h-auto p-8 flex justify-center rounded-e-xl relative">
