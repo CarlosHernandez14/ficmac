@@ -50,7 +50,6 @@ export default function Forum() {
 
         if (postsResponse.OK) {
           const mainPosts = postsResponse.data.filter((post) => !post.idPostPadre);
-          console.log(mainPosts);
           setPosts(mainPosts);
         } else {
           throw new Error(postsResponse.message || "Error al obtener los posts");
@@ -63,7 +62,8 @@ export default function Forum() {
         }
 
         if (myPostsResponse.OK) {
-          setMyPosts(myPostsResponse.data);
+          const myMainPosts = myPostsResponse.data.filter((post) => !post.idPostPadre);
+          setMyPosts(myMainPosts);
         } else {
           throw new Error(categoriesResponse.error || "Error al obtener los posts del usuario");
         }
@@ -226,7 +226,7 @@ export default function Forum() {
 
               {/* Si este post está seleccionado, muestra las respuestas y el botón de agregar comentario */}
               {selectedPost?.id === post.id && (
-                <div className="bg-gray-100 rounded-lg p-4 mt-2">
+                <div className="justify-center bg-gray-100 rounded-lg p-4 mt-2 w-[50rem]">
 
                   <div className="flex items-center justify-between mb-4">
                     <p className="text-[#753350] font-bold">Respuestas ({replies.length})</p>
@@ -246,7 +246,6 @@ export default function Forum() {
                           question={reply.usuario?.Paciente?.[0]?.nombre_completo}
                           description={reply.cuerpo}
                           likes={reply.Voto?.length || 0}
-                          categories={reply.Tipo_Cancer.nombre}
                           responses={0}
                           compact={true}
                           imageSrc={reply.usuario?.Paciente?.[0]?.imagen_url || "/Perfil/PF2.webp"}
