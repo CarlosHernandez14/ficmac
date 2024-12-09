@@ -27,7 +27,7 @@
 Cypress.Commands.add("login", () => {
   const email = "aguimtz.2003@gmail.com"; // Correo fijo
   const password = "123456"; // Contraseña fija
-
+  
   cy.visit("http://localhost:3000/auth/login");
   cy.get('input[id="username"]').type(email);
   cy.get('input[id="password"]').type(password);
