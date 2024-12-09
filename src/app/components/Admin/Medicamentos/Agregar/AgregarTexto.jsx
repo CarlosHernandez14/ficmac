@@ -13,9 +13,8 @@ function AgregarTexto() {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [efectosSecundarios, setEfectosSecundarios] = useState("");
-  const [urlImagen, setUrlImagen] = useState("");
+  const [imagen, setImagen] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
   const [errors, setErrors] = useState({});
   // Funcion para obtener los tipos de cancer
   useEffect(() => {
@@ -33,7 +32,7 @@ function AgregarTexto() {
   // metodo para guardar el medicamento
   const handleSave = async () => {
     // Validar los datos
-   
+
     const newErrors = {};
     if (!nombre) newErrors.nombre = "El nombre es obligatorio";
     if (!descripcion) newErrors.descripcion = "La descripción es obligatoria";
@@ -45,13 +44,14 @@ function AgregarTexto() {
       setErrors(newErrors);
       return;
     }
-     console.log("Guardando medicamento...");
+    console.log("Guardando medicamento...");
     const nuevoMedicamento = {
       idTipoCancer: tipoCancer,
       nombre,
       descripcion,
       efectos_secundarios: efectosSecundarios,
-      //  url_imagen: urlImagen,
+      url_imagen: imagen ? imagen.url : "",
+      id_imagen: imagen ? imagen.id : "",
     };
 
     console.log("Datos a guardar:", nuevoMedicamento);
@@ -60,15 +60,16 @@ function AgregarTexto() {
     if (response.OK) {
       console.log("Medicamento creado:", response.data);
       setSuccessMessage("Medicamento creado Correctamente");
-       window.location.reload();
+      window.location.reload();
     } else {
       console.error("Error al crear el medicamento:", response.error);
     }
   };
 
   //Metodo para seleccionar imagen
-  const handleImageSelect = (image) => {
-    setSelectedImage(image);
+  const handleImageSelect = (selectedImage) => {
+    console.log("Imagen seleccionada:", selectedImage);
+    setImagen(selectedImage);
   };
 
   //Metodo para cancelar
@@ -78,7 +79,7 @@ function AgregarTexto() {
     setDescripcion("");
     setEfectosSecundarios("");
     setUrlImagen("");
-     window.location.reload();
+    window.location.reload();
   };
 
   return (

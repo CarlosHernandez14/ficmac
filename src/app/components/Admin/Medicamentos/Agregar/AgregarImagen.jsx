@@ -3,23 +3,30 @@ import React, { useState } from 'react'
 import { IoDuplicateOutline } from "react-icons/io5";
 
 function AgregarImagen({ onImageSelect }) {
-  const [imageSrc, setImageSrc] = useState(null);
-  //Funcion para cambiar la imagen
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageSrc(reader.result);
-        onImageSelect(reader.result);
+const [imageSrc, setImageSrc] = useState(null);
+
+// Función para manejar el cambio de archivo
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const imageDetails = {
+        url: reader.result, // Imagen en formato base64
+        name: file.name, // Nombre del archivo
+        type: file.type, // Tipo MIME
       };
-      reader.readAsDataURL(file);
-    }
-  };
-  //Funcion para abrir el input file
-  const handleButtonClick = () => {
-    document.getElementById("fileInput").click();
-  };
+      setImageSrc(reader.result);
+      onImageSelect(imageDetails); // Pasar los detalles al padre
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+// Función para abrir el input file
+const handleButtonClick = () => {
+  document.getElementById("fileInput").click();
+};
 
   return (
     <div className="bg-[#CB1662] w-80 h-auto p-8 flex justify-center rounded-e-xl relative">

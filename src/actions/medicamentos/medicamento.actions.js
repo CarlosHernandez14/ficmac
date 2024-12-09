@@ -145,7 +145,7 @@ export const createMedicamento = async (medicamento) => {
           },
         },
         url_imagen: medicamento.url_imagen ?? "",
-        id_imagen: medicamento.id_imagen ?? "",
+        id_imagen: parseInt(medicamento.id_imagen) ?? "",
       },
     });
 
@@ -212,7 +212,7 @@ export const updateMedicamento = async (id, medicamento) => {
         descripcion: medicamento.descripcion,
         efectos_secundarios: medicamento.efectos_secundarios,
         url_imagen: medicamento.url_imagen ?? "",
-        id_imagen: medicamento.id_imagen ?? "",
+        id_imagen: parseInt( medicamento.id_imagen) ?? "",
       },
     });
 

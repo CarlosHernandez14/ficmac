@@ -23,8 +23,10 @@ function CajaTexto({ tipo}) {
           </p>
         </div>
       </div>
-      <div className="flex justify-end ">
-        <CajaImagenMedicamento tipo={tipo.url_imagen} />
+      <div className="flex justify-end">
+        {tipo.url_imagen ? (
+          <CajaImagenMedicamento tipo={tipo.url_imagen} />
+        ) : null}
       </div>
     </div>
   );
