@@ -1,5 +1,6 @@
 "use server"
 import {prisma as db} from "@/libs/db";
+import { auth } from "@/auth";
 
 // Funcion para obtener las respuestas de un post
 /* 
@@ -21,7 +22,11 @@ export const getReplies = async (idPostPadre) => {
             },
             // Incluimos los datos del usuario
             include: {
-                usuario: true
+                usuario: {
+                    include: {
+                        Paciente: true,
+                    }
+                },
             }
         });
 
@@ -132,55 +137,38 @@ export const deleteReply = async (id) => {
     - data: object
 */
 
-export const createReply = async (reply, idPostPadre, idUsuario) => {
+export const createReply = async (data) => {
     try {
-        // Transaccion para crear la respuesta
-        const resultado = await db.$transaction(async (db) => {
-            
-            // Se obtiene el post padre
-            const postPadre = await db.Post.findUnique({
-                where: {
-                    id: idPostPadre
-                },
-                // Incluimos el tipo de cancer
-                include: {
-                    Tipo_Cancer: true
-                }
-            });
-            
-            // Se crea la respuesta
-            const respuesta = await db.Post.create({
-                data: {
-                    idPostPadre: idPostPadre,
-                    idUsuario: idUsuario,
-                    cuerpo: reply,
-                    titulo: "",
-                    idTipoCancer: {
-                        connect: {
-                            id: postPadre.idTipoCancer.id
-                        }
-                    },
-                }
-            });
+        const session = await auth();
+        const idUsuario = session.user.id;
 
-            return respuesta;
+        // Se crea la respuesta
+        const respuesta = await db.Post.create({
+            data: {
+                cuerpo: data.cuerpo,
+                idPostPadre: data.idPostPadre,
+                idUsuario: idUsuario,
+                idTipoCancer: data.idTipoCancer,
+                titulo: "", // Las respuestas no tienen título, según tu lógica
+            },
         });
 
+        // Retornamos la respuesta creada
         return {
             message: "Respuesta creada",
             OK: true,
-            data: resultado
+            data: respuesta,
         };
     } catch (error) {
         console.error(error);
 
+        // Retornamos un objeto de error
         return {
-            message: "Error al crear la respuesta",
-            OK: false,
-            data: null
+            error: true,
+            message: error.message || "No se pudo crear la respuesta",
         };
     }
-}
+};
 
 // Funcion para actualizar una respuesta
 
