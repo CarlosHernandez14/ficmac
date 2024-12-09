@@ -1,6 +1,8 @@
 import React from 'react'
-import { FaUserCircle, FaStethoscope, FaMicroscope, FaComments } from 'react-icons/fa';
+import { FaUserCircle, FaStethoscope, FaMicroscope, FaComments, FaHome, FaMedkit, FaQuestion } from 'react-icons/fa';
 import NavbarItemGeneral from '../../Navbar/NavbarItemGeneral'
+import { BiLogOut } from 'react-icons/bi';
+import { handleLogout } from '@/actions/authActions/authActions';
 
 function SidebarAdmin() {
   return (
@@ -13,9 +15,17 @@ function SidebarAdmin() {
             <p className='text-white text-xl'>Administrador</p>
         </div>
         <div className='flex flex-col items-center text-justify space-y-2'>
-            <NavbarItemGeneral icon={FaStethoscope} name='Medicos' href='/admin/users' />
-            <NavbarItemGeneral icon={FaMicroscope} name='Estudios' href='/admin/studies' />
+            <NavbarItemGeneral icon={FaHome} name='Inicio' href='/Admin/dashboard' />
+            <NavbarItemGeneral icon={FaStethoscope} name='Medicos' href='/Admin/Usuarios' />
+            <NavbarItemGeneral icon={FaMedkit} name='Medicamentos' href='/Admin/medicamentos' />
+            <NavbarItemGeneral icon={FaMicroscope} name='Publicaciones' href='/Admin/Publicaciones' />
+            <NavbarItemGeneral icon={FaQuestion} name='Preguntas' href='/Admin/preguntasFrecuentes' />
             <NavbarItemGeneral icon={FaComments} name='Foro' href='/admin/comments' />
+            <button onClick={handleLogout} className=' flex justify-center items-center text-xl text-white hover:bg-[#a13c68] rounded-xl' >
+              <BiLogOut size={30}/>
+              <span>Cerrar sesión</span>
+            </button>
+            
         </div>
     </div>
   )

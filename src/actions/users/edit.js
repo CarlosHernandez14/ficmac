@@ -293,6 +293,11 @@ export const createPaciente = async (values) => {
 //Funcion para obtener un usuario
 export const getUser = async () => {
   const session = await auth();
+
+  if (!session) {
+    return null;
+  }
+
   const user = await db.User.findUnique({
     where: {
       id: session.user.id,

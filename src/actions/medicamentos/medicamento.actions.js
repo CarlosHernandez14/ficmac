@@ -121,6 +121,8 @@ export const getMedicamentoById = async (id) => {
  * descripcion: string, // Descripcion del medicamento
  * efectos_secundarios: string, // Efectos secundarios del medicamento
  * idTipoCancer: number, // Id del tipo de cancer al que pertenece el medicamento
+ * url_imagen: string, // URL de la imagen del medicamento
+ * id_imagen: string, // ID de la imagen del medicamento
  * } medicamento - Datos del medicamento a crear
  * @returns {
  * OK: boolean, // Indica si la operacion fue exitosa
@@ -142,6 +144,8 @@ export const createMedicamento = async (medicamento) => {
             id: parseInt(medicamento.idTipoCancer),
           },
         },
+        url_imagen: medicamento.url_imagen ?? "",
+        id_imagen: medicamento.id_imagen ?? "",
       },
     });
 
@@ -171,6 +175,8 @@ export const createMedicamento = async (medicamento) => {
  * descripcion: string, // Descripcion del medicamento
  * efectos_secundarios: string, // Efectos secundarios del medicamento
  * idTipoCancer: number, // Id del tipo de cancer al que pertenece el medicamento
+ * url_imagen: string, // URL de la imagen del medicamento
+ * id_imagen: string, // ID de la imagen del medicamento
  * } medicamento - Datos del medicamento a actualizar
  * @returns {
  * OK: boolean, // Indica si la operacion fue exitosa
@@ -205,6 +211,8 @@ export const updateMedicamento = async (id, medicamento) => {
         nombre: medicamento.nombre,
         descripcion: medicamento.descripcion,
         efectos_secundarios: medicamento.efectos_secundarios,
+        url_imagen: medicamento.url_imagen ?? "",
+        id_imagen: medicamento.id_imagen ?? "",
       },
     });
 
@@ -224,6 +232,7 @@ export const updateMedicamento = async (id, medicamento) => {
     };
   }
 };
+
 
 // Funcion para eliminar un medicamento
 /**

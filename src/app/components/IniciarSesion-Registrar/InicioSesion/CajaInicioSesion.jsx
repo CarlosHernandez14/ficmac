@@ -7,6 +7,7 @@ import { login } from "@/actions/users/login";
 import ErrorBox from "../General/ErrorBox";
 import { DNA } from "react-loader-spinner";
 import { useRouter } from "next/navigation";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 function CajaInicioSesion({ setShowLogin }) {
   const [username, setUsername] = useState("")
@@ -36,18 +37,16 @@ function CajaInicioSesion({ setShowLogin }) {
         email: e.target.username.value,
         password: e.target.password.value
       }
-      startTransition(() => {
-        login(values).then(
-          (response) =>{
-            if(response.error){
-              console.log(response.error)
-              setErrorResponse(response.error)
-            }
-            if(response.success){
-              console.log(response.success)
-
-            }
-          })
+      startTransition(async () => {
+        const response = await login(values)
+        if(response.error){
+          console.log(response.error)
+          setErrorResponse(response.error)
+        }
+        if(response.success){
+          console.log(response.success)
+          router.push(DEFAULT_LOGIN_REDIRECT);
+        }
       })
     }
   };

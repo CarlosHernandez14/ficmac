@@ -26,9 +26,12 @@ export const login = async (values) =>{
         await signIn("credentials",{
             email: values.email,
             password: values.password,
-            redirectTo: DEFAULT_LOGIN_REDIRECT
+            // redirectTo: DEFAULT_LOGIN_REDIRECT
+            redirect: false
         })
+        return { success: "Inicio de sesión exitoso" }; // Asegúrate de retornar algo aquí
     }catch(ex){
+        console.log("Error desde login: ", ex)
         if(ex instanceof AuthError){
             switch(ex.type){
                 case "CredentialsSignin":
@@ -37,7 +40,8 @@ export const login = async (values) =>{
                     return {error: "Error desconocido"}
             }
         }
-        throw ex
+        // throw ex
+        return { error: "Error inesperado" }; // Retorna un error genérico si algo falla
     }
 }
 

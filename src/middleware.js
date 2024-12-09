@@ -14,13 +14,14 @@ import {
   DEFAULT_LOGIN_REDIRECT,
   DEFAULT_MEDICAL_REDIRECT,
   DEFAULT_ADMIN_REDIRECT,
+  DEFAULT_PACIENT_REDIRECT,
 } from "@/routes"
 
 const { auth } = NextAuth(authConfig)
 //Funciones de middleware
 export default auth(async (req) => {
   //Declaración de variables
-  const token =  await getToken({req, secret: process.env.AUTH_SECRET}) 
+  const token =  await getToken({req, secret: process.env.AUTH_SECRET, secureCookie: process.env.NODE_ENV === "production"}) 
   const {nextUrl} = req
   const isLoggedIn = !!req.auth
   const isAdmin = isLoggedIn && token.role=== "ADMIN"
@@ -53,7 +54,7 @@ export default auth(async (req) => {
       if(isMedical){
         return Response.redirect(new URL(DEFAULT_MEDICAL_REDIRECT, nextUrl))
       }
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+      return Response.redirect(new URL(DEFAULT_PACIENT_REDIRECT, nextUrl))
     }
     return null
   }
