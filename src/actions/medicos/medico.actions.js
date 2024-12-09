@@ -35,3 +35,49 @@ export async function getMedicos() {
     };
   }
 }
+
+/**
+ * Funcion para crear un medico
+ * Recibe como parametro:
+ * - values: Objeto con los valores del medico a crear
+ * Retorna un objeto con la siguiente estructura:
+ * {
+ *   OK: true|false, // Indica si la creacion fue exitosa
+ *  message: "", // Mensaje de respuesta
+ * data: {}|null // Medico creado
+ * }
+ */
+
+export async function createMedico(values) {
+  try {
+    // Crear el medico
+    const medico = await db.medico.create({
+      data: {
+        nombre_completo: values.nombre_completo,
+        rfc: values.rfc,
+        matricula: values.matricula,
+        num_celular: values.num_celular,
+        especialidad: values.especialidad,
+        usuario: {
+          connect: {
+            id: values.idUsuario,
+          },
+        },
+      },
+    });
+
+    return {
+      OK: true,
+      message: "Medico creado",
+      data: medico,
+    };
+
+  } catch (error) {
+    //console.table(error);
+    return {
+      OK: false,
+      message: "Error al crear el medico",
+      error: error
+    };
+  }
+}
