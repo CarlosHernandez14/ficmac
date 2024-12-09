@@ -3,7 +3,7 @@ import React from 'react';
 import { deletePost } from "@/actions/foro/post.actions";
 import ImagenPost from "@/app/components/Foro/ImagenPost";
 
-const PostCard = ({ question, description, categories, likes, responses, compact = false, myPost = false, postId, imageSrc }) => {
+const PostCard = ({ question, description, categories, likes, responses, compact = false, myPost = false, postId, imageSrc, onClickResponses, isSelected = false }) => {
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este post?");
@@ -24,8 +24,7 @@ const PostCard = ({ question, description, categories, likes, responses, compact
 
   return (
     <div
-      className={`bg-[#A0737D] mb-6 p-${compact ? '4' : '6'} rounded-lg shadow-lg ${compact ? 'text-sm' : 'text-base'
-        }`}
+      className={`mb-6 p-${compact ? '4' : '6'} rounded-lg shadow-lg ${compact ? 'text-sm' : 'text-base'} ${isSelected ? 'bg-[#753350]' : 'bg-[#A0737D]'}`}
     >
       {/* Encabezado */}
       <div className="flex items-center mb-4">
@@ -61,7 +60,7 @@ const PostCard = ({ question, description, categories, likes, responses, compact
             <span>{likes} Votos</span>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={onClickResponses}>
             <img src="/Foro/Comentario_foro.png" alt="Comentarios" className="w-5 h-5" />
             <span>{responses} Respuestas</span>
           </div>
