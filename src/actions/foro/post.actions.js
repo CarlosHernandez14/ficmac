@@ -15,18 +15,36 @@ export const getPosts = async () => {
         const publicaciones = await db.Post.findMany({
             // Incluimos los datos del usuario, tipo-cancer, 
             include: {
-                usuario: true,
+                usuario: {
+                    include: {
+                        Paciente: true,
+                    }
+                },
                 Tipo_Cancer: true,
-                Voto: true
-            }
+                Voto: true,
+            },
         });
 
-        // Se retorna las publicaciones
+        // Para cada publicación, contar cuántos comentarios tiene (los que tienen idPostPadre igual al id del post)
+        const publicacionesConComentarios = await Promise.all(publicaciones.map(async (post) => {
+            // Contamos los comentarios para el post actual (posts con idPostPadre igual al id del post)
+            const replies = await db.Post.count({
+                where: {
+                    idPostPadre: post.id
+                }
+            });
 
+            return {
+                ...post,
+                replies // Agregamos el conteo de comentarios a la publicación
+            };
+        }));
+
+        // Se retorna las publicaciones
         return {
             message: "Publicaciones obtenidas",
             OK: true,
-            data: publicaciones
+            data: publicacionesConComentarios
         };
     } catch (error) {
         console.error(error);
@@ -55,7 +73,11 @@ export const getPostById = async () => {
             },
             // Incluimos los datos del usuario, tipo-cancer, 
             include: {
-                usuario: true,
+                usuario: {
+                    include: {
+                        Paciente: true,
+                    }
+                },
                 Tipo_Cancer: true,
                 Voto: true
             }

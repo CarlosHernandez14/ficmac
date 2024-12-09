@@ -1,103 +1,112 @@
 "use client";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 
 import IconosAvance from "./IconosAvance";
 import { useRouter } from "next/navigation";
 import ButtonNext from "./ButtonNext";
 
-const validatePhoneNumber = (phone) => {
-  const phoneRegex = /^\d{10}$/; 
-  return phoneRegex.test(phone);
-};
-
-const validateEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
-  return emailRegex.test(email);
-};
-const validateName = (name) => {
-  const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/; 
-  return nameRegex.test(name);
-};
+import {
+  createPaciente,
+  getPacienteDataByIdUser,
+  getUser,
+  updatePaciente,
+} from "@/actions/users/edit";
+import { getPacienteByIdUser } from "@/actions/users/edit";
 
 const Formulario = () => {
   const router = useRouter();
 
-  const [formData, setFormData] = useState({
-    nombre: "",
-    apellidos: "",
-    tipoDocumento: "",
-    numeroDocumento: "",
-    fechaNacimiento: "",
-    ciudad: "",
-    direccion: "",
-    nacionalidad: "",
-    telefono: "",
-    correo: "",
-    ips: "",
-    eps: "",
-    familiar: "",
-    telefonoFamiliar: "",
-    aceptaPolitica: false,
-  });
+  const [paciente, setPaciente] = useState(null);
+  const [existePaciente, setExistePaciente] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [numCelular, setNumCelular] = useState("");
+  const [edad, setEdad] = useState("");
+  const [sexo, setSexo] = useState("");
+  const [direccion, setDireccion] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [tipoDocumento, setTipoDocumento] = useState("");
+  const [numDocumento, setNumDocumento] = useState("");
+  const [nacionalidad, setNacionalidad] = useState("");
+  const [IPS, setIPS] = useState("");
+  const [EPS, setEPS] = useState("");
+  const [parentescoFamiliar, setParentescoFamiliar] = useState("");
+  const [contactoFamiliar, setContactoFamiliar] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [aceptaPolitica, setAceptaPolitica] = useState(false);
 
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
+  // Validar los campos obligatorios
   const validateForm = () => {
-    const newErrors = {};
-    for (const [key, value] of Object.entries(formData)) {
-      if (!value && key !== "aceptaPolitica") {
-        newErrors[key] = "Este campo es obligatorio";
-      }
-    }
-    if (!validatePhoneNumber(formData.telefono)) {
-      newErrors.telefono = "El teléfono debe tener exactamente 10 números";
-    }
-  
-    if (!validatePhoneNumber(formData.telefonoFamiliar)) {
-      newErrors.telefonoFamiliar = "El teléfono debe tener exactamente 10 números";
-    }
-  
-    if (!validateEmail(formData.correo)) {
-      newErrors.correo = "El correo electrónico no es válido";
-    }
-  
-    if (!formData.aceptaPolitica) {
-      newErrors.aceptaPolitica = "Acepta la política y privacidad de datos*";
-    }
-    if (!validateName(formData.nombre)) {
-      newErrors.nombre = "El nombre solo debe contener letras y espacios";
-    }
-  
-    if (!validateName(formData.apellidos)) {
-      newErrors.apellidos = "Los apellidos solo deben contener letras y espacios";
-    }
-    if (!validateName(formData.ciudad)) {
-      newErrors.ciudad = "La ciudad solo debe contener letras y espacios";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return (
+      name &&
+      email &&
+      numCelular &&
+      direccion &&
+      tipoDocumento &&
+      numDocumento &&
+      nacionalidad &&
+      IPS &&
+      EPS &&
+      parentescoFamiliar &&
+      contactoFamiliar &&
+      aceptaPolitica
+    );
   };
 
+  // Manejar el envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      router.push("/Usuarios/AdjuntarDocumentos"); 
+
+    // Validar términos y condiciones
+    if (!aceptaPolitica) {
+      setErrorMessage("Para continuar acepta términos y condiciones.");
+      return;
+    }
+
+    // Validar campos
+    if (!validateForm()) {
+      setShowPopup(true); // Mostrar el pop-up general
     } else {
-      alert("Por favor, completa todos los campos obligatorios.");
+      router.push("/Usuarios/AdjuntarDocumentos");
     }
   };
 
-  
+  //efecto para obtener los datos del usuario y del paciente
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUser();
+      setName(user.name);
+      setEmail(user.email);
+      setNumCelular(user.num_celular);
+
+      const pacienteData = await getPacienteDataByIdUser(user.id);
+
+      if (pacienteData) {
+        setPaciente(pacienteData);
+        setEdad(pacienteData.edad);
+        setSexo(pacienteData.sexo);
+        setDireccion(pacienteData.direccion);
+        setTipoDocumento(pacienteData.tipo_documento);
+        setNumDocumento(pacienteData.num_documento);
+        setNacionalidad(pacienteData.nacionalidad);
+        setIPS(pacienteData.IPS);
+        setEPS(pacienteData.EPS);
+        setParentescoFamiliar(pacienteData.ParentescoFamiliar);
+        setContactoFamiliar(pacienteData.contactoFamiliar);
+      }
+    };
+    const fetchExistePaciente = async () => {
+      const user = await getUser();
+      const led = await getPacienteByIdUser(user.id);
+      setExistePaciente(led);
+    };
+    fetchUser();
+    fetchExistePaciente();
+  }, []);
+
   return (
-    <div className="flex h-screen ">
+    <div className="flex  min-h-screen">
       <div className="w-1/5 p-4 flex flex-col items-center justify-start mr-48 ml-10">
         <IconosAvance
           imagen={"/FormularioSolicitarEstudios/Carpeta.png"}
@@ -113,199 +122,158 @@ const Formulario = () => {
           </h2>
           <form className="grid grid-cols-2 gap-6 text-xl font-thin">
             <div className="flex flex-col">
+              <label className="block text-xl font-medium text-white">
+                Nombre completo
+              </label>
               <input
                 type="text"
                 placeholder="Nombre*"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
+                readOnly
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="[419px] h-[56px] rounded-[20px] shadow-2xl  pl-5"
               />
-              {errors.nombre && (
-                <p className="text-red-500 text-xs  ">{errors.nombre}</p>
-              )}
             </div>
+
             <div className="flex flex-col">
+              <label className="block text-xl font-medium text-white">
+                Tipo de documento
+              </label>
               <input
                 type="text"
-                placeholder="Apellidos*"
-                name="apellidos"
-                value={formData.apellidos}
-                onChange={handleChange}
-                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
-              />
-              {errors.apellidos && (
-                <p className="text-red-500 text-xs  ">{errors.apellidos}</p>
-              )}
-            </div>
-            <div className="flex flex-col">
-              <select
+                readOnly
                 name="tipoDocumento"
                 className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
-                value={formData.tipoDocumento}
-                onChange={handleChange}
-              >
-                <option> Tipo de documento*</option>
-                <option>INE</option>
-                <option>Pasaporte</option>
-                <option>Cartilla militar</option>
-              </select>
-              {errors.tipoDocumento && (
-                <p className="text-red-500 text-xs  ">{errors.tipoDocumento}</p>
-              )}
+                value={tipoDocumento}
+                onChange={(e) => setTipoDocumento(e.target.value)}
+              />
             </div>
             <div className="flex flex-col">
+              <label className="block text-xl font-medium text-white">
+                Número de documento
+              </label>
               <input
                 type="text"
                 placeholder="Número de documento*"
+                readOnly
                 name="numeroDocumento"
-                value={formData.numeroDocumento}
-                onChange={handleChange}
+                value={numDocumento}
+                onChange={(e) => setNumDocumento(e.target.value)}
                 className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
               />
-              {errors.numeroDocumento && (
-                <p className="text-red-500 text-xs  ">
-                  {errors.numeroDocumento}
-                </p>
-              )}
             </div>
+
             <div className="flex flex-col">
-              <input
-                type="date"
-                placeholder="Fecha de nacimiento*"
-                name="fechaNacimiento"
-                value={formData.fechaNacimiento}
-                onChange={handleChange}
-                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
-              />
-              {errors.fechaNacimiento && (
-                <p className="text-red-500 text-xs  ">
-                  {errors.fechaNacimiento}
-                </p>
-              )}
-            </div>
-            <div className="flex flex-col">
+              <label className="block text-xl font-medium text-white">
+                Dirección de residencia
+              </label>
               <input
                 type="text"
-                placeholder="Ciudad residente*"
-                name="ciudad"
-                value={formData.ciudad}
-                onChange={handleChange}
-                className=" w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
-              />
-              {errors.ciudad && (
-                <p className="text-red-500 text-xs  ">{errors.ciudad}</p>
-              )}
-            </div>
-            <div className="flex flex-col">
-              <input
-                type="text"
+                readOnly
                 placeholder="Dirección de residencia*"
                 name="direccion"
-                value={formData.direccion}
-                onChange={handleChange}
+                value={direccion}
+                onChange={(e) => setDireccion(e.target.value)}
                 className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
               />
-              {errors.direccion && (
-                <p className="text-red-500 text-xs  ">{errors.direccion}</p>
-              )}
             </div>
             <div className="flex flex-col">
+              <label className="block text-xl font-medium text-white">
+                Nacionalidad
+              </label>
               <input
                 type="text"
+                readOnly
                 placeholder="Nacionalidad*"
                 name="nacionalidad"
-                value={formData.nacionalidad}
-                onChange={handleChange}
+                value={nacionalidad}
+                onChange={(e) => setNacionalidad(e.target.value)}
                 className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
               />
-              {errors.nacionalidad && (
-                <p className="text-red-500 text-xs  ">{errors.nacionalidad}</p>
-              )}
             </div>
             <div className="flex flex-col">
+              <label className="block text-xl font-medium text-white">
+                Teléfono
+              </label>
               <input
-                type="text"
+                type="tel"
+                readOnly
                 placeholder="Número de teléfono*"
-                name="telefono"
-                value={formData.telefono}
-                onChange={handleChange}
+                name="num_celular"
+                value={numCelular}
+                onChange={(e) => setNumCelular(e.target.value)}
                 className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
               />
-              {errors.telefono && (
-                <p className="text-red-500 text-xs  ">{errors.telefono}</p>
-              )}
             </div>
             <div className="flex flex-col">
+              <label className="block text-xl font-medium text-white">
+                Correo electrónico
+              </label>
               <input
                 type="email"
+                readOnly
                 placeholder="Correo electrónico*"
-                name="correo"
-                value={formData.correo}
-                onChange={handleChange}
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
               />
-              {errors.correo && (
-                <p className="text-red-500 text-xs  ">{errors.correo}</p>
-              )}
             </div>
             <div className="flex flex-col">
+              <label className="block text-xl font-medium text-white">
+                IPS
+              </label>
               <input
-                type="text"
+                type="number"
+                readOnly
                 placeholder="IPS*"
-                name="ips"
-                value={formData.ips}
-                onChange={handleChange}
+                name="IPS"
+                value={IPS}
+                onChange={(e) => setIPS(e.target.value)}
                 className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
               />
-              {errors.ips && (
-                <p className="text-red-500 text-xs  ">{errors.ips}</p>
-              )}
             </div>
             <div className="flex flex-col">
-              <select
-                name="eps"
-                value={formData.eps}
-                onChange={handleChange}
+              <label className="block text-xl font-medium text-white">
+                EPS
+              </label>
+              <input
+                type="number"
+                readOnly
+                name="EPS"
+                value={EPS}
+                onChange={(e) => setEPS(e.target.value)}
                 className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
-              >
-                <option>EPS*</option>
-                <option>Jijo</option>
-              </select>
-              {errors.eps && (
-                <p className="text-red-500 text-xs  ">{errors.eps}</p>
-              )}
+              />
             </div>
             <div className="flex flex-col">
-              <select
-                name="familiar"
-                value={formData.familiar}
-                onChange={handleChange}
-                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
-              >
-                <option>Familiar de contacto*</option>
-                <option>Madre</option>
-                <option>Padre</option>
-                <option>Hijo/a</option>
-              </select>
-              {errors.familiar && (
-                <p className="text-red-500 text-xs  ">{errors.familiar}</p>
-              )}
-            </div>
-            <div className="flex flex-col">
+              <label className="block text-xl font-medium text-white">
+                Parentezco familiar
+              </label>
               <input
                 type="text"
+                readOnly
+                name="parentesco_familiar"
+                placeholder="Parentezco familiar"
+                value={parentescoFamiliar}
+                onChange={(e) => setParentescoFamiliar(e.target.value)}
+                className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5"
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="block text-xl font-medium text-white">
+                Teléfono del familiar
+              </label>
+              <input
+                type="tel"
+                readOnly
                 placeholder="Teléfono del familiar*"
-                name="telefonoFamiliar"
-                value={formData.telefonoFamiliar}
-                onChange={handleChange}
+                name="contacto_familiar"
+                value={contactoFamiliar}
+                onChange={(e) => setContactoFamiliar(e.target.value)}
                 className="w-[419px] h-[56px] rounded-[20px] shadow-2xl pl-5 "
               />
-              {errors.telefonoFamiliar && (
-                <p className="text-red-500 text-xs  ">
-                  {errors.telefonoFamiliar}
-                </p>
-              )}
             </div>
           </form>
         </div>
@@ -314,8 +282,10 @@ const Formulario = () => {
             <input
               type="checkbox"
               name="aceptaPolitica"
-              checked={formData.aceptaPolitica}
-              onChange={handleChange}
+              onChange={(e) => {
+                setAceptaPolitica(e.target.checked);
+                setErrorMessage("");
+              }}
               className="mr-2"
             />
             Autorizo la{" "}
@@ -323,13 +293,15 @@ const Formulario = () => {
               política y privacidad de datos
             </span>
           </label>
-          {errors.aceptaPolitica && (
-            <p className="text-red-500 col-span-2 text-sm">{errors.aceptaPolitica}</p>
-          )}
 
           <a href="" className="underline">
             Ver consentimiento informado
           </a>
+        </div>
+        <div>
+          {errorMessage && (
+            <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+          )}
         </div>
         <div className="w-full mt-8 flex justify-center">
           <div className="w-1/2">
@@ -337,6 +309,47 @@ const Formulario = () => {
           </div>
         </div>
       </div>
+      {/* Pop-up */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50  ">
+          <div className="relative bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-lg  ">
+            {/* Botón de cierre */}
+            <button
+              onClick={() => setShowPopup(false)}
+              className="absolute top-3 right-3 text-[#753350] hover:text-black focus:outline-none transform transition-transform duration-200 hover:rotate-180"
+            >
+              ✖
+            </button>
+
+            {/* Logo */}
+            <div className="flex justify-center  ">
+              <img
+                src="/General/logo negro.png"
+                alt="Logo"
+                className="h-32 w-32 object-contain"
+              />
+            </div>
+
+            {/* Mensaje */}
+            <h3 className="text-lg font-bold mb-4 text-center">
+              Para continuar tienes que llenar todos tus datos
+            </h3>
+
+            {/* Botón */}
+            <div className="flex justify-center">
+              <button
+                onClick={() => {
+                  setShowPopup(false); // Ocultar el pop-up
+                  router.push("/Usuarios/Perfil"); // Redirigir
+                }}
+                className="bg-[#367B99] text-white px-4 py-2 rounded hover:bg-[#85d9fd]"
+              >
+                Ir a editar perfil
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -33,30 +33,39 @@ function InputEditarPerfil() {
   const [EPS, setEPS] = useState("");
   const [parentescoFamiliar, setParentescoFamiliar] = useState("");
   const [contactoFamiliar, setContactoFamiliar] = useState("");
-
+ const [errors, setErrors] = useState({});
   //maneja el submit del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!validatePhone(numCelular||contactoFamiliar)) {
-      alert("El número de celular debe tener 10 dígitos.");
-      return;
+    const newErrors = {};
+
+    if (!validatePhone(numCelular)) {
+      newErrors.numCelular = "El número de celular debe tener 10 dígitos.";
     }
 
-    //console.table("Valores", valores);
+    if (!validatePhone(contactoFamiliar)) {
+      newErrors.contactoFamiliar =
+        "El número de celular debe tener 10 dígitos.";
+    }
 
-    if (
-      !validateText(name) ||
-      !validateText(nacionalidad)
-    ) {
-      alert("Los campos de texto solo deben contener letras.");
-      return;
+    if (!validateText(name)) {
+      newErrors.name = "El nombre solo debe contener letras.";
+    }
+
+    
+
+    if (!validateText(nacionalidad)) {
+      newErrors.nacionalidad = "La nacionalidad solo debe contener letras.";
     }
 
     if (!validateEmail(email)) {
-      alert("El correo electrónico no es válido.");
-      return;
+      newErrors.email = "El correo electrónico no es válido.";
     }
 
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
     handleCreatePaciente();
 
   };
@@ -137,17 +146,19 @@ function InputEditarPerfil() {
     }
     
   };
-//Funcion para validar el telefono
+  // Función para validar el teléfono
   const validatePhone = (phone) => {
     const phoneRegex = /^\d{10}$/;
     return phoneRegex.test(phone);
   };
-//Funcion para validar el texto
+
+  // Función para validar el texto
   const validateText = (text) => {
     const textRegex = /^[a-zA-Z\s]+$/;
     return textRegex.test(text);
   };
-//Funcion para validar el email
+
+  // Función para validar el email
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -175,16 +186,15 @@ function InputEditarPerfil() {
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                onBlur={() => {
-                  if (!validateText(name)) {
-                    alert("El nombre solo debe contener letras.");
-                  }
-                }}
-                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
-         focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+                className={`shadow-gray-700 shadow-sm block w-full h-10 border ${
+                  errors.name ? "border-red-500" : "border-[#A0737D]"
+                } rounded-md focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold`}
                 pattern="[A-Za-z\s]+"
                 title="Solo se permiten letras y espacios"
               />
+              {errors.name && (
+                <p className="text-red-500 text-xs italic">{errors.name}</p>
+              )}
             </div>
             <div>
               <label className="block text-xl font-medium text-black">
@@ -195,16 +205,15 @@ function InputEditarPerfil() {
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                onBlur={() => {
-                  if (!validateEmail(email)) {
-                    alert("El correo electrónico no es válido.");
-                  }
-                }}
-                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
-         focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+                className={`shadow-gray-700 shadow-sm block w-full h-10 border ${
+                  errors.email ? "border-red-500" : "border-[#A0737D]"
+                } rounded-md focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold`}
                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                 title="Debe ser un correo electrónico válido"
               />
+              {errors.email && (
+                <p className="text-red-500 text-xs italic">{errors.email}</p>
+              )}
             </div>
             <div>
               <label className="block text-xl font-medium text-black">
@@ -215,16 +224,17 @@ function InputEditarPerfil() {
                 name="num_celular"
                 value={numCelular}
                 onChange={(e) => setNumCelular(e.target.value)}
-                onBlur={() => {
-                  if (!validatePhone(numCelular)) {
-                    alert("El número de celular debe tener 10 dígitos.");
-                  }
-                }}
-                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md 
-         focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+                className={`shadow-gray-700 shadow-sm block w-full h-10 border ${
+                  errors.numCelular ? "border-red-500" : "border-[#A0737D]"
+                } rounded-md focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold`}
                 pattern="\d{10}"
                 title="Debe ser un número de teléfono válido de 10 dígitos"
               />
+              {errors.numCelular && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.numCelular}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-xl font-medium text-black">
@@ -251,8 +261,8 @@ function InputEditarPerfil() {
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
               >
                 <option value="">Seleccione una opción</option>
-                <option value="femenino">Femenino</option>
-                <option value="masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Masculino">Masculino</option>
                 <option value="otro">Otro</option>
               </select>
             </div>
@@ -281,10 +291,10 @@ function InputEditarPerfil() {
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
               >
                 <option value="">Seleccione una opción</option>
-                <option value="femenino">INE</option>
-                <option value="masculino">Pasaporte</option>
-                <option value="otro">Licencia de conducir</option>
-                <option value="otro">Cartilla militar</option>
+                <option value="INE">INE</option>
+                <option value="Pasaporte">Pasaporte</option>
+                <option value="Licencia de conducir">Licencia de conducir</option>
+                <option value="Cartilla militar">Cartilla militar</option>
               </select>
             </div>
             <div>
@@ -297,9 +307,15 @@ function InputEditarPerfil() {
                 value={numDocumento}
                 onChange={(e) => setNumDocumento(e.target.value)}
                 pattern="\d{8}"
-                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
-          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+                className={`shadow-gray-700 shadow-sm block w-full h-10 border ${
+                  errors.numDocumento ? "border-red-500" : "border-[#A0737D]"
+                } rounded-md focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold`}
               />
+              {errors.numDocumento && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.numDocumento}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-xl font-medium text-black">
@@ -325,9 +341,13 @@ function InputEditarPerfil() {
                 value={IPS}
                 onChange={(e) => setIPS(e.target.value)}
                 pattern="\d{8}"
-                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
-          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+                className={`shadow-gray-700 shadow-sm block w-full h-10 border ${
+                  errors.IPS ? "border-red-500" : "border-[#A0737D]"
+                } rounded-md focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold`}
               />
+              {errors.IPS && (
+                <p className="text-red-500 text-xs italic">{errors.IPS}</p>
+              )}
             </div>
             <div>
               <label className="block text-xl font-medium text-black">
@@ -339,9 +359,13 @@ function InputEditarPerfil() {
                 value={EPS}
                 onChange={(e) => setEPS(e.target.value)}
                 pattern="\d{8}"
-                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
-          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+                className={`shadow-gray-700 shadow-sm block w-full h-10 border ${
+                  errors.EPS ? "border-red-500" : "border-[#A0737D]"
+                } rounded-md focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold`}
               />
+              {errors.EPS && (
+                <p className="text-red-500 text-xs italic">{errors.EPS}</p>
+              )}
             </div>
             <div>
               <label className="block text-xl font-medium text-black">
@@ -353,9 +377,17 @@ function InputEditarPerfil() {
                 value={parentescoFamiliar}
                 onChange={(e) => setParentescoFamiliar(e.target.value)}
                 pattern="[A-Za-z\s]+"
-                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
-          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+                className={`shadow-gray-700 shadow-sm block w-full h-10 border ${
+                  errors.parentescoFamiliar
+                    ? "border-red-500"
+                    : "border-[#A0737D]"
+                } rounded-md focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold`}
               />
+              {errors.parentescoFamiliar && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.parentescoFamiliar}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-xl font-medium text-black">
@@ -366,14 +398,19 @@ function InputEditarPerfil() {
                 name="contacto_familiar"
                 value={contactoFamiliar}
                 onChange={(e) => setContactoFamiliar(e.target.value)}
-                onBlur={() => {
-                  if (!validatePhone(contactoFamiliar)) {
-                    alert("El número de celular debe tener 10 dígitos.");
-                  }
-                }}
-                className="shadow-gray-700 shadow-sm block w-full h-10 border border-[#A0737D] rounded-md
-          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
+                className={`shadow-gray-700 shadow-sm block w-full h-10 border ${
+                  errors.contactoFamiliar
+                    ? "border-red-500"
+                    : "border-[#A0737D]"
+                } rounded-md focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold`}
+                pattern="\d{10}"
+                title="Debe ser un número de teléfono válido de 10 dígitos"
               />
+              {errors.contactoFamiliar && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.contactoFamiliar}
+                </p>
+              )}
             </div>
 
             <div className="flex justify-between py-8 space-x-32">

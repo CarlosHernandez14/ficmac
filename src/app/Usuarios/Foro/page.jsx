@@ -4,9 +4,15 @@ import Image from 'next/image';
 
 import PostCard from "@/app/components/Foro/PostCard";
 import ModalNewPost from "@/app/components/Foro/ModalNewPost";
+import ModalNewComment from "@/app/components/Foro/ModalNewComment";
 
+import { getUser } from "@/actions/users/edit";
 import { getTiposCancer } from "@/actions/tipos_cancer/tiposCancer";
 import { createPost, getPosts, getPostById } from "@/actions/foro/post.actions";
+
+import { getReplies, createReply } from "@/actions/foro/reply.actions";
+
+import ImagenPerfil from "@/app/components/Foro/ImagenPerfil";
 
 export default function Forum() {
 
@@ -17,14 +23,21 @@ export default function Forum() {
     { id: 5, question: "¿Cuáles son los síntomas iniciales del cáncer de piel?", description: "Estoy notando una nueva mancha en mi piel. ¿Cómo puedo saber si es un síntoma de alerta o solo algo benigno?", categories: ["Cáncer de piel", "Cáncer"], likes: 120, responses: 30 },
   ];
 
+  const [userName, setUserName] = useState("");
+
   const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const [posts, setPosts] = useState([]);
   const [myPosts, setMyPosts] = useState([]);
 
+  const [selectedPost, setSelectedPost] = useState(null); // Post seleccionado
+  const [replies, setReplies] = useState([]); // Respuestas del post seleccionado
+  const [showCommentModal, setShowCommentModal] = useState(false); // Modal para agregar comentario
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +49,8 @@ export default function Forum() {
         ]);
 
         if (postsResponse.OK) {
-          setPosts(postsResponse.data);
+          const mainPosts = postsResponse.data.filter((post) => !post.idPostPadre);
+          setPosts(mainPosts);
         } else {
           throw new Error(postsResponse.message || "Error al obtener los posts");
         }
@@ -48,7 +62,8 @@ export default function Forum() {
         }
 
         if (myPostsResponse.OK) {
-          setMyPosts(myPostsResponse.data);
+          const myMainPosts = myPostsResponse.data.filter((post) => !post.idPostPadre);
+          setMyPosts(myMainPosts);
         } else {
           throw new Error(categoriesResponse.error || "Error al obtener los posts del usuario");
         }
@@ -61,6 +76,17 @@ export default function Forum() {
     };
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUser();
+      if (user) {
+        setUserName(user.name);
+      }
+    };
+
+    fetchUser();
   }, []);
 
   const handleCategoryClick = (category) => {
@@ -84,6 +110,57 @@ export default function Forum() {
       }
     } catch (error) {
       alert("Error al crear la publicación");
+    }
+  };
+
+  // Conseguir Comentarios
+  const fetchReplies = async (postId) => {
+    const response = await getReplies(postId);
+    if (response.OK) {
+      setReplies(response.data);
+    }
+  };
+
+  const handlePostClick = async (post) => {
+    if (selectedPost?.id === post.id) {
+      setSelectedPost(null);
+      setReplies([]);
+    } else {
+      setSelectedPost(post);
+      await fetchReplies(post.id);
+    }
+  };
+
+  const handleAddComment = async (commentBody) => {
+    try {
+      if (!selectedPost) {
+        alert("Por favor selecciona un post antes de agregar un comentario.");
+        return;
+      }
+
+      const tipoCancerId = selectedPost.Tipo_Cancer?.id;
+      if (!tipoCancerId) {
+        alert("No se encontró el ID del tipo de cáncer para el post seleccionado.");
+        return;
+      }
+
+      const replyData = {
+        cuerpo: commentBody,
+        idPostPadre: selectedPost.id,
+        idTipoCancer: tipoCancerId,
+      };
+
+      const response = await createReply(replyData);
+      if (response.OK) {
+        alert("Comentario agregado exitosamente");
+        setReplies((prev) => [...prev, response.data]);
+        setShowCommentModal(false); // Cerrar modal después de agregar el comentario
+      } else {
+        alert(response.message);
+      }
+    } catch (error) {
+      alert("Error al agregar el comentario. Por favor, inténtalo de nuevo.");
+      console.error(error);
     }
   };
 
@@ -134,24 +211,71 @@ export default function Forum() {
 
         <div className="h-[660px] min-h-[660px] overflow-y-scroll pr-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
           {filteredPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              question={post.titulo}
-              description={post.cuerpo}
-              categories={post.Tipo_Cancer.nombre}
-              likes={post.Voto?.length || 0} // Contar los votos
-              responses={post.responses || 0}
-              compact={false}
-            />
+            <div key={post.id} className="mb-4">
+              <PostCard
+                question={post.titulo}
+                description={post.cuerpo}
+                categories={post.Tipo_Cancer.nombre}
+                likes={post.Voto?.length || 0}
+                responses={post.replies || 0}
+                compact={false}
+                imageSrc={post.usuario?.Paciente?.[0]?.imagen_url || "/Perfil/PF2.webp"}
+                onClickResponses={() => handlePostClick(post)}
+                isSelected={selectedPost?.id === post.id}
+              />
+
+              {/* Si este post está seleccionado, muestra las respuestas y el botón de agregar comentario */}
+              {selectedPost?.id === post.id && (
+                <div className="justify-center bg-gray-100 rounded-lg p-4 mt-2 w-[50rem]">
+
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-[#753350] font-bold">Respuestas ({replies.length})</p>
+                    <button
+                      onClick={() => setShowCommentModal(true)}
+                      className="bg-[#753350] text-white px-4 py-2 rounded hover:bg-blue-600"
+                    >
+                      Agregar Comentario
+                    </button>
+                  </div>
+
+                  {/* Listado de respuestas */}
+                  <div className="space-y-2 mt-4">
+                    {replies.map((reply) => (
+                      <div key={reply.id}>
+                        <PostCard
+                          question={reply.usuario?.Paciente?.[0]?.nombre_completo}
+                          description={reply.cuerpo}
+                          likes={reply.Voto?.length || 0}
+                          responses={0}
+                          compact={true}
+                          imageSrc={reply.usuario?.Paciente?.[0]?.imagen_url || "/Perfil/PF2.webp"}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+              )}
+            </div>
+
+
           ))}
         </div>
+
+        {/* Modal para agregar comentarios */}
+        {showCommentModal && (
+          <ModalNewComment
+            onClose={() => setShowCommentModal(false)}
+            onSubmit={handleAddComment}
+          />
+        )}
       </div>
 
 
       <div className="flex flex-col justify-between space-y-6 w-[40%] z-10">
 
         {/* Perfil del usuario */}
-        <div className="h-[60%] bg-[#D9D9D9] rounded-3xl p-6 shadow-lgs">
+        <div className="h-[63%] bg-[#D9D9D9] rounded-3xl p-6 shadow-lgs">
 
           <div className="flex items-center justify-end">
             <button onClick={() => setShowModal(true)} className="flex p-4 bg-[#753350] text-white rounded-full hover:bg-[#5a2530] items-end">
@@ -160,8 +284,11 @@ export default function Forum() {
           </div>
 
           <div className="flex flex-col items-center mb-4">
-            <div className="w-[8rem] h-[8rem] bg-black rounded-full"></div>
-            <h2 className="text-xl font-bold mt-4 text-[#753350]">Leonardo Aguilar</h2>
+            <div className="w-[8rem] h-[8rem]">
+              <ImagenPerfil />
+            </div>
+
+            <h2 className="text-xl font-bold mt-4 text-[#753350]">{userName}</h2>
           </div>
 
           <div className="flex justify-between items-center mb-4">
@@ -177,10 +304,11 @@ export default function Forum() {
                 description={post.cuerpo}
                 categories={post.Tipo_Cancer?.nombre}
                 likes={post.Voto?.length || 0} // Contar los votos
-                responses={post.responses || 0}
+                responses={post.replies || 0}
                 compact={true}
                 myPost={true}
                 postId={post.id}
+                imageSrc={post.usuario?.Paciente?.[0]?.imagen_url || "/Perfil/PF2.webp"}
               />
             ))}
           </div>
