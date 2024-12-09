@@ -1,3 +1,4 @@
+"use client";
 import InputEditarPerfil from "@/app/components/Perfil/Editar/InputEditarPerfil";
 
 function CajaEditarPerfil() {
