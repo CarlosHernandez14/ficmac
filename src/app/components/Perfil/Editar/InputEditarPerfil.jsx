@@ -266,10 +266,10 @@ function InputEditarPerfil() {
          focus:ring-[#A0737D] focus:border-[#A0737D] sm:text-sm font-semibold "
               >
                 <option value="">Seleccione una opción</option>
-                <option value="femenino">INE</option>
-                <option value="masculino">Pasaporte</option>
-                <option value="otro">Licencia de conducir</option>
-                <option value="otro">Cartilla militar</option>
+                <option value="INE">INE</option>
+                <option value="Pasaporte">Pasaporte</option>
+                <option value="Licencia de conducir">Licencia de conducir</option>
+                <option value="Cartilla militar">Cartilla militar</option>
               </select>
             </div>
             <div>
