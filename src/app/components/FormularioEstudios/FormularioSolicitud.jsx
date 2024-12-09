@@ -20,7 +20,7 @@ const FormularioSolicitud = () => {
         </div>
         
       </div>
-    {/*  <h1 className="text-center ">Para continuar, es necesario llenar los datos desde <strong className="font-bold">Editar Perfil.</strong>  </h1>*/ }
+      <h1 className="text-center ">Por favor, confirme que los datos ingresados son correctos. Si es así, haga clic en  <strong className="font-bold">Continuar. </strong>  </h1>
       <div className="flex-1 mt-4 p-4 mb-48 mr-32">
         <Formulario />
       </div>
